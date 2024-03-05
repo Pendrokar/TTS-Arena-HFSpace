@@ -42,7 +42,7 @@ AVAILABLE_MODELS = {
     'coqui/xtts': '1#1',
     'collabora/WhisperSpeech': '/whisper_speech_demo#0',
     'myshell-ai/OpenVoice': '1#1',
-    'PolyAI/pheme': '/predict#0',
+    # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
     'mrfakename/MetaVoice-1B-v0.1': '/tts#0',
 
     # xVASynth (CPU)

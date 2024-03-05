@@ -1,14 +1,18 @@
 ---
-title: TTS Arena
+title: TTS Spaces Arena
 sdk: gradio
 app_file: app.py
 license: zlib
 tags:
 - leaderboard
-emoji: 🏆
-colorFrom: blue
-colorTo: blue
-pinned: true
-header: mini
-short_description: Vote on the top TTS models!
+emoji: 🤗🏆
+colorFrom: red
+colorTo: red
+pinned: false
+#space_ci:
+#  trusted_authors: []
+#  secrets:
+#    - HF_TOKEN
+#    - DATASET_ID
+#  hardware: cpu-basic
 ---
