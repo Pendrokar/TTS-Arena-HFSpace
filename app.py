@@ -38,19 +38,49 @@ AVAILABLE_MODELS = {
     # 'Pheme': 'pheme',
     # 'MetaVoice': 'metavoice'
 
-    # '<Space>': func#<return-index-of-audio-param>
-    # 'coqui/xtts': '1#1', #FIXME: Space defaults
-    # 'collabora/WhisperSpeech': '/whisper_speech_demo#0', #FIXME: invalid url for third param
-    # 'myshell-ai/OpenVoice': '1#1', #FIXME: example audio path
-    # 'PolyAI/pheme': 'PolyAI/pheme', #FIXME
+    # '<Space>': <function>#<return-index-of-audio-param>
+    'coqui/xtts': '1#1',
+    'collabora/WhisperSpeech': '/whisper_speech_demo#0',
+    'myshell-ai/OpenVoice': '1#1',
+    'PolyAI/pheme': '/predict#0',
     'mrfakename/MetaVoice-1B-v0.1': '/tts#0',
 
     # xVASynth (CPU)
     'Pendrokar/xVASynth': '/predict#0',
 
     # CoquiTTS (CPU)
-    'coqui/CoquiTTS': '0#0',
+    # 'coqui/CoquiTTS': '0#0',
+
     # 'pytorch/Tacotron2': '0#0', #old gradio
+}
+
+OVERRIDE_INPUTS = {
+    'coqui/xtts': {
+        1: 'en',
+        2: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        3: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        4: False, #use_mic
+        5: False, #cleanup_reference
+        6: False, #auto_detect
+    },
+    'collabora/WhisperSpeech': {
+        1: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        2: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        3: 14.0, #Tempo - Gradio Slider issue: takes min. rather than value
+    },
+    'myshell-ai/OpenVoice': {
+        1: 'default', # style
+        2: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+    },
+    'PolyAI/pheme': {
+        1: 'YOU1000000044_S0000798', # voice
+        2: 210,
+        3: 0.7, #Tempo - Gradio Slider issue: takes min. rather than value
+    },
+    'Pendrokar/xVASynth': {
+        1: 'ccby_nvidia_hifi_92_F', #fine-tuned voice model name
+        3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
+    },
 }
 
 SPACE_ID = os.getenv('SPACE_ID')
@@ -58,6 +88,9 @@ MAX_SAMPLE_TXT_LENGTH = 300
 MIN_SAMPLE_TXT_LENGTH = 10
 DB_DATASET_ID = os.getenv('DATASET_ID')
 DB_NAME = "database.db"
+
+SPACE_ID = 'Pendrokar/TTS-Arena'
+DB_DATASET_ID = 'PenLocal'
 
 # If /data available => means local storage is enabled => let's use it!
 DB_PATH = f"/data/{DB_NAME}" if os.path.isdir("/data") else DB_NAME
@@ -589,6 +622,8 @@ def synthandreturn(text):
                     return_audio_index = int(AVAILABLE_MODELS[model][-1])
                     endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
 
+                    api_name = None
+                    fn_index = None
                     # has named endpoint
                     if '/' == AVAILABLE_MODELS[model][:1]:
                         # assume the index is one of the first 9 params
@@ -597,13 +632,6 @@ def synthandreturn(text):
                         space_inputs = _get_param_examples(
                             endpoints['named_endpoints'][api_name]['parameters']
                         )
-
-                        # force text to the text input
-                        space_inputs[0] = text
-
-                        # print(space_inputs)
-                        results = mdl_space.predict(*space_inputs, api_name=api_name)
-
                     # has unnamed endpoint
                     else:
                         # endpoint index is the first character
@@ -613,15 +641,16 @@ def synthandreturn(text):
                             endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
                         )
 
-                        # force text
-                        space_inputs[0] = text
+                    space_inputs = _override_params(space_inputs, model)
 
-                        # OpenVoice
-                        # space_inputs[2] = "examples/speaker2.mp3"
+                    # force text
+                    space_inputs[0] = text
 
-                        results = mdl_space.predict(*space_inputs, fn_index=fn_index)
+                    results = mdl_space.predict(*space_inputs, api_name=api_name, fn_index=fn_index)
 
                     # return path to audio
+                    print(results)
+                    print(return_audio_index)
                     result = results[return_audio_index] if (not isinstance(results, str)) else results
                 else:
                     # Use the private HF Space
@@ -677,6 +706,16 @@ def synthandreturn(text):
                 continue
 
         return example_inputs
+
+    def _override_params(inputs, modelname):
+        try:
+            for key,value in OVERRIDE_INPUTS[modelname].items():
+                inputs[key] = value
+            print(f"Default inputs overridden for {modelname}")
+        except:
+            pass
+
+        return inputs
 
     results = {}
     thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1, results))
