@@ -15,4 +15,11 @@ pinned: false
 #    - HF_TOKEN
 #    - DATASET_ID
 #  hardware: cpu-basic
+short_description: xVA vs The World
+models:
+- Pendrokar/xvapitch_nvidia
+- coqui/XTTS-v2
+- collabora/whisperspeech
+- myshell-ai/OpenVoice
+- metavoiceio/metavoice-1B-v0.1
 ---
