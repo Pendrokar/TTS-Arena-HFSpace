@@ -608,7 +608,7 @@ def synthandreturn(text):
     # Get two random models
     # your TTS model versus The World!!!
     mdl1 = 'Pendrokar/xVASynth'
-    mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 1)
+    mdl2 = random.sample(list(AVAILABLE_MODELS.keys().remove(mdl1)), 1)
     mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
     # mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
     log_text(text)
