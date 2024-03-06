@@ -90,7 +90,6 @@ DB_DATASET_ID = os.getenv('DATASET_ID')
 DB_NAME = "database.db"
 
 SPACE_ID = 'TTS-AGI/TTS-Arena'
-DB_DATASET_ID = 'PenLocal'
 
 # If /data available => means local storage is enabled => let's use it!
 DB_PATH = f"/data/{DB_NAME}" if os.path.isdir("/data") else DB_NAME
