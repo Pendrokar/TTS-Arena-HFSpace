@@ -51,26 +51,38 @@ AVAILABLE_MODELS = {
     # CoquiTTS (CPU)
     # 'coqui/CoquiTTS': '0#0',
 
+    'amphion/Text-to-Speech': '/predict#0',
+    'LeeSangHoon/HierSpeech_TTS': '/predict#0',
+
+    # TTS w issues
+    # 'suno/bark': '3#0', # Hallucinates
+    # 'shivammehta25/Matcha-TTS': '5#0', #seems to require multiple requests for setup
+    # 'styletts2/styletts2': '0#0', #API disabled
+    # 'mrfakename/MelloTTS': '0#0', #API disabled
+    # 'Manmay/tortoise-tts': '/predict#0', #Cannot skip text-from-file parameter
     # 'pytorch/Tacotron2': '0#0', #old gradio
 }
+
+# for zero-shot TTS - voice sample of Scarlett Johanson
+DEFAULT_VOICE_SAMPLE = 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav'
 
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
         1: 'en',
-        2: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
-        3: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        2: DEFAULT_VOICE_SAMPLE, # voice sample
+        3: DEFAULT_VOICE_SAMPLE, # voice sample
         4: False, #use_mic
         5: False, #cleanup_reference
         6: False, #auto_detect
     },
     'collabora/WhisperSpeech': {
-        1: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
-        2: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        1: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: DEFAULT_VOICE_SAMPLE, # voice sample
         3: 14.0, #Tempo - Gradio Slider issue: takes min. rather than value
     },
     'myshell-ai/OpenVoice': {
         1: 'default', # style
-        2: 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav', # voice sample - Scarlett Johanson
+        2: DEFAULT_VOICE_SAMPLE, # voice sample
     },
     'PolyAI/pheme': {
         1: 'YOU1000000044_S0000798', # voice
@@ -80,6 +92,27 @@ OVERRIDE_INPUTS = {
     'Pendrokar/xVASynth': {
         1: 'ccby_nvidia_hifi_92_F', #fine-tuned voice model name
         3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
+    },
+    'suno/bark': {
+        1: 'Speaker 3 (en)',
+    },
+    'amphion/Text-to-Speech': {
+        1: 'LikeManyWaters',
+    },
+    'LeeSangHoon/HierSpeech_TTS': {
+        1: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: 0.333,
+        3: 0.333,
+        4: 1,
+        5: 1,
+        6: 0,
+        7: 1111,
+    },
+    'Manmay/tortoise-tts': {
+        1: None, # text-from-file; FIXME: cannot skip and doesn't work without
+        2: 'angie',
+        3: None,
+        4: 'No',
     },
 }
 
@@ -339,9 +372,7 @@ model_licenses = {
     'metavoice': 'Apache 2.0',
     'elevenlabs': 'Proprietary',
     'whisperspeech': 'MIT',
-
     'Pendrokar/xVASynth': 'GPT3',
-    'Pendrokar/xVASynthStreaming': 'GPT3',
 }
 model_links = {
     'styletts2': 'https://github.com/yl4579/StyleTTS2',
