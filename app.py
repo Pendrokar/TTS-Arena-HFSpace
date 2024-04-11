@@ -44,7 +44,6 @@ AVAILABLE_MODELS = {
     'coqui/xtts': '1#1',
     'collabora/WhisperSpeech': '/whisper_speech_demo#0',
     'myshell-ai/OpenVoice': '1#1',
-    # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
     'mrfakename/MetaVoice-1B-v0.1': '/tts#0',
 
     # xVASynth (CPU)
@@ -53,10 +52,11 @@ AVAILABLE_MODELS = {
     # CoquiTTS (CPU)
     # 'coqui/CoquiTTS': '0#0',
 
-    'amphion/Text-to-Speech': '/predict#0',
     'LeeSangHoon/HierSpeech_TTS': '/predict#0',
 
     # TTS w issues
+    # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
+    # 'amphion/Text-to-Speech': '/predict#0', #takes a whole minute to synthesize
     # 'suno/bark': '3#0', # Hallucinates
     # 'shivammehta25/Matcha-TTS': '5#0', #seems to require multiple requests for setup
     # 'styletts2/styletts2': '0#0', #API disabled
