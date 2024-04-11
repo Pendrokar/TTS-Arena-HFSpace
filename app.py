@@ -37,6 +37,8 @@ AVAILABLE_MODELS = {
     # 'OpenVoice': 'openvoice',
     # 'Pheme': 'pheme',
     # 'MetaVoice': 'metavoice'
+    # 'MeloTTS': 'melo',
+    # 'StyleTTS 2': 'styletts2',
 
     # '<Space>': <function>#<return-index-of-audio-param>
     'coqui/xtts': '1#1',
