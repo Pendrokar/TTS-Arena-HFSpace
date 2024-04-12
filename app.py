@@ -426,7 +426,8 @@ def get_leaderboard(reveal_prelim = False):
     df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote'])
     # df['license'] = df['name'].map(model_license)
     df['name'] = df['name'].replace(model_names)
-    df['name'] = make_link_to_space(df['name'])
+    for i in range(len(df)):
+        df['name'][i] = make_link_to_space(df['name'][i])
     df['votes'] = df['upvote'] + df['downvote']
     # df['score'] = round((df['upvote'] / df['votes']) * 100, 2) # Percentage score
 
@@ -453,7 +454,14 @@ def get_leaderboard(reveal_prelim = False):
 def make_link_to_space(model_name):
     # create a anchor link if a HF space
     if '/' in model_name:
-        return '🤗 <a href="'+ 'https://huggingface.co/spaces/' + model_name + '">' + model_name + '</a>'
+        style = 'color: var(--link-text-color);text-decoration: underline;text-decoration-style: dotted;'
+        return '🤗 <a style="' + style + '" href="'+ 'https://huggingface.co/spaces/' + model_name + '">' + model_name + '</a>'
+    # otherwise just return the model name
+    return model_name
+def markdown_link_to_space(model_name):
+    # create a anchor link if a HF space using markdown syntax
+    if '/' in model_name:
+        return '🤗 [' + model_name + '](https://huggingface.co/spaces/' + model_name + ')'
     # otherwise just return the model name
     return model_name
 def mkuuid(uid):
@@ -565,7 +573,13 @@ def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, cho
 with gr.Blocks() as leaderboard:
     gr.Markdown(LDESC)
     # df = gr.Dataframe(interactive=False, value=get_leaderboard())
-    df = gr.Dataframe(interactive=False, min_width=0, wrap=True, column_widths=[30, 200, 50, 50])
+    df = gr.Dataframe(
+        interactive=False,
+        min_width=0,
+        wrap=True,
+        column_widths=[30, 200, 50, 50],
+        datatype=["str", "html", "number", "number"]
+    )
     with gr.Row():
         reveal_prelim = gr.Checkbox(label="Reveal preliminary results", info="Show all models, including models with very few human ratings.", scale=1)
         reloadbtn = gr.Button("Refresh", scale=3)
