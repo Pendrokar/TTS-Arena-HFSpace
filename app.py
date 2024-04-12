@@ -426,6 +426,7 @@ def get_leaderboard(reveal_prelim = False):
     df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote'])
     # df['license'] = df['name'].map(model_license)
     df['name'] = df['name'].replace(model_names)
+    df['name'] = make_link_to_space(df['name'])
     df['votes'] = df['upvote'] + df['downvote']
     # df['score'] = round((df['upvote'] / df['votes']) * 100, 2) # Percentage score
 
@@ -448,6 +449,13 @@ def get_leaderboard(reveal_prelim = False):
     # df = df[['order', 'name', 'score', 'license', 'votes']]
     df = df[['order', 'name', 'score', 'votes']]
     return df
+
+def make_link_to_space(model_name):
+    # create a anchor link if a HF space
+    if '/' in model_name:
+        return '🤗 <a href="'+ 'https://huggingface.co/spaces/' + model_name + '">' + model_name + '</a>'
+    # otherwise just return the model name
+    return model_name
 def mkuuid(uid):
     if not uid:
         uid = uuid.uuid4()
@@ -538,16 +546,19 @@ def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, cho
     # return out
     # return (f'This model was {chosenmodel1}', f'This model was {chosenmodel2}', gr.update(visible=False), gr.update(visible=False))
     # return (gr.update(variant='secondary', value=chosenmodel1, interactive=False), gr.update(variant='secondary', value=chosenmodel2, interactive=False))
+    chosenmodel1 = make_link_to_space(chosenmodel1)
+    chosenmodel2 = make_link_to_space(chosenmodel2)
     out = [
         gr.update(interactive=False, visible=False),
         gr.update(interactive=False, visible=False)
     ]
+    style = 'text-align: center; font-size: 1rem; margin-bottom: 0; padding: var(--input-padding)'
     if chose_a == True:
-        out.append(gr.update(value=f'Your vote: {chosenmodel1}', interactive=False, visible=True))
-        out.append(gr.update(value=f'{chosenmodel2}', interactive=False, visible=True))
+        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel1}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">{chosenmodel2}</p>', visible=True))
     else:
-        out.append(gr.update(value=f'{chosenmodel1}', interactive=False, visible=True))
-        out.append(gr.update(value=f'Your vote: {chosenmodel2}', interactive=False, visible=True))
+        out.append(gr.update(value=f'<p style="{style}">{chosenmodel1}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel2}</p>', visible=True))
     out.append(gr.update(visible=True))
     return out
 
@@ -643,12 +654,15 @@ def synthandreturn(text):
     except:
         pass
     # Get two random models
-    # your TTS model versus The World!!!
+    # forced model: your TTS model versus The World!!!
     mdl1 = 'Pendrokar/xVASynth'
     vsModels = dict(AVAILABLE_MODELS)
     del vsModels[mdl1]
+    # randomize position of the forced model
     mdl2 = random.sample(list(vsModels.keys()), 1)
+    # forced random
     mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
+    # actual random
     # mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
     log_text(text)
     print("[debug] Using", mdl1, mdl2)
@@ -832,13 +846,13 @@ with gr.Blocks() as vote:
         with gr.Column():
             with gr.Group():
                 aud1 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
-                abetter = gr.Button("A is better", variant='primary')
-                prevmodel1 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model A", text_align="center", lines=1, max_lines=1, visible=False)
+                abetter = gr.Button("A is better", variant='primary', interactive=False)
+                prevmodel1 = gr.HTML(show_label=False, value="Vote to reveal model A", visible=False)
         with gr.Column():
             with gr.Group():
                 aud2 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
-                bbetter = gr.Button("B is better", variant='primary')
-                prevmodel2 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model B", text_align="center", lines=1, max_lines=1, visible=False)
+                bbetter = gr.Button("B is better", variant='primary', interactive=False)
+                prevmodel2 = gr.HTML(show_label=False, value="Vote to reveal model B", visible=False)
     nxtroundbtn = gr.Button('Next round', visible=False)
     # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
     outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
