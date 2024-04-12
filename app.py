@@ -199,7 +199,7 @@ if not os.path.isfile(DB_PATH):
 
 # Create DB table (if doesn't exist)
 create_db_if_missing()
-    
+
 hf_token = os.getenv('HF_TOKEN')
 # Sync local DB with remote repo every 5 minute (only if a change is detected)
 scheduler = CommitScheduler(
@@ -860,7 +860,7 @@ with gr.Blocks() as vote:
     nxtroundbtn = gr.Button('Next round', visible=False)
     # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
     outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
-    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs).then(enable, outputs=[btn, abetter, bbetter])
+    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs)
     nxtroundbtn.click(clear_stuff, outputs=outputs)
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
