@@ -22,4 +22,6 @@ models:
 - collabora/whisperspeech
 - myshell-ai/OpenVoice
 - metavoiceio/metavoice-1B-v0.1
+- amphion/Text-to-Speech
+- LeeSangHoon/HierSpeech_TTS
 ---
