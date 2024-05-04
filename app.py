@@ -1060,9 +1060,9 @@ def synthandreturn(text):
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
         gr.update(visible=False), #nxt round btn
-        # reset aplayed, bplayed audio playback events
-        gr.update(value=False), #aplayed
-        gr.update(value=False), #bplayed
+        # reset gr.State aplayed & bplayed
+        False, #aplayed
+        False, #bplayed
     )
     # return (
     #     text,
@@ -1092,16 +1092,17 @@ def synthandreturn(text):
 def unlock_vote(btn_index, aplayed, bplayed):
     # sample played
     if btn_index == 0:
-        aplayed = gr.State(value=True)
+        aplayed = True
     if btn_index == 1:
-        bplayed = gr.State(value=True)
+        bplayed = True
 
     # both audio samples played
     if bool(aplayed) and bool(bplayed):
         print('Both audio samples played, voting unlocked')
-        return [gr.update(interactive=True), gr.update(interactive=True), gr.update(), gr.update()]
+        return [gr.update(interactive=True), gr.update(interactive=True), True, True]
 
     return [gr.update(), gr.update(), aplayed, bplayed]
+
 
 def cachedsent(request: gr.Request):
     # add new userid to voting_users from Browser session hash
@@ -1159,21 +1160,22 @@ def randomsent():
     return '⚡', random.choice(sents), '🎲'
 def clear_stuff():
     return [
-        '',
+        "",
         "Synthesize",
-        gr.update(visible=True), # r2
+        gr.update(visible=False), # r2
         '', # model1
         '', # model2
         gr.update(visible=False), # aud1
         gr.update(visible=False), # aud2
-        gr.update(visible=False), #abetter
-        gr.update(visible=False), #bbetter
+        gr.update(visible=False, interactive=False), #abetter
+        gr.update(visible=False, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
         gr.update(visible=False), #nxt round btn
-        gr.update(value=False), #aplayed
-        gr.update(value=False), #bplayed
+        False, #aplayed
+        False, #bplayed
     ]
+
 def disable():
     return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
