@@ -35,24 +35,101 @@ AVAILABLE_MODELS = {
     # 'WhisperSpeech': 'whisperspeech',
     # 'ElevenLabs': 'eleven',
     # 'OpenVoice': 'openvoice',
-    # 'Pheme': 'pheme',
-    # 'MetaVoice': 'metavoice'
+    # 'OpenVoice V2': 'openvoicev2',
+    # 'Play.HT 2.0': 'playht',
+    # 'MetaVoice': 'metavoice',
     # 'MeloTTS': 'melo',
     # 'StyleTTS 2': 'styletts2',
+    # 'GPT-SoVITS': 'sovits',
+    # 'Vokan TTS': 'vokan',
+    # 'VoiceCraft 2.0': 'voicecraft',
+    # 'Parler TTS': 'parler'
 
-    # '<Space>': <function>#<return-index-of-audio-param>
-    'coqui/xtts': '1#1',
-    'collabora/WhisperSpeech': '/whisper_speech_demo#0',
-    'myshell-ai/OpenVoice': '1#1',
-    'mrfakename/MetaVoice-1B-v0.1': '/tts#0',
+    'coqui/xtts': 'coqui/xtts',
+    'collabora/WhisperSpeech': 'collabora/WhisperSpeech',
+    # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice',
+    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2',
+    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1',
+    'Pendrokar/xVASynth': 'Pendrokar/xVASynth',
+    # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
+    'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS',
 
+    # TTS w issues
+    # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
+    # 'amphion/Text-to-Speech': '/predict#0', # old running space, takes a whole minute to synthesize
+    # 'suno/bark': '3#0', # Hallucinates
+    # 'shivammehta25/Matcha-TTS': '5#0', # seems to require multiple requests for setup
+    # 'styletts2/styletts2': '0#0', # API disabled
+    # 'Manmay/tortoise-tts': '/predict#0', # Cannot skip text-from-file parameter
+    # 'pytorch/Tacotron2': '0#0', # old gradio
+    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # old gradio - ValueError: Unsupported protocol: sse_v3
+    # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # old gradio - ValueError: Unsupported protocol: sse_v3
+}
+
+HF_SPACES = {
+    # XTTS v2
+    'coqui/xtts': {
+        'name': 'coqui/xtts',
+        'function': '1',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+    },
+    # WhisperSpeech
+    'collabora/WhisperSpeech': {
+        'name': 'collabora/WhisperSpeech',
+        'function': '/whisper_speech_demo',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
+    # OpenVoice (MyShell.ai)
+    'myshell-ai/OpenVoice': {
+        'name':'myshell-ai/OpenVoice',
+        'function': '1',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+    },
+    # OpenVoice v2 (MyShell.ai)
+    'myshell-ai/OpenVoiceV2': {
+        'name':'myshell-ai/OpenVoiceV2',
+        'function': '1',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+    },
+    # MetaVoice
+    'mrfakename/MetaVoice-1B-v0.1': {
+        'name':'mrfakename/MetaVoice-1B-v0.1',
+        'function': '/tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
     # xVASynth (CPU)
-    'Pendrokar/xVASynth': '/predict#0',
-
+    'Pendrokar/xVASynth': {
+        'name': 'Pendrokar/xVASynth',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
     # CoquiTTS (CPU)
-    # 'coqui/CoquiTTS': '0#0',
-
-    'LeeSangHoon/HierSpeech_TTS': '/predict#0',
+    'coqui/CoquiTTS': {
+        'name': 'coqui/CoquiTTS',
+        'function': '0',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
+    # HierSpeech_TTS
+    'LeeSangHoon/HierSpeech_TTS': {
+        'name': 'LeeSangHoon/HierSpeech_TTS',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
+    # MeloTTS (MyShell.ai)
+    'mrfakename/MeloTTS': {
+        'name': 'mrfakename/MeloTTS',
+        'function': '/synthesize',
+        'text_param_index': 1,
+        'return_audio_index': 0,
+    },
 
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
@@ -60,7 +137,6 @@ AVAILABLE_MODELS = {
     # 'suno/bark': '3#0', # Hallucinates
     # 'shivammehta25/Matcha-TTS': '5#0', #seems to require multiple requests for setup
     # 'styletts2/styletts2': '0#0', #API disabled
-    # 'mrfakename/MelloTTS': '0#0', #API disabled
     # 'Manmay/tortoise-tts': '/predict#0', #Cannot skip text-from-file parameter
     # 'pytorch/Tacotron2': '0#0', #old gradio
 }
@@ -84,6 +160,10 @@ OVERRIDE_INPUTS = {
     },
     'myshell-ai/OpenVoice': {
         1: 'default', # style
+        2: DEFAULT_VOICE_SAMPLE, # voice sample
+    },
+    'myshell-ai/OpenVoiceV2': {
+        1: 'en_default', # style
         2: DEFAULT_VOICE_SAMPLE, # voice sample
     },
     'PolyAI/pheme': {
@@ -115,6 +195,11 @@ OVERRIDE_INPUTS = {
         2: 'angie',
         3: None,
         4: 'No',
+    },
+    'mrfakename/MeloTTS': {
+        0: 'EN-US',	# speaker
+        2: 1,
+        3: 'EN',	# language
     },
 }
 
@@ -686,43 +771,44 @@ def synthandreturn(text):
     log_text(text)
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage):
+        print(model)
         try:
             if model in AVAILABLE_MODELS:
                 if '/' in model:
                     # Use public HF Space
                     mdl_space = Client(model, hf_token=hf_token)
                     # assume the index is one of the first 9 return params
-                    return_audio_index = int(AVAILABLE_MODELS[model][-1])
+                    return_audio_index = int(HF_SPACES[model]['return_audio_index'])
                     endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
 
                     api_name = None
                     fn_index = None
+                    end_parameters = None
                     # has named endpoint
-                    if '/' == AVAILABLE_MODELS[model][:1]:
-                        # assume the index is one of the first 9 params
-                        api_name = AVAILABLE_MODELS[model][:-2]
+                    if '/' == HF_SPACES[model]['function'][0]:
+                        # audio sync function name
+                        api_name = HF_SPACES[model]['function']
 
-                        space_inputs = _get_param_examples(
+                        end_parameters = _get_param_examples(
                             endpoints['named_endpoints'][api_name]['parameters']
                         )
                     # has unnamed endpoint
                     else:
                         # endpoint index is the first character
-                        fn_index = int(AVAILABLE_MODELS[model][0])
+                        fn_index = int(HF_SPACES[model]['function'])
 
-                        space_inputs = _get_param_examples(
+                        end_parameters = _get_param_examples(
                             endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
                         )
 
-                    space_inputs = _override_params(space_inputs, model)
+                    space_inputs = _override_params(end_parameters, model)
 
                     # force text
-                    space_inputs[0] = text
+                    space_inputs[HF_SPACES[model]['text_param_index']] = text
 
                     results = mdl_space.predict(*space_inputs, api_name=api_name, fn_index=fn_index)
 
                     # return path to audio
-                    print(results)
                     result = results[return_audio_index] if (not isinstance(results, str)) else results
                 else:
                     # Use the private HF Space
@@ -803,7 +889,7 @@ def synthandreturn(text):
     print(f"Sending models {mdl1k} and {mdl2k} to API")
     thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results))
     thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results))
-    
+
     thread1.start()
     thread2.start()
     thread1.join()
@@ -818,7 +904,7 @@ def synthandreturn(text):
     # print(sr)
     #debug
     #     outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
-    
+
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
         text,
