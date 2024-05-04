@@ -496,6 +496,9 @@ def downvote_model(model, uname):
     cursor.close()
 
 def a_is_better(model1, model2, userid):
+    print("A is better", model1, model2)
+    if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
+        raise gr.Error('Sorry, please try voting again.')
     userid = mkuuid(userid)
     if model1 and model2:
         conn = get_db()
@@ -508,6 +511,9 @@ def a_is_better(model1, model2, userid):
         downvote_model(model2, str(userid))
     return reload(model1, model2, userid, chose_a=True)
 def b_is_better(model1, model2, userid):
+    print("B is better", model1, model2)
+    if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
+        raise gr.Error('Sorry, please try voting again.')
     userid = mkuuid(userid)
     if model1 and model2:
         conn = get_db()
@@ -746,7 +752,9 @@ def synthandreturn(text):
                 result = f.name
         except:
             pass
-
+        if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
+        print(model)
+        print(f"Running model {model}")
         result_storage[model] = result
         # try:
         #     doloudnorm(result)
@@ -786,9 +794,16 @@ def synthandreturn(text):
 
         return inputs
 
+    mdl1k = mdl1
+    mdl2k = mdl2
+    print(mdl1k, mdl2k)
+    if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
+    if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
-    thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1, results))
-    thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2, results))
+    print(f"Sending models {mdl1k} and {mdl2k} to API")
+    thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results))
+    thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results))
+    
     thread1.start()
     thread2.start()
     thread1.join()
@@ -802,14 +817,17 @@ def synthandreturn(text):
     # y, sr = librosa.load(results[list(results.keys())[1]], sr=None)
     # print(sr)
     #debug
+    #     outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
+    
+    print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
         text,
         "Synthesize",
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
-        gr.update(visible=True, value=results[mdl1]), # aud1
-        gr.update(visible=True, value=results[mdl2]), # aud2
+        gr.update(visible=True, value=results[mdl1k]), # aud1
+        gr.update(visible=True, value=results[mdl2k]), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
@@ -868,8 +886,8 @@ def enable():
     return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
 with gr.Blocks() as vote:
     # sample played
-    aplayed = gr.State(value=False)
-    bplayed = gr.State(value=False)
+    #aplayed = gr.State(value=False)
+    #bplayed = gr.State(value=False)
     # voter ID
     useridstate = gr.State()
     gr.Markdown(INSTR)
@@ -880,7 +898,9 @@ with gr.Blocks() as vote:
         randomt.click(randomsent, outputs=[text, randomt])
         btn = gr.Button("Synthesize", variant='primary')
     model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
+    #model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
     model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
+    #model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
     with gr.Row(visible=False) as r2:
         with gr.Column():
             with gr.Group():
@@ -894,13 +914,39 @@ with gr.Blocks() as vote:
                 prevmodel2 = gr.HTML(show_label=False, value="Vote to reveal model B", visible=False)
     nxtroundbtn = gr.Button('Next round', visible=False)
     # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
-    outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn, aplayed, bplayed]
-    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs).then(enable, outputs=[btn, gr.State(), gr.State()])
+    outputs = [
+        text,
+        btn,
+        r2,
+        model1,
+        model2,
+        aud1,
+        aud2,
+        abetter,
+        bbetter,
+        prevmodel1,
+        prevmodel2,
+        nxtroundbtn
+    ]
+    """
+    text,
+        "Synthesize",
+        gr.update(visible=True), # r2
+        mdl1, # model1
+        mdl2, # model2
+        gr.update(visible=True, value=results[mdl1]), # aud1
+        gr.update(visible=True, value=results[mdl2]), # aud2
+        gr.update(visible=True, interactive=False), #abetter
+        gr.update(visible=True, interactive=False), #bbetter
+        gr.update(visible=False), #prevmodel1
+        gr.update(visible=False), #prevmodel2
+        gr.update(visible=False), #nxt round btn"""
+    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs).then(enable, outputs=[btn, abetter, bbetter])
     nxtroundbtn.click(clear_stuff, outputs=outputs)
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
-    aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=0), aplayed, bplayed])
-    aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=1), aplayed, bplayed])
+    #aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=0), aplayed, bplayed])
+    #aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=1), aplayed, bplayed])
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
