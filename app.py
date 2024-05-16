@@ -54,6 +54,10 @@ AVAILABLE_MODELS = {
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS',
 
+    # Parler
+    'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini',
+    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso',
+
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
     # 'amphion/Text-to-Speech': '/predict#0', # old running space, takes a whole minute to synthesize
@@ -130,6 +134,22 @@ HF_SPACES = {
         'text_param_index': 1,
         'return_audio_index': 0,
     },
+
+    # Parler
+    'parler-tts/parler_tts_mini': {
+        'name': 'parler-tts/parler_tts_mini',
+        'function': '/gen_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
+    # Parler, using Expresso dataset
+    'parler-tts/parler-tts-expresso': {
+        'name': 'parler-tts/parler-tts-expresso',
+        'function': '/gen_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
+
 
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
