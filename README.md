@@ -1,6 +1,7 @@
 ---
 title: TTS Spaces Arena
 sdk: gradio
+sdk_version: 4.19.0
 app_file: app.py
 license: zlib
 tags:
