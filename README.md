@@ -1,7 +1,7 @@
 ---
 title: TTS Spaces Arena
 sdk: gradio
-sdk_version: 4.19.0
+sdk_version: 4.36.1
 app_file: app.py
 license: zlib
 tags:
@@ -10,12 +10,6 @@ emoji: 🤗🏆
 colorFrom: red
 colorTo: red
 pinned: false
-#space_ci:
-#  trusted_authors: []
-#  secrets:
-#    - HF_TOKEN
-#    - DATASET_ID
-#  hardware: cpu-basic
 short_description: xVA vs The World
 models:
 - Pendrokar/xvapitch_nvidia
