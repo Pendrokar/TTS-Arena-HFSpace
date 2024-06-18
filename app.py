@@ -912,8 +912,8 @@ def synthandreturn(text):
 
     thread1.start()
     thread2.start()
-    thread1.join()
-    thread2.join()
+    thread1.join(180)
+    thread2.join(180)
     #debug
     # print(results)
     # print(list(results.keys())[0])
