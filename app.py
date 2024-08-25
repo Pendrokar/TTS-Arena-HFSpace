@@ -55,7 +55,7 @@ AVAILABLE_MODELS = {
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS',
 
     # Parler
-    'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini',
+    'parler-tts/parler_tts': 'parler-tts/parler_tts',
     'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso',
 
     # TTS w issues
@@ -135,6 +135,13 @@ HF_SPACES = {
         'return_audio_index': 0,
     },
 
+    # Parler
+    'parler-tts/parler_tts': {
+        'name': 'parler-tts/parler_tts',
+        'function': '/gen_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
     # Parler
     'parler-tts/parler_tts_mini': {
         'name': 'parler-tts/parler_tts_mini',
@@ -220,6 +227,12 @@ OVERRIDE_INPUTS = {
         0: 'EN-US',	# speaker
         2: 1,
         3: 'EN',	# language
+    },
+    'parler-tts/parler_tts': {
+        1: 'Laura's voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
+    },
+    'parler-tts/parler-tts-expresso': {
+        1: 'Laura's voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
     },
 }
 
