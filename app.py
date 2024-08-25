@@ -805,51 +805,56 @@ def synthandreturn(text):
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage):
         print(model)
-        try:
-            if model in AVAILABLE_MODELS:
-                if '/' in model:
-                    # Use public HF Space
-                    mdl_space = Client(model, hf_token=hf_token)
-                    # assume the index is one of the first 9 return params
-                    return_audio_index = int(HF_SPACES[model]['return_audio_index'])
-                    endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
-
-                    api_name = None
-                    fn_index = None
-                    end_parameters = None
-                    # has named endpoint
-                    if '/' == HF_SPACES[model]['function'][0]:
-                        # audio sync function name
-                        api_name = HF_SPACES[model]['function']
-
-                        end_parameters = _get_param_examples(
-                            endpoints['named_endpoints'][api_name]['parameters']
-                        )
-                    # has unnamed endpoint
+        # 3 attempts
+        attempt_count = 0
+        while attempt_count < 3:
+            try:
+                if model in AVAILABLE_MODELS:
+                    if '/' in model:
+                        # Use public HF Space
+                        mdl_space = Client(model, hf_token=hf_token)
+                        # assume the index is one of the first 9 return params
+                        return_audio_index = int(HF_SPACES[model]['return_audio_index'])
+                        endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
+    
+                        api_name = None
+                        fn_index = None
+                        end_parameters = None
+                        # has named endpoint
+                        if '/' == HF_SPACES[model]['function'][0]:
+                            # audio sync function name
+                            api_name = HF_SPACES[model]['function']
+    
+                            end_parameters = _get_param_examples(
+                                endpoints['named_endpoints'][api_name]['parameters']
+                            )
+                        # has unnamed endpoint
+                        else:
+                            # endpoint index is the first character
+                            fn_index = int(HF_SPACES[model]['function'])
+    
+                            end_parameters = _get_param_examples(
+                                endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
+                            )
+    
+                        space_inputs = _override_params(end_parameters, model)
+    
+                        # force text
+                        space_inputs[HF_SPACES[model]['text_param_index']] = text
+    
+                        results = mdl_space.predict(*space_inputs, api_name=api_name, fn_index=fn_index)
+    
+                        # return path to audio
+                        result = results[return_audio_index] if (not isinstance(results, str)) else results
                     else:
-                        # endpoint index is the first character
-                        fn_index = int(HF_SPACES[model]['function'])
-
-                        end_parameters = _get_param_examples(
-                            endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
-                        )
-
-                    space_inputs = _override_params(end_parameters, model)
-
-                    # force text
-                    space_inputs[HF_SPACES[model]['text_param_index']] = text
-
-                    results = mdl_space.predict(*space_inputs, api_name=api_name, fn_index=fn_index)
-
-                    # return path to audio
-                    result = results[return_audio_index] if (not isinstance(results, str)) else results
+                        # Use the private HF Space
+                        result = router.predict(text, AVAILABLE_MODELS[model].lower(), api_name="/synthesize")
                 else:
-                    # Use the private HF Space
-                    result = router.predict(text, AVAILABLE_MODELS[model].lower(), api_name="/synthesize")
-            else:
-                result = router.predict(text, model.lower(), api_name="/synthesize")
-        except:
-            raise gr.Error('Unable to call API, please try again :)')
+                    result = router.predict(text, model.lower(), api_name="/synthesize")
+                break
+            except:
+                attempt_count++
+                raise gr.Error('Unable to call API, please try again')
         print('Done with', model)
         # try:
         #     doresample(result)
@@ -860,9 +865,10 @@ def synthandreturn(text):
                 audio = AudioSegment.from_file(result)
                 current_sr = audio.frame_rate
                 if current_sr > 24000:
+                    print('Resampling', model)
                     audio = audio.set_frame_rate(24000)
                 try:
-                    print('Trying to normalize audio')
+                    print('Trying to normalize audio', model)
                     audio = match_target_amplitude(audio, -20)
                 except:
                     print('[WARN] Unable to normalize audio')
