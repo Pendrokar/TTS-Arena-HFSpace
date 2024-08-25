@@ -853,7 +853,7 @@ def synthandreturn(text):
                     result = router.predict(text, model.lower(), api_name="/synthesize")
                 break
             except:
-                attempt_count++
+                attempt_count += 1
                 raise gr.Error('Unable to call API, please try again')
         print('Done with', model)
         # try:
