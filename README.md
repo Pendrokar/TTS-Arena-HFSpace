@@ -18,4 +18,5 @@ models:
 - metavoiceio/metavoice-1B-v0.1
 - amphion/Text-to-Speech
 - LeeSangHoon/HierSpeech_TTS
+sdk_version: 4.29.0
 ---
