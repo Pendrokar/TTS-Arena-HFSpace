@@ -54,6 +54,7 @@ AVAILABLE_MODELS = {
     'Pendrokar/xVASynth': 'Pendrokar/xVASynth', # EN-GB 4.29.0 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
+    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # Error with EN # 4.29.0
 
     # Parler
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29.0 4.42.0
@@ -67,7 +68,6 @@ AVAILABLE_MODELS = {
     # 'styletts2/styletts2': '0#0', # API disabled
     # 'Manmay/tortoise-tts': '/predict#0', # Cannot skip text-from-file parameter
     # 'pytorch/Tacotron2': '0#0', # old gradio
-    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # Error with EN # 4.29.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # old gradio - ValueError: Unsupported protocol: sse_v3
 }
 
@@ -225,8 +225,7 @@ OVERRIDE_INPUTS = {
         4: 'No',
     },
     'mrfakename/MeloTTS': {
-        1: 'EN',	# speaker
-        # 1: 'EN-US',	# speaker
+        1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
         2: 1, # speed
         3: 'EN',	# language
     },
