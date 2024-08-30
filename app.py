@@ -45,18 +45,19 @@ AVAILABLE_MODELS = {
     # 'VoiceCraft 2.0': 'voicecraft',
     # 'Parler TTS': 'parler'
 
+    # HF Gradio Spaces:
     'coqui/xtts': 'coqui/xtts',
-    'collabora/WhisperSpeech': 'collabora/WhisperSpeech',
-    # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice',
-    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2',
-    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1',
-    'Pendrokar/xVASynth': 'Pendrokar/xVASynth',
+    # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # old gradio?
+    'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # 4.29.0
+    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # 4.29.0
+    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29.0
+    'Pendrokar/xVASynth': 'Pendrokar/xVASynth', # EN-GB 4.29.0 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-    'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS',
+    'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
 
     # Parler
-    'parler-tts/parler_tts': 'parler-tts/parler_tts',
-    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso',
+    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29.0 4.42.0
+    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29.0 4.42.0
 
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
@@ -66,7 +67,7 @@ AVAILABLE_MODELS = {
     # 'styletts2/styletts2': '0#0', # API disabled
     # 'Manmay/tortoise-tts': '/predict#0', # Cannot skip text-from-file parameter
     # 'pytorch/Tacotron2': '0#0', # old gradio
-    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # old gradio - ValueError: Unsupported protocol: sse_v3
+    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # Error with EN # 4.29.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # old gradio - ValueError: Unsupported protocol: sse_v3
 }
 
@@ -131,7 +132,7 @@ HF_SPACES = {
     'mrfakename/MeloTTS': {
         'name': 'mrfakename/MeloTTS',
         'function': '/synthesize',
-        'text_param_index': 1,
+        'text_param_index': 0,
         'return_audio_index': 0,
     },
 
@@ -199,14 +200,14 @@ OVERRIDE_INPUTS = {
         3: 0.7, #Tempo - Gradio Slider issue: takes min. rather than value
     },
     'Pendrokar/xVASynth': {
-        1: 'ccby_nvidia_hifi_92_F', #fine-tuned voice model name
+        1: 'ccby_nvidia_hifi_92_F', #fine-tuned voice model name; #92 BRITISH
         3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
     },
     'suno/bark': {
-        1: 'Speaker 3 (en)',
+        1: 'Speaker 3 (en)', # voice
     },
     'amphion/Text-to-Speech': {
-        1: 'LikeManyWaters',
+        1: 'LikeManyWaters', # voice
     },
     'LeeSangHoon/HierSpeech_TTS': {
         1: DEFAULT_VOICE_SAMPLE, # voice sample
@@ -218,23 +219,26 @@ OVERRIDE_INPUTS = {
         7: 1111,
     },
     'Manmay/tortoise-tts': {
-        1: None, # text-from-file; FIXME: cannot skip and doesn't work without
-        2: 'angie',
+        1: None, # text-from-file; cannot skip and doesn't work without
+        2: 'angie', # voice
         3: None,
         4: 'No',
     },
     'mrfakename/MeloTTS': {
-        0: 'EN-US',	# speaker
-        2: 1,
+        1: 'EN',	# speaker
+        # 1: 'EN-US',	# speaker
+        2: 1, # speed
         3: 'EN',	# language
     },
     'parler-tts/parler_tts': {
-        1: 'Laura\'s voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
+        1: 'Elisabeth\'s voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
     },
     'parler-tts/parler-tts-expresso': {
-        1: 'Laura\'s voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
+        1: 'Elisabeth\'s voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
     },
 }
+
+hf_clients = {}
 
 SPACE_ID = os.getenv('SPACE_ID')
 MAX_SAMPLE_TXT_LENGTH = 300
@@ -334,6 +338,7 @@ scheduler = CommitScheduler(
 # Router API
 ####################################
 # router = Client("TTS-AGI/tts-router", hf_token=hf_token)
+router = {}
 ####################################
 # Gradio app
 ####################################
@@ -792,15 +797,15 @@ def synthandreturn(text):
         pass
     # Get two random models
     # forced model: your TTS model versus The World!!!
-    mdl1 = 'Pendrokar/xVASynth'
+    # mdl1 = 'Pendrokar/xVASynth'
     vsModels = dict(AVAILABLE_MODELS)
-    del vsModels[mdl1]
+    # del vsModels[mdl1]
     # randomize position of the forced model
     mdl2 = random.sample(list(vsModels.keys()), 1)
     # forced random
-    mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
+    # mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
     # actual random
-    # mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
+    mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
     log_text(text)
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage):
@@ -812,7 +817,11 @@ def synthandreturn(text):
                 if model in AVAILABLE_MODELS:
                     if '/' in model:
                         # Use public HF Space
-                        mdl_space = Client(model, hf_token=hf_token)
+                        if (model not in hf_clients):
+                            hf_clients[model] = Client(model, hf_token=hf_token)
+                        mdl_space = hf_clients[model]
+
+                        print(f"{model}: Fetching endpoints of HF Space")
                         # assume the index is one of the first 9 return params
                         return_audio_index = int(HF_SPACES[model]['return_audio_index'])
                         endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
@@ -841,9 +850,10 @@ def synthandreturn(text):
     
                         # force text
                         space_inputs[HF_SPACES[model]['text_param_index']] = text
-    
+
+                        print(f"{model}: Sending request to HF Space")
                         results = mdl_space.predict(*space_inputs, api_name=api_name, fn_index=fn_index)
-    
+
                         # return path to audio
                         result = results[return_audio_index] if (not isinstance(results, str)) else results
                     else:
@@ -852,39 +862,37 @@ def synthandreturn(text):
                 else:
                     result = router.predict(text, model.lower(), api_name="/synthesize")
                 break
-            except:
+            except Exception:
+                raise Exception
                 attempt_count += 1
-                raise gr.Error('Unable to call API, please try again')
-        print('Done with', model)
-        # try:
-        #     doresample(result)
-        # except:
-        #     pass
+                print(f"{model}: Unable to call API (attempt: {attempt_count})")
+                # sleep for one second before trying again
+                time.sleep(1)
+
+        if attempt_count > 2:
+            raise gr.Error(f"{model}: Failed to call model")
+        else:
+            print('Done with', model)
+
         try:
             with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
                 audio = AudioSegment.from_file(result)
                 current_sr = audio.frame_rate
                 if current_sr > 24000:
-                    print('Resampling', model)
+                    print(f"{model}: Resampling")
                     audio = audio.set_frame_rate(24000)
                 try:
-                    print('Trying to normalize audio', model)
+                    print(f"{model}: Trying to normalize audio")
                     audio = match_target_amplitude(audio, -20)
                 except:
-                    print('[WARN] Unable to normalize audio')
+                    print(f"{model}: [WARN] Unable to normalize audio")
                 audio.export(f.name, format="wav")
                 os.unlink(result)
                 result = f.name
         except:
             pass
         if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
-        print(model)
-        print(f"Running model {model}")
         result_storage[model] = result
-        # try:
-        #     doloudnorm(result)
-        # except:
-        #     pass
 
     def _get_param_examples(parameters):
         example_inputs = []
@@ -913,7 +921,7 @@ def synthandreturn(text):
         try:
             for key,value in OVERRIDE_INPUTS[modelname].items():
                 inputs[key] = value
-            print(f"Default inputs overridden for {modelname}")
+            print(f"{modelname}: Default inputs overridden")
         except:
             pass
 
@@ -1104,3 +1112,4 @@ with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}
 
 
 demo.queue(api_open=False, default_concurrency_limit=40).launch(show_api=False)
+demo.queue(api_open=False, default_concurrency_limit=40).launch(show_api=False, show_error=True)
