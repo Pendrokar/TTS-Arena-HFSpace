@@ -234,10 +234,10 @@ OVERRIDE_INPUTS = {
         3: 'EN',	# language
     },
     'parler-tts/parler_tts': {
-        1: 'Elisabeth\'s voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
+        1: 'Elisabeth. Elisabeth\'s clear sharp voice.', # description/prompt
     },
     'parler-tts/parler-tts-expresso': {
-        1: 'Elisabeth\'s voice is monotone yet slightly fast in delivery, with a very close recording that almost has no background noise.', # description/prompt
+        1: 'Elisabeth. Elisabeth\'s clear sharp voice.', # description/prompt
     },
 }
 
