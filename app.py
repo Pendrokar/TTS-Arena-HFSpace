@@ -25,8 +25,11 @@ def match_target_amplitude(sound, target_dBFS):
 
 
 toxicity = Detoxify('original')
+sents = []
 with open('harvard_sentences.txt') as f:
-    sents = f.read().strip().splitlines()
+    sents += f.read().strip().splitlines()
+with open('llama3_command-r_sentences.txt') as f:
+    sents += f.read().strip().splitlines()
 ####################################
 # Constants
 ####################################
