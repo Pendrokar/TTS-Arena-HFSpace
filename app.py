@@ -574,9 +574,14 @@ def get_leaderboard(reveal_prelim = False):
 
 def make_link_to_space(model_name):
     # create a anchor link if a HF space
+    style = 'text-decoration: underline;text-decoration-style: dotted;'
+    if model_name in AVAILABLE_MODELS:
+        style += 'color: var(--link-text-color);'
+    else:
+        style += 'font-style: italic;'
     if '/' in model_name:
-        style = 'color: var(--link-text-color);text-decoration: underline;text-decoration-style: dotted;'
         return '🤗 <a style="' + style + '" href="'+ 'https://huggingface.co/spaces/' + model_name + '">' + model_name + '</a>'
+
     # otherwise just return the model name
     return model_name
 def markdown_link_to_space(model_name):
