@@ -5,7 +5,7 @@ from datasets import load_dataset
 import threading, time, uuid, sqlite3, shutil, os, random, asyncio, threading
 from pathlib import Path
 from huggingface_hub import CommitScheduler, delete_file, hf_hub_download
-from gradio_client import Client
+from gradio_client import Client, file
 import pyloudnorm as pyln
 import soundfile as sf
 import librosa
@@ -54,7 +54,7 @@ AVAILABLE_MODELS = {
     'Pendrokar/xVASynth': 'Pendrokar/xVASynth', # EN-GB 4.29.0 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
-    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # Error with EN # 4.29.0
+    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29.0
 
     # Parler
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29.0 4.42.0
@@ -170,29 +170,30 @@ HF_SPACES = {
 }
 
 # for zero-shot TTS - voice sample of Scarlett Johanson
-DEFAULT_VOICE_SAMPLE = 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav'
+DEFAULT_VOICE_SAMPLE_STR = 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav'
+DEFAULT_VOICE_SAMPLE = file(DEFAULT_VOICE_SAMPLE_STR)
 
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
         1: 'en',
-        2: DEFAULT_VOICE_SAMPLE, # voice sample
-        3: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
+        3: DEFAULT_VOICE_SAMPLE_STR, # voice sample
         4: False, #use_mic
         5: False, #cleanup_reference
         6: False, #auto_detect
     },
     'collabora/WhisperSpeech': {
         1: DEFAULT_VOICE_SAMPLE, # voice sample
-        2: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: DEFAULT_VOICE_SAMPLE, # voice sample URL
         3: 14.0, #Tempo - Gradio Slider issue: takes min. rather than value
     },
     'myshell-ai/OpenVoice': {
         1: 'default', # style
-        2: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
     },
     'myshell-ai/OpenVoiceV2': {
         1: 'en_default', # style
-        2: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
     },
     'PolyAI/pheme': {
         1: 'YOU1000000044_S0000798', # voice
@@ -866,12 +867,15 @@ def synthandreturn(text):
                 else:
                     result = router.predict(text, model.lower(), api_name="/synthesize")
                 break
-            except Exception:
-                raise Exception
+            except Exception as e:
                 attempt_count += 1
+                print(repr(e))
                 print(f"{model}: Unable to call API (attempt: {attempt_count})")
-                # sleep for one second before trying again
+                # sleep for one second
                 time.sleep(1)
+
+                # Fetch and store client again
+                hf_clients[model] = Client(model, hf_token=hf_token)
 
         if attempt_count > 2:
             raise gr.Error(f"{model}: Failed to call model")
@@ -925,7 +929,7 @@ def synthandreturn(text):
         try:
             for key,value in OVERRIDE_INPUTS[modelname].items():
                 inputs[key] = value
-            print(f"{modelname}: Default inputs overridden")
+            print(f"{modelname}: Default inputs overridden by Arena")
         except:
             pass
 
