@@ -63,6 +63,9 @@ AVAILABLE_MODELS = {
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29.0 4.42.0
     'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29.0 4.42.0
 
+    # Microsoft Edge TTS
+    'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech',
+
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
     # 'amphion/Text-to-Speech': '/predict#0', # old running space, takes a whole minute to synthesize
@@ -77,63 +80,63 @@ AVAILABLE_MODELS = {
 HF_SPACES = {
     # XTTS v2
     'coqui/xtts': {
-        'name': 'coqui/xtts',
+        'name': 'XTTS v2',
         'function': '1',
         'text_param_index': 0,
         'return_audio_index': 1,
     },
     # WhisperSpeech
     'collabora/WhisperSpeech': {
-        'name': 'collabora/WhisperSpeech',
+        'name': 'WhisperSpeech',
         'function': '/whisper_speech_demo',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # OpenVoice (MyShell.ai)
     'myshell-ai/OpenVoice': {
-        'name':'myshell-ai/OpenVoice',
+        'name':'OpenVoice',
         'function': '1',
         'text_param_index': 0,
         'return_audio_index': 1,
     },
     # OpenVoice v2 (MyShell.ai)
     'myshell-ai/OpenVoiceV2': {
-        'name':'myshell-ai/OpenVoiceV2',
+        'name':'OpenVoice v2',
         'function': '1',
         'text_param_index': 0,
         'return_audio_index': 1,
     },
     # MetaVoice
     'mrfakename/MetaVoice-1B-v0.1': {
-        'name':'mrfakename/MetaVoice-1B-v0.1',
+        'name':'MetaVoice',
         'function': '/tts',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # xVASynth (CPU)
     'Pendrokar/xVASynth': {
-        'name': 'Pendrokar/xVASynth',
+        'name': 'xVASynth v3',
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # CoquiTTS (CPU)
     'coqui/CoquiTTS': {
-        'name': 'coqui/CoquiTTS',
+        'name': 'CoquiTTS',
         'function': '0',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # HierSpeech_TTS
     'LeeSangHoon/HierSpeech_TTS': {
-        'name': 'LeeSangHoon/HierSpeech_TTS',
+        'name': 'HierSpeech++',
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # MeloTTS (MyShell.ai)
     'mrfakename/MeloTTS': {
-        'name': 'mrfakename/MeloTTS',
+        'name': 'MeloTTS',
         'function': '/synthesize',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -141,26 +144,33 @@ HF_SPACES = {
 
     # Parler
     'parler-tts/parler_tts': {
-        'name': 'parler-tts/parler_tts',
+        'name': 'Parler',
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # Parler
     'parler-tts/parler_tts_mini': {
-        'name': 'parler-tts/parler_tts_mini',
+        'name': 'Parler Mini',
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
     # Parler, using Expresso dataset
     'parler-tts/parler-tts-expresso': {
-        'name': 'parler-tts/parler-tts-expresso',
+        'name': 'Parler Expresso',
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
     },
 
+    # Microsoft Edge TTS
+    'innoai/Edge-TTS-Text-to-Speech': {
+        'name': 'Edge TTS',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+    },
 
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
@@ -238,6 +248,11 @@ OVERRIDE_INPUTS = {
     },
     'parler-tts/parler-tts-expresso': {
         1: 'Elisabeth. Elisabeth\'s clear sharp voice.', # description/prompt
+    },
+    'innoai/Edge-TTS-Text-to-Speech': {
+        1: 'en-US-EmmaMultilingualNeural - en-US (Female)', # voice
+        2: 0, # pace rate
+        3: 0, # pitch
     },
 }
 
@@ -579,12 +594,24 @@ def get_leaderboard(reveal_prelim = False):
 def make_link_to_space(model_name):
     # create a anchor link if a HF space
     style = 'text-decoration: underline;text-decoration-style: dotted;'
+    title = ''
+
+    # bolden actual name
+    # model_name_split = model_name.split('/')
+    # model_name_split = model_name_split[:-1].join('/') +'/<strong>'+ model_name_split[-1] +'</strong>'
     if model_name in AVAILABLE_MODELS:
         style += 'color: var(--link-text-color);'
+        title = model_name
     else:
         style += 'font-style: italic;'
+        title = 'Disabled for Arena'
+
+    model_basename = model_name
+    if model_name in HF_SPACES:
+        model_basename = HF_SPACES[model_name]['name']
+
     if '/' in model_name:
-        return '🤗 <a style="' + style + '" href="'+ 'https://huggingface.co/spaces/' + model_name + '">' + model_name + '</a>'
+        return '🤗 <a style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
 
     # otherwise just return the model name
     return model_name
@@ -817,7 +844,6 @@ def synthandreturn(text):
     log_text(text)
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage):
-        print(model)
         # 3 attempts
         attempt_count = 0
         while attempt_count < 3:
@@ -829,7 +855,7 @@ def synthandreturn(text):
                             hf_clients[model] = Client(model, hf_token=hf_token)
                         mdl_space = hf_clients[model]
 
-                        print(f"{model}: Fetching endpoints of HF Space")
+                        # print(f"{model}: Fetching endpoints of HF Space")
                         # assume the index is one of the first 9 return params
                         return_audio_index = int(HF_SPACES[model]['return_audio_index'])
                         endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
