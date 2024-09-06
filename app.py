@@ -54,7 +54,7 @@ AVAILABLE_MODELS = {
     'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # 4.29.0
     'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # 4.29.0
     'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29.0
-    'Pendrokar/xVASynth': 'Pendrokar/xVASynth', # EN-GB 4.29.0 4.42.0
+    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # EN-GB 4.29.0 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29.0
@@ -114,7 +114,7 @@ HF_SPACES = {
         'return_audio_index': 0,
     },
     # xVASynth (CPU)
-    'Pendrokar/xVASynth': {
+    'Pendrokar/xVASynth-TTS': {
         'name': 'xVASynth v3',
         'function': '/predict',
         'text_param_index': 0,
@@ -213,7 +213,7 @@ OVERRIDE_INPUTS = {
         2: 210,
         3: 0.7, #Tempo - Gradio Slider issue: takes min. rather than value
     },
-    'Pendrokar/xVASynth': {
+    'Pendrokar/xVASynth-TTS': {
         1: 'ccby_nvidia_hifi_92_F', #fine-tuned voice model name; #92 BRITISH
         3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
     },
