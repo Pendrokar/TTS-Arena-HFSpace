@@ -851,8 +851,8 @@ def synthandreturn(text):
                 if model in AVAILABLE_MODELS:
                     if '/' in model:
                         # Use public HF Space
-                        if (model not in hf_clients):
-                            hf_clients[model] = Client(model, hf_token=hf_token)
+                        #if (model not in hf_clients):
+                        hf_clients[model] = Client(model, hf_token=hf_token)
                         mdl_space = hf_clients[model]
 
                         # print(f"{model}: Fetching endpoints of HF Space")
@@ -904,7 +904,7 @@ def synthandreturn(text):
                 time.sleep(1)
 
                 # Fetch and store client again
-                hf_clients[model] = Client(model, hf_token=hf_token)
+                #hf_clients[model] = Client(model, hf_token=hf_token)
 
         if attempt_count > 2:
             raise gr.Error(f"{model}: Failed to call model")
