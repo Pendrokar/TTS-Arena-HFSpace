@@ -54,7 +54,7 @@ AVAILABLE_MODELS = {
     'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # 4.29.0
     'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # 4.29.0
     'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29.0
-    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # EN-GB 4.29.0 4.42.0
+    #'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # EN-GB 4.29.0 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29.0
