@@ -605,7 +605,7 @@ def get_leaderboard(reveal_prelim = False):
     # df['license'] = df['name'].map(model_license)
     df['name'] = df['name'].replace(model_names)
     for i in range(len(df)):
-        df['name'][i] = make_link_to_space(df['name'][i])
+        df.loc[i, "name"] = make_link_to_space(df['name'][i])
     df['votes'] = df['upvote'] + df['downvote']
     # df['score'] = round((df['upvote'] / df['votes']) * 100, 2) # Percentage score
 
@@ -618,8 +618,8 @@ def get_leaderboard(reveal_prelim = False):
                 expected_b = 1 / (1 + 10 ** ((df['score'][i] - df['score'][j]) / 400))
                 actual_a = df['upvote'][i] / df['votes'][i]
                 actual_b = df['upvote'][j] / df['votes'][j]
-                df.at[i, 'score'] += 32 * (actual_a - expected_a)
-                df.at[j, 'score'] += 32 * (actual_b - expected_b)
+                df.at[i, 'score'] += round(32 * (actual_a - expected_a))
+                df.at[j, 'score'] += round(32 * (actual_b - expected_b))
     df['score'] = round(df['score'])
     ## ELO SCORE
     df = df.sort_values(by='score', ascending=False)
