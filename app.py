@@ -13,6 +13,20 @@ from detoxify import Detoxify
 import os
 import tempfile
 from pydub import AudioSegment
+import itertools
+from typing import List, Tuple, Set, Dict
+from hashlib import sha1
+
+class User:
+    def __init__(self, user_id: str):
+        self.user_id = user_id
+        self.voted_pairs: Set[Tuple[str, str]] = set()
+
+class Sample:
+    def __init__(self, filename: str, transcript: str, modelName: str):
+        self.filename = filename
+        self.transcript = transcript
+        self.modelName = modelName
 
 def match_target_amplitude(sound, target_dBFS):
     change_in_dBFS = target_dBFS - sound.dBFS
@@ -257,6 +271,27 @@ OVERRIDE_INPUTS = {
 }
 
 hf_clients = {}
+# cache audio samples for quick voting
+cached_samples: List[Sample] = []
+voting_users = {
+    # userid as the key and USER() as the value
+}
+
+def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
+    transcript_groups: Dict[str, List[Sample]] = {}
+    for sample in samples:
+        if sample.transcript not in transcript_groups:
+            transcript_groups[sample.transcript] = []
+        transcript_groups[sample.transcript].append(sample)
+
+    matching_pairs: List[Tuple[Sample, Sample]] = []
+    for group in transcript_groups.values():
+        matching_pairs.extend(list(itertools.combinations(group, 2)))
+
+    return matching_pairs
+
+# List[Tuple[Sample, Sample]]
+all_pairs = []
 
 SPACE_ID = os.getenv('SPACE_ID')
 MAX_SAMPLE_TXT_LENGTH = 300
@@ -378,7 +413,9 @@ Vote to help the community find the best available text-to-speech model!
 INSTR = """
 ## 🗳️ Vote
 
-* Input text (English only) to synthesize audio (or press 🎲 for random text).
+* Input text (English only) to synthesize audio.
+* Press ⚡ to select a cached sample you have yet to vote on. Fast.
+* Press 🎲 to randomly select text for a list. Slow.
 * Listen to the two audio clips, one after the other.
 * Vote on which audio sounds more natural to you.
 * _Note: Model names are revealed after the vote is cast._
@@ -611,7 +648,7 @@ def make_link_to_space(model_name):
         model_basename = HF_SPACES[model_name]['name']
 
     if '/' in model_name:
-        return '🤗 <a style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
+        return '🤗 <a target="_top" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
 
     # otherwise just return the model name
     return model_name
@@ -989,6 +1026,26 @@ def synthandreturn(text):
     #debug
     #     outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
 
+    # cache the result
+    for model in [mdl1k, mdl2k]:
+        already_cached = False
+        # check if already cached
+        for cached_sample in cached_samples:
+            # TODO:replace cached
+            if (cached_sample.transcript == text and cached_sample.modelName == model):
+                already_cached = True
+                break
+
+        if (already_cached):
+            continue
+
+        print(f"Cached {model}")
+        cached_samples.append(Sample(results[model], text, model))
+    # print(cached_samples)
+
+    all_pairs = generate_matching_pairs(cached_samples)
+    # print(all_pairs)
+
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
         text,
@@ -1046,26 +1103,94 @@ def unlock_vote(btn_index, aplayed, bplayed):
 
     return [gr.update(), gr.update(), aplayed, bplayed]
 
+def cachedsent(request: gr.Request):
+    # add new userid to voting_users from Browser session hash
+    # stored only in RAM
+    if request.username:
+        print('auth by username')
+        # by HuggingFace username
+        userid = sha1(bytes(request.username.encode('ascii'))).hexdigest()
+    else:
+        print('auth by ip')
+        # by IP address
+        userid = sha1(bytes(request.client.host.encode('ascii'))).hexdigest()
+        # by browser session hash
+        # userid = sha1(bytes(request.session_hash.encode('ascii')), usedforsecurity=False).hexdigest() # Session hash changes on page reload
+
+    if userid not in voting_users:
+        voting_users[userid] = User(userid)
+
+    def get_next_pair(user: User):
+        # all_pairs = generate_matching_pairs(cached_samples)
+
+        # for pair in all_pairs:
+        for pair in generate_matching_pairs(cached_samples):
+            pair_key = (pair[0].filename, pair[1].filename)
+            if pair_key not in user.voted_pairs and (pair_key[1], pair_key[0]) not in user.voted_pairs:
+                return pair
+        return None
+
+    pair = get_next_pair(voting_users[userid])
+    if pair is None:
+        return [*clear_stuff(), gr.update(interactive=False)]
+
+    # TODO: move to abisbetter
+    voting_users[userid].voted_pairs.add((pair[0].filename, pair[1].filename))
+    return (
+        pair[0].transcript,
+        "Synthesize",
+        gr.update(visible=True), # r2
+        pair[0].modelName, # model1
+        pair[1].modelName, # model2
+        gr.update(visible=True, value=pair[0].filename), # aud1
+        gr.update(visible=True, value=pair[1].filename), # aud2
+        gr.update(visible=True, interactive=False), #abetter
+        gr.update(visible=True, interactive=False), #bbetter
+        gr.update(visible=False), #prevmodel1
+        gr.update(visible=False), #prevmodel2
+        gr.update(visible=False), #nxt round btn
+        # reset aplayed, bplayed audio playback events
+        gr.update(value=False), #aplayed
+        gr.update(value=False), #bplayed
+        # fetch cached btn
+        gr.update(interactive=True)
+    )
 def randomsent():
-    return random.choice(sents), '🎲'
+    return '⚡', random.choice(sents), '🎲'
 def clear_stuff():
-    return "", "Synthesize", gr.update(visible=False), '', '', gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
+    return [
+        '',
+        "Synthesize",
+        gr.update(visible=True), # r2
+        '', # model1
+        '', # model2
+        gr.update(visible=False), # aud1
+        gr.update(visible=False), # aud2
+        gr.update(visible=False), #abetter
+        gr.update(visible=False), #bbetter
+        gr.update(visible=False), #prevmodel1
+        gr.update(visible=False), #prevmodel2
+        gr.update(visible=False), #nxt round btn
+        gr.update(value=False), #aplayed
+        gr.update(value=False), #bplayed
+    ]
 def disable():
     return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
     return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
 with gr.Blocks() as vote:
     # sample played
-    #aplayed = gr.State(value=False)
-    #bplayed = gr.State(value=False)
+    aplayed = gr.State(value=False)
+    bplayed = gr.State(value=False)
     # voter ID
     useridstate = gr.State()
     gr.Markdown(INSTR)
     with gr.Group():
         with gr.Row():
+            cachedt = gr.Button('⚡', scale=0, min_width=0, variant='tool', interactive=len(cached_samples)>0)
             text = gr.Textbox(container=False, show_label=False, placeholder="Enter text to synthesize", lines=1, max_lines=1, scale=9999999, min_width=0)
             randomt = gr.Button('🎲', scale=0, min_width=0, variant='tool')
-        randomt.click(randomsent, outputs=[text, randomt])
+        randomt.click(randomsent, outputs=[cachedt, text, randomt])
         btn = gr.Button("Synthesize", variant='primary')
     model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
     #model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
@@ -1096,7 +1221,9 @@ with gr.Blocks() as vote:
         bbetter,
         prevmodel1,
         prevmodel2,
-        nxtroundbtn
+        nxtroundbtn,
+        aplayed,
+        bplayed,
     ]
     """
     text,
@@ -1111,12 +1238,15 @@ with gr.Blocks() as vote:
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
         gr.update(visible=False), #nxt round btn"""
-    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs).then(enable, outputs=[btn, abetter, bbetter])
-    nxtroundbtn.click(clear_stuff, outputs=outputs)
+    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs).then(enable, outputs=[btn, gr.State(), gr.State()])
+    nxtroundbtn.click(cachedsent, outputs=[*outputs, cachedt])
+
+    # fetch a comparison pair from cache
+    cachedt.click(disable, outputs=[cachedt, abetter, bbetter]).then(cachedsent, outputs=[*outputs, cachedt]).then(enable, outputs=[btn, gr.State(), gr.State()])
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
-    #aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=0), aplayed, bplayed])
-    #aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=1), aplayed, bplayed])
+    aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=0), aplayed, bplayed])
+    aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=1), aplayed, bplayed])
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
