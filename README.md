@@ -11,12 +11,13 @@ colorTo: red
 pinned: false
 short_description: xVA vs The World
 models:
-- Pendrokar/xvapitch_nvidia
 - coqui/XTTS-v2
-- collabora/whisperspeech
-- myshell-ai/OpenVoice
+- Pendrokar/xvapitch_nvidia
+- parler-tts/parler-tts-mini-v1
 - metavoiceio/metavoice-1B-v0.1
-- amphion/Text-to-Speech
-- LeeSangHoon/HierSpeech_TTS
+- myshell-ai/MeloTTS-English-v2
+- myshell-ai/OpenVoice
+- myshell-ai/OpenVoiceV2
+- WhisperSpeech/WhisperSpeech
 sdk_version: 4.29.0
 ---
