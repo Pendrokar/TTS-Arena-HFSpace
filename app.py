@@ -280,6 +280,7 @@ voting_users = {
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
     transcript_groups: Dict[str, List[Sample]] = {}
+    samples = random.sample(samples, k=len(samples))
     for sample in samples:
         if sample.transcript not in transcript_groups:
             transcript_groups[sample.transcript] = []
@@ -1119,11 +1120,11 @@ def unlock_vote(btn_index, aplayed, bplayed):
 
 def get_userid(request: gr.Request):
     if request.username:
-        print('auth by username')
+        # print('auth by username')
         # by HuggingFace username
         return sha1(bytes(request.username.encode('ascii'))).hexdigest()
     else:
-        print('auth by ip')
+        # print('auth by ip')
         # by IP address
         return sha1(bytes(request.client.host.encode('ascii'))).hexdigest()
         # by browser session hash
@@ -1135,6 +1136,7 @@ def give_cached_sample(request: gr.Request):
     # add new userid to voting_users from Browser session hash
     # stored only in RAM
     userid = get_userid(request)
+    print(f'userid asked for cached: {userid}')
 
     if userid not in voting_users:
         voting_users[userid] = User(userid)
@@ -1183,6 +1185,8 @@ def give_cached_sample(request: gr.Request):
 # note the vote on cached sample pair
 def voted_on_cached(modelName1: str, modelName2: str, transcript: str, request: gr.Request):
     userid = get_userid(request)
+    print(f'userid voted on cached: {userid}')
+
     if userid not in voting_users:
         voting_users[userid] = User(userid)
 
