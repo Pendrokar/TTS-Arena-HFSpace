@@ -15,7 +15,7 @@ import tempfile
 from pydub import AudioSegment
 import itertools
 from typing import List, Tuple, Set, Dict
-from hashlib import sha1
+from hashlib import md5, sha1
 
 class User:
     def __init__(self, user_id: str):
@@ -415,7 +415,7 @@ INSTR = """
 ## 🗳️ Vote
 
 * Input text (English only) to synthesize audio.
-* Press ⚡ to select a cached sample you have yet to vote on. Fast.
+* Press ⚡ to get cached samples you have yet to vote on. Fast.
 * Press 🎲 to randomly select text for a list. Slow.
 * Listen to the two audio clips, one after the other.
 * Vote on which audio sounds more natural to you.
@@ -1029,6 +1029,10 @@ def synthandreturn(text):
 
     # cache the result
     for model in [mdl1k, mdl2k]:
+        # skip caching if not hardcoded sentence
+        if (text not in sents):
+            break
+
         already_cached = False
         # check if already cached
         for cached_sample in cached_samples:
@@ -1040,12 +1044,9 @@ def synthandreturn(text):
         if (already_cached):
             continue
 
-        print(f"Cached {model}")
         cached_samples.append(Sample(results[model], text, model))
-    # print(cached_samples)
 
-    all_pairs = generate_matching_pairs(cached_samples)
-    # print(all_pairs)
+    # all_pairs = generate_matching_pairs(cached_samples)
 
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
@@ -1116,31 +1117,42 @@ def unlock_vote(btn_index, aplayed, bplayed):
 
     return [gr.update(), gr.update(), aplayed, bplayed, aud2]
 
-
-def cachedsent(request: gr.Request):
-    # add new userid to voting_users from Browser session hash
-    # stored only in RAM
+def get_userid(request: gr.Request):
     if request.username:
         print('auth by username')
         # by HuggingFace username
-        userid = sha1(bytes(request.username.encode('ascii'))).hexdigest()
+        return sha1(bytes(request.username.encode('ascii'))).hexdigest()
     else:
         print('auth by ip')
         # by IP address
-        userid = sha1(bytes(request.client.host.encode('ascii'))).hexdigest()
+        return sha1(bytes(request.client.host.encode('ascii'))).hexdigest()
         # by browser session hash
-        # userid = sha1(bytes(request.session_hash.encode('ascii')), usedforsecurity=False).hexdigest() # Session hash changes on page reload
+        # Issue: Not a cookie, session hash changes on page reload
+        # return sha1(bytes(request.session_hash.encode('ascii')), usedforsecurity=False).hexdigest()
+
+# Give user a cached audio sample pair they have yet to vote on
+def give_cached_sample(request: gr.Request):
+    # add new userid to voting_users from Browser session hash
+    # stored only in RAM
+    userid = get_userid(request)
 
     if userid not in voting_users:
         voting_users[userid] = User(userid)
 
     def get_next_pair(user: User):
+        # FIXME: all_pairs var out of scope
         # all_pairs = generate_matching_pairs(cached_samples)
 
         # for pair in all_pairs:
         for pair in generate_matching_pairs(cached_samples):
-            pair_key = (pair[0].filename, pair[1].filename)
-            if pair_key not in user.voted_pairs and (pair_key[1], pair_key[0]) not in user.voted_pairs:
+            hash1 = md5(bytes((pair[0].modelName + pair[0].transcript).encode('ascii'))).hexdigest()
+            hash2 = md5(bytes((pair[1].modelName + pair[1].transcript).encode('ascii'))).hexdigest()
+            pair_key = (hash1, hash2)
+            if (
+                pair_key not in user.voted_pairs
+                # or in reversed order
+                and (pair_key[1], pair_key[0]) not in user.voted_pairs
+            ):
                 return pair
         return None
 
@@ -1148,8 +1160,6 @@ def cachedsent(request: gr.Request):
     if pair is None:
         return [*clear_stuff(), gr.update(interactive=False)]
 
-    # TODO: move to abisbetter
-    voting_users[userid].voted_pairs.add((pair[0].filename, pair[1].filename))
     return (
         pair[0].transcript,
         "Synthesize",
@@ -1164,11 +1174,23 @@ def cachedsent(request: gr.Request):
         gr.update(visible=False), #prevmodel2
         gr.update(visible=False), #nxt round btn
         # reset aplayed, bplayed audio playback events
-        gr.update(value=False), #aplayed
-        gr.update(value=False), #bplayed
+        False, #aplayed
+        False, #bplayed
         # fetch cached btn
         gr.update(interactive=True)
     )
+
+# note the vote on cached sample pair
+def voted_on_cached(modelName1: str, modelName2: str, transcript: str, request: gr.Request):
+    userid = get_userid(request)
+    if userid not in voting_users:
+        voting_users[userid] = User(userid)
+
+    hash1 = md5(bytes((modelName1 + transcript).encode('ascii'))).hexdigest()
+    hash2 = md5(bytes((modelName2 + transcript).encode('ascii'))).hexdigest()
+
+    voting_users[userid].voted_pairs.add((hash1, hash2))
+
 def randomsent():
     return '⚡', random.choice(sents), '🎲'
 def clear_stuff():
@@ -1178,8 +1200,8 @@ def clear_stuff():
         gr.update(visible=False), # r2
         '', # model1
         '', # model2
-        gr.update(visible=False, autoplay=False), # aud1
-        gr.update(visible=False, autoplay=False), # aud2
+        gr.update(visible=False, interactive=False, autoplay=False), # aud1
+        gr.update(visible=False, interactive=False, autoplay=False), # aud2
         gr.update(visible=False, interactive=False), #abetter
         gr.update(visible=False, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
@@ -1190,9 +1212,9 @@ def clear_stuff():
     ]
 
 def disable():
-    return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
+    return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
-    return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
+    return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
 with gr.Blocks() as vote:
     # sample played
     aplayed = gr.State(value=False)
@@ -1202,7 +1224,7 @@ with gr.Blocks() as vote:
     gr.Markdown(INSTR)
     with gr.Group():
         with gr.Row():
-            cachedt = gr.Button('⚡', scale=0, min_width=0, variant='tool', interactive=len(cached_samples)>0)
+            cachedt = gr.Button('⚡', scale=0, min_width=0, variant='tool', interactive=True)
             text = gr.Textbox(container=False, show_label=False, placeholder="Enter text to synthesize", lines=1, max_lines=1, scale=9999999, min_width=0)
             randomt = gr.Button('🎲', scale=0, min_width=0, variant='tool')
         randomt.click(randomsent, outputs=[cachedt, text, randomt])
@@ -1267,11 +1289,17 @@ with gr.Blocks() as vote:
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
         gr.update(visible=False), #nxt round btn"""
-    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn, inputs=[text], outputs=outputs).then(enable, outputs=[btn, gr.State(), gr.State()])
-    nxtroundbtn.click(cachedsent, outputs=[*outputs, cachedt])
+    btn\
+        .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
+        .then(synthandreturn, inputs=[text], outputs=outputs)\
+        .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])
+    nxtroundbtn.click(give_cached_sample, outputs=[*outputs, cachedt])
 
     # fetch a comparison pair from cache
-    cachedt.click(disable, outputs=[cachedt, abetter, bbetter]).then(cachedsent, outputs=[*outputs, cachedt]).then(enable, outputs=[btn, gr.State(), gr.State()])
+    cachedt\
+        .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
+        .then(give_cached_sample, outputs=[*outputs, cachedt])\
+        .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
     aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed, aud2], inputs=[gr.State(value=0), aplayed, bplayed])
@@ -1280,8 +1308,12 @@ with gr.Blocks() as vote:
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
-    abetter.click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])
-    bbetter.click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])
+    abetter\
+        .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])\
+        .then(voted_on_cached, inputs=[model1, model2, text])
+    bbetter\
+        .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])\
+        .then(voted_on_cached, inputs=[model1, model2, text])
     # skipbtn.click(b_is_better, outputs=outputs, inputs=[model1, model2, useridstate])
 
     # bothbad.click(both_bad, outputs=outputs, inputs=[model1, model2, useridstate])
