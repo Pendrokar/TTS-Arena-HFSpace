@@ -194,6 +194,7 @@ HF_SPACES = {
     # 'styletts2/styletts2': '0#0', #API disabled
     # 'Manmay/tortoise-tts': '/predict#0', #Cannot skip text-from-file parameter
     # 'pytorch/Tacotron2': '0#0', #old gradio
+    # 'fishaudio/fish-speech-1': '/inference_wrapper#0', heavy hallucinations
 }
 
 # for zero-shot TTS - voice sample of Scarlett Johanson
@@ -1053,8 +1054,8 @@ def synthandreturn(text):
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
-        gr.update(visible=True, value=results[mdl1k]), # aud1
-        gr.update(visible=True, value=results[mdl2k]), # aud2
+        gr.update(visible=True, value=results[mdl1k], interactive=False, autoplay=True), # aud1
+        gr.update(visible=True, value=results[mdl2k], interactive=False, autoplay=False), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
@@ -1090,18 +1091,30 @@ def synthandreturn(text):
     # )
 
 def unlock_vote(btn_index, aplayed, bplayed):
+    aud2 = gr.update()
     # sample played
     if btn_index == 0:
         aplayed = True
+        # autoplay the other once
+        if not bplayed:
+            # other options added just to get autoplay to work
+            aud2 = gr.update(
+                autoplay=True,
+                interactive=True,
+                sources=[],
+                show_download_button=False,
+                show_share_button=False,
+                editable=False
+            )
     if btn_index == 1:
         bplayed = True
 
     # both audio samples played
     if bool(aplayed) and bool(bplayed):
         print('Both audio samples played, voting unlocked')
-        return [gr.update(interactive=True), gr.update(interactive=True), True, True]
+        return [gr.update(interactive=True), gr.update(interactive=True), True, True, aud2]
 
-    return [gr.update(), gr.update(), aplayed, bplayed]
+    return [gr.update(), gr.update(), aplayed, bplayed, aud2]
 
 
 def cachedsent(request: gr.Request):
@@ -1143,8 +1156,8 @@ def cachedsent(request: gr.Request):
         gr.update(visible=True), # r2
         pair[0].modelName, # model1
         pair[1].modelName, # model2
-        gr.update(visible=True, value=pair[0].filename), # aud1
-        gr.update(visible=True, value=pair[1].filename), # aud2
+        gr.update(visible=True, value=pair[0].filename, interactive=False, autoplay=True), # aud1
+        gr.update(visible=True, value=pair[1].filename, interactive=False, autoplay=False), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
@@ -1165,8 +1178,8 @@ def clear_stuff():
         gr.update(visible=False), # r2
         '', # model1
         '', # model2
-        gr.update(visible=False), # aud1
-        gr.update(visible=False), # aud2
+        gr.update(visible=False, autoplay=False), # aud1
+        gr.update(visible=False, autoplay=False), # aud2
         gr.update(visible=False, interactive=False), #abetter
         gr.update(visible=False, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
@@ -1201,12 +1214,26 @@ with gr.Blocks() as vote:
     with gr.Row(visible=False) as r2:
         with gr.Column():
             with gr.Group():
-                aud1 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
+                aud1 = gr.Audio(
+                    interactive=False,
+                    show_label=False,
+                    show_download_button=False,
+                    show_share_button=False,
+                    waveform_options={'waveform_progress_color': '#EF4444'}
+                    # var(--color-red-500)'}); gradio only accepts HEX and CSS color
+                )
                 abetter = gr.Button("A is better", variant='primary', interactive=False)
                 prevmodel1 = gr.HTML(show_label=False, value="Vote to reveal model A", visible=False)
         with gr.Column():
             with gr.Group():
-                aud2 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
+                aud2 = gr.Audio(
+                    interactive=False,
+                    show_label=False,
+                    show_download_button=False,
+                    show_share_button=False,
+                    waveform_options={'waveform_progress_color': '#3C82F6'}
+                    # var(--secondary-500)'}); gradio only accepts HEX and CSS color
+                )
                 bbetter = gr.Button("B is better", variant='primary', interactive=False)
                 prevmodel2 = gr.HTML(show_label=False, value="Vote to reveal model B", visible=False)
     nxtroundbtn = gr.Button('Next round', visible=False)
@@ -1247,8 +1274,9 @@ with gr.Blocks() as vote:
     cachedt.click(disable, outputs=[cachedt, abetter, bbetter]).then(cachedsent, outputs=[*outputs, cachedt]).then(enable, outputs=[btn, gr.State(), gr.State()])
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
-    aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=0), aplayed, bplayed])
-    aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed], inputs=[gr.State(value=1), aplayed, bplayed])
+    aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed, aud2], inputs=[gr.State(value=0), aplayed, bplayed])
+    # autoplay if unplayed
+    aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed, gr.State()], inputs=[gr.State(value=1), aplayed, bplayed])
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
