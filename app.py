@@ -865,7 +865,10 @@ def synthandreturn(text):
         raise gr.Error(f'You did not enter any text')
     # Check language
     try:
-        if not detect(text) == "en":
+        if (
+            text not in sents
+            and not detect(text) == "en"
+        ):
             gr.Warning('Warning: The input text may not be in English')
     except:
         pass
@@ -1093,32 +1096,23 @@ def synthandreturn(text):
     # )
 
 def unlock_vote(btn_index, aplayed, bplayed):
-    aud2 = gr.update()
     # sample played
     if btn_index == 0:
         aplayed = True
-        # autoplay the other once
-        if not bplayed:
-            # other options added just to get autoplay to work
-            aud2 = gr.update(
-                autoplay=True,
-                interactive=True,
-                sources=[],
-                show_download_button=False,
-                show_share_button=False,
-                editable=False
-            )
     if btn_index == 1:
         bplayed = True
 
     # both audio samples played
     if bool(aplayed) and bool(bplayed):
         print('Both audio samples played, voting unlocked')
-        return [gr.update(interactive=True), gr.update(interactive=True), True, True, aud2]
+        return [gr.update(interactive=True), gr.update(interactive=True), True, True]
 
-    return [gr.update(), gr.update(), aplayed, bplayed, aud2]
+    return [gr.update(), gr.update(), aplayed, bplayed]
 
-def get_userid(request: gr.Request):
+def play_other(bplayed):
+    return bplayed
+
+def get_userid(request):
     if request.username:
         # print('auth by username')
         # by HuggingFace username
@@ -1220,9 +1214,9 @@ def disable():
 def enable():
     return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
 with gr.Blocks() as vote:
-    # sample played
-    aplayed = gr.State(value=False)
-    bplayed = gr.State(value=False)
+    # sample played, using Checkbox so that JS can fetch the value
+    aplayed = gr.Checkbox(visible=False, value=False)
+    bplayed = gr.Checkbox(visible=False, value=False)
     # voter ID
     useridstate = gr.State()
     gr.Markdown(INSTR)
@@ -1245,7 +1239,7 @@ with gr.Blocks() as vote:
                     show_label=False,
                     show_download_button=False,
                     show_share_button=False,
-                    waveform_options={'waveform_progress_color': '#EF4444'}
+                    waveform_options={'waveform_progress_color': '#EF4444'},
                     # var(--color-red-500)'}); gradio only accepts HEX and CSS color
                 )
                 abetter = gr.Button("A is better", variant='primary', interactive=False)
@@ -1257,7 +1251,7 @@ with gr.Blocks() as vote:
                     show_label=False,
                     show_download_button=False,
                     show_share_button=False,
-                    waveform_options={'waveform_progress_color': '#3C82F6'}
+                    waveform_options={'waveform_progress_color': '#3C82F6'},
                     # var(--secondary-500)'}); gradio only accepts HEX and CSS color
                 )
                 bbetter = gr.Button("B is better", variant='primary', interactive=False)
@@ -1306,9 +1300,24 @@ with gr.Blocks() as vote:
         .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
-    aud1.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed, aud2], inputs=[gr.State(value=0), aplayed, bplayed])
+    aud1\
+        .stop(
+            unlock_vote,
+            outputs=[abetter, bbetter, aplayed, bplayed],
+            inputs=[gr.State(value=0), aplayed, bplayed],
+        )\
+        .then(
+            None,
+            inputs=[bplayed],
+            js="(b) => {console.log(b); b ? 0 : document.querySelector('.stretch .gap+.gap button.play-pause-button').click()}",
+        )
     # autoplay if unplayed
-    aud2.stop(unlock_vote, outputs=[abetter, bbetter, aplayed, bplayed, gr.State()], inputs=[gr.State(value=1), aplayed, bplayed])
+    aud2\
+        .stop(
+            unlock_vote,
+            outputs=[abetter, bbetter, aplayed, bplayed],
+            inputs=[gr.State(value=1), aplayed, bplayed],
+        )
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
