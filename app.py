@@ -72,6 +72,7 @@ AVAILABLE_MODELS = {
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29.0
+    'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29.0
 
     # Parler
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29.0 4.42.0
@@ -186,6 +187,13 @@ HF_SPACES = {
         'return_audio_index': 0,
     },
 
+    'fishaudio/fish-speech-1': {
+        'name': 'Fish Speech',
+        'function': '/inference_wrapper',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+    },
+
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
     # 'amphion/Text-to-Speech': '/predict#0', #takes a whole minute to synthesize
@@ -200,6 +208,7 @@ HF_SPACES = {
 # for zero-shot TTS - voice sample of Scarlett Johanson
 DEFAULT_VOICE_SAMPLE_STR = 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav'
 DEFAULT_VOICE_SAMPLE = file(DEFAULT_VOICE_SAMPLE_STR)
+DEFAULT_VOICE_TRANSCRIPT = "In the first half of the 20th century, science fiction familiarized the world with the concept of artificially intelligent robots. It began with the “heartless” Tin man from the Wizard of Oz and continued with the humanoid robot that impersonated Maria in Metropolis. By the 1950s, we had a generation of scientists, mathematicians, and philosophers with the concept of artificial intelligence (or AI) culturally assimilated in their minds."
 
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
@@ -268,6 +277,19 @@ OVERRIDE_INPUTS = {
         1: 'en-US-EmmaMultilingualNeural - en-US (Female)', # voice
         2: 0, # pace rate
         3: 0, # pitch
+    },
+
+    'fishaudio/fish-speech-1': {
+		1: True, # enable_reference_audio
+		2: DEFAULT_VOICE_SAMPLE, # reference_audio
+		3: DEFAULT_VOICE_TRANSCRIPT, # reference_text
+		4: 1024, # max_new_tokens
+		5: 200, # chunk_length
+		6: 0.7, # top_p
+		7: 1.2, # repetition_penalty
+		8: 0.7, # temperature
+		9: 1, # batch_infer_num
+		10: False, # if_load_asr_model
     },
 }
 
@@ -693,7 +715,7 @@ def downvote_model(model, uname):
     cursor.close()
 
 def a_is_better(model1, model2, userid):
-    print("A is better", model1, model2)
+    # print("A is better", model1, model2)
     if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
         raise gr.Error('Sorry, please try voting again.')
     userid = mkuuid(userid)
@@ -708,7 +730,7 @@ def a_is_better(model1, model2, userid):
         downvote_model(model2, str(userid))
     return reload(model1, model2, userid, chose_a=True)
 def b_is_better(model1, model2, userid):
-    print("B is better", model1, model2)
+    # print("B is better", model1, model2)
     if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
         raise gr.Error('Sorry, please try voting again.')
     userid = mkuuid(userid)
@@ -931,7 +953,13 @@ def synthandreturn(text):
                         results = mdl_space.predict(*space_inputs, api_name=api_name, fn_index=fn_index)
 
                         # return path to audio
-                        result = results[return_audio_index] if (not isinstance(results, str)) else results
+                        result = results
+                        if (not isinstance(results, str)):
+                            # return_audio_index may be a filepath string
+                            result = results[return_audio_index]
+                        if (isinstance(result, dict)):
+                            # return_audio_index is a dictionary
+                            result = results[return_audio_index]['value']
                     else:
                         # Use the private HF Space
                         result = router.predict(text, AVAILABLE_MODELS[model].lower(), api_name="/synthesize")
@@ -969,6 +997,7 @@ def synthandreturn(text):
                 os.unlink(result)
                 result = f.name
         except:
+            print(f"{model}: [WARN] Unable to resample audio")
             pass
         if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
         result_storage[model] = result
@@ -1104,7 +1133,7 @@ def unlock_vote(btn_index, aplayed, bplayed):
 
     # both audio samples played
     if bool(aplayed) and bool(bplayed):
-        print('Both audio samples played, voting unlocked')
+        # print('Both audio samples played, voting unlocked')
         return [gr.update(interactive=True), gr.update(interactive=True), True, True]
 
     return [gr.update(), gr.update(), aplayed, bplayed]
@@ -1309,7 +1338,7 @@ with gr.Blocks() as vote:
         .then(
             None,
             inputs=[bplayed],
-            js="(b) => {console.log(b); b ? 0 : document.querySelector('.stretch .gap+.gap button.play-pause-button').click()}",
+            js="(b) => b ? 0 : document.querySelector('.stretch .gap+.gap button.play-pause-button').click()",
         )
     # autoplay if unplayed
     aud2\
