@@ -437,9 +437,9 @@ Vote to help the community find the best available text-to-speech model!
 INSTR = """
 ## 🗳️ Vote
 
-* Input text (English only) to synthesize audio.
-* Press ⚡ to get cached samples you have yet to vote on. Fast.
-* Press 🎲 to randomly select text for a list. Slow.
+* Input text (🇺🇸 English only) to synthesize audio.
+* Press ⚡ to get cached sample pairs you've yet to vote on. (Fast 🐇)
+* Press 🎲 to randomly use text from a preselected list. (Slow 🐌)
 * Listen to the two audio clips, one after the other.
 * Vote on which audio sounds more natural to you.
 * _Note: Model names are revealed after the vote is cast._
@@ -665,7 +665,7 @@ def make_link_to_space(model_name):
         title = model_name
     else:
         style += 'font-style: italic;'
-        title = 'Disabled for Arena'
+        title = 'Got disabled for Arena (See AVAILABLE_MODELS within code for why)'
 
     model_basename = model_name
     if model_name in HF_SPACES:
@@ -970,8 +970,8 @@ def synthandreturn(text):
                 attempt_count += 1
                 print(repr(e))
                 print(f"{model}: Unable to call API (attempt: {attempt_count})")
-                # sleep for one second
-                time.sleep(1)
+                # sleep for three seconds
+                time.sleep(3)
 
                 # Fetch and store client again
                 #hf_clients[model] = Client(model, hf_token=hf_token)
@@ -1141,25 +1141,30 @@ def unlock_vote(btn_index, aplayed, bplayed):
 def play_other(bplayed):
     return bplayed
 
-def get_userid(request):
+def get_userid(session_hash: str, request):
+    # JS cookie
+    if (session_hash != ''):
+        # print('auth by session cookie')
+        return sha1(bytes(session_hash.encode('ascii')), usedforsecurity=False).hexdigest()
+
     if request.username:
         # print('auth by username')
-        # by HuggingFace username
-        return sha1(bytes(request.username.encode('ascii'))).hexdigest()
+        # by HuggingFace username - requires `auth` to be enabled therefore denying access to anonymous users
+        return sha1(bytes(request.username.encode('ascii')), usedforsecurity=False).hexdigest()
     else:
         # print('auth by ip')
-        # by IP address
-        return sha1(bytes(request.client.host.encode('ascii'))).hexdigest()
-        # by browser session hash
-        # Issue: Not a cookie, session hash changes on page reload
-        # return sha1(bytes(request.session_hash.encode('ascii')), usedforsecurity=False).hexdigest()
+        # by IP address - unreliable when gradio within HTML iframe
+        # return sha1(bytes(request.client.host.encode('ascii')), usedforsecurity=False).hexdigest()
+        # by browser session cookie - Gradio on HF is run in an HTML iframe, access to parent session required to reach session token
+        # return sha1(bytes(request.headers.encode('ascii'))).hexdigest()
+        # by browser session hash - Not a cookie, session hash changes on page reload
+        return sha1(bytes(request.session_hash.encode('ascii')), usedforsecurity=False).hexdigest()
 
 # Give user a cached audio sample pair they have yet to vote on
-def give_cached_sample(request: gr.Request):
+def give_cached_sample(session_hash: str, request: gr.Request):
     # add new userid to voting_users from Browser session hash
     # stored only in RAM
-    userid = get_userid(request)
-    print(f'userid asked for cached: {userid}')
+    userid = get_userid(session_hash, request)
 
     if userid not in voting_users:
         voting_users[userid] = User(userid)
@@ -1183,7 +1188,11 @@ def give_cached_sample(request: gr.Request):
 
     pair = get_next_pair(voting_users[userid])
     if pair is None:
-        return [*clear_stuff(), gr.update(interactive=False)]
+        return [
+            *clear_stuff(),
+            # disable get cached sample button
+            gr.update(interactive=False)
+        ]
 
     return (
         pair[0].transcript,
@@ -1206,8 +1215,8 @@ def give_cached_sample(request: gr.Request):
     )
 
 # note the vote on cached sample pair
-def voted_on_cached(modelName1: str, modelName2: str, transcript: str, request: gr.Request):
-    userid = get_userid(request)
+def voted_on_cached(modelName1: str, modelName2: str, transcript: str, session_hash: str, request: gr.Request):
+    userid = get_userid(session_hash, request)
     print(f'userid voted on cached: {userid}')
 
     if userid not in voting_users:
@@ -1242,7 +1251,11 @@ def disable():
     return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
     return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
+
+
 with gr.Blocks() as vote:
+    session_hash = gr.Textbox(visible=False, value='')
+
     # sample played, using Checkbox so that JS can fetch the value
     aplayed = gr.Checkbox(visible=False, value=False)
     bplayed = gr.Checkbox(visible=False, value=False)
@@ -1285,7 +1298,7 @@ with gr.Blocks() as vote:
                 )
                 bbetter = gr.Button("B is better", variant='primary', interactive=False)
                 prevmodel2 = gr.HTML(show_label=False, value="Vote to reveal model B", visible=False)
-    nxtroundbtn = gr.Button('Next round', visible=False)
+    nxtroundbtn = gr.Button('⚡ Next round', visible=False)
     # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
     outputs = [
         text,
@@ -1320,13 +1333,17 @@ with gr.Blocks() as vote:
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(synthandreturn, inputs=[text], outputs=outputs)\
         .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])
-    nxtroundbtn.click(give_cached_sample, outputs=[*outputs, cachedt])
+    nxtroundbtn\
+        .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
+        .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
+        .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
 
     # fetch a comparison pair from cache
     cachedt\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
-        .then(give_cached_sample, outputs=[*outputs, cachedt])\
-        .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])
+        .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
+        .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
+    # TODO: await download of sample before allowing playback
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
     aud1\
@@ -1352,16 +1369,21 @@ with gr.Blocks() as vote:
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
     abetter\
         .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])\
-        .then(voted_on_cached, inputs=[model1, model2, text])
+        .then(voted_on_cached, inputs=[model1, model2, text, session_hash])
     bbetter\
         .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])\
-        .then(voted_on_cached, inputs=[model1, model2, text])
+        .then(voted_on_cached, inputs=[model1, model2, text, session_hash])
     # skipbtn.click(b_is_better, outputs=outputs, inputs=[model1, model2, useridstate])
 
     # bothbad.click(both_bad, outputs=outputs, inputs=[model1, model2, useridstate])
     # bothgood.click(both_good, outputs=outputs, inputs=[model1, model2, useridstate])
 
-    # vote.load(reload, outputs=[aud1, aud2, model1, model2])
+    vote.load(
+        None,
+        None,
+        session_hash,
+        js="() => { return getArenaCookie('session') }",
+    )
 
 with gr.Blocks() as about:
     gr.Markdown(ABOUT)
@@ -1372,7 +1394,7 @@ with gr.Blocks() as about:
 #         dbtext = gr.Textbox(label="Type \"delete db\" to confirm", placeholder="delete db")
 #         ddb = gr.Button("Delete DB")
 #     ddb.click(del_db, inputs=dbtext, outputs=ddb)
-with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}", title="TTS Arena") as demo:
+with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}", js="cookie.js", title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
     gr.TabbedInterface([vote, leaderboard, about], ['🗳️ Vote', '🏆 Leaderboard', '📄 About'])
@@ -1382,4 +1404,6 @@ with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}
                 gr.Markdown(f"If you use this data in your publication, please cite us!\n\nCopy the BibTeX citation to cite this source:\n\n```bibtext\n{CITATION_TEXT}\n```\n\nPlease remember that all generated audio clips should be assumed unsuitable for redistribution or commercial use.")
 
 
-demo.queue(api_open=False, default_concurrency_limit=40).launch(show_api=False, show_error=True)
+demo\
+    .queue(api_open=False, default_concurrency_limit=40)\
+    .launch(show_api=False, show_error=True)
