@@ -1,4 +1,4 @@
-I can’t believe it, we won the championship! This is the best day ever!
+I can't believe it, we won the championship! This is the best day ever!
 I'm so excited for my birthday tomorrow!
 I just got the job, I'm on top of the world!
 This cake is so delicious, I'm in heaven!
@@ -135,15 +135,15 @@ This is infuriating!
 This is amazing!
 This is the funniest thing ever!
 My heart feels like it's going to burst from joy!
-I’m thrilled about the surprise party you planned for me!
-I can’t stop laughing; that joke was hilarious!
-I’m overjoyed that we’re finally going on vacation!
-I’m ecstatic about our new house!
-I’m over the moon about becoming a parent!
-I’m bursting with excitement for the concert tonight!
-I’m so thrilled about our upcoming trip!
-I’m so thrilled to be promoted!
-I’m so proud of you for graduating!
+I'm thrilled about the surprise party you planned for me!
+I can't stop laughing; that joke was hilarious!
+I'm overjoyed that we're finally going on vacation!
+I'm ecstatic about our new house!
+I'm over the moon about becoming a parent!
+I'm bursting with excitement for the concert tonight!
+I'm so thrilled about our upcoming trip!
+I'm so thrilled to be promoted!
+I'm so proud of you for graduating!
 My heart is racing with anticipation as I wait for the concert to start!
 I'm fuming with anger after being cut off in traffic!
 Winning the art competition has left me on cloud nine!
@@ -204,7 +204,7 @@ I'm thrilled about starting my own business!
 She's excited about meeting her favorite celebrity!
 His proud smile said it all!
 She's euphoric about winning the contest!
-I can’t believe it, we won the championship! This is the best day ever!
+I can't believe it, we won the championship! This is the best day ever!
 I'm so excited for my birthday tomorrow!
 That's absolutely disgusting! How could you even think that?
 This is amazing! You're so talented!
@@ -595,7 +595,7 @@ They were enthralled by the captivating magic show!
 I'm seething with anger, how could you do that to me?
 I'm so anxious about this job interview, what if I mess up?
 How could you betray me like that?
-Why can’t just one thing go right for a change?
+Why can't just one thing go right for a change?
 Why does this always happen to me?
 That's absolutely disgusting! How could you even think that?
 Ugh, I'm so bored. Is there anything interesting to do around here?
