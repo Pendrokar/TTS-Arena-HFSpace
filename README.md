@@ -12,12 +12,13 @@ pinned: false
 short_description: xVA vs The World
 models:
 - coqui/XTTS-v2
-- Pendrokar/xvapitch_nvidia
-- parler-tts/parler-tts-mini-v1
+- fishaudio/fish-speech-1.4
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
 - myshell-ai/OpenVoice
 - myshell-ai/OpenVoiceV2
+- parler-tts/parler-tts-mini-v1
+- Pendrokar/xvapitch_nvidia
 - WhisperSpeech/WhisperSpeech
 sdk_version: 4.29.0
 ---

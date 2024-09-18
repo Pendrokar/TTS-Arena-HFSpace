@@ -257,10 +257,10 @@ OVERRIDE_INPUTS = {
         7: 1111,
     },
     'Manmay/tortoise-tts': {
-        1: None, # text-from-file; cannot skip and doesn't work without
+        1: None, # text-from-file
         2: 'angie', # voice
-        3: None,
-        4: 'No',
+        3: 'disabled', # second voice for a dialogue
+        4: 'No', # split by newline
     },
     'mrfakename/MeloTTS': {
         1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
@@ -281,8 +281,8 @@ OVERRIDE_INPUTS = {
 
     'fishaudio/fish-speech-1': {
 		1: True, # enable_reference_audio
-		2: DEFAULT_VOICE_SAMPLE, # reference_audio
-		3: DEFAULT_VOICE_TRANSCRIPT, # reference_text
+		2: file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
+		3: 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
 		4: 1024, # max_new_tokens
 		5: 200, # chunk_length
 		6: 0.7, # top_p
