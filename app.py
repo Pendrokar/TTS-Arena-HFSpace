@@ -1382,5 +1382,4 @@ with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}
                 gr.Markdown(f"If you use this data in your publication, please cite us!\n\nCopy the BibTeX citation to cite this source:\n\n```bibtext\n{CITATION_TEXT}\n```\n\nPlease remember that all generated audio clips should be assumed unsuitable for redistribution or commercial use.")
 
 
-demo.queue(api_open=False, default_concurrency_limit=40).launch(show_api=False)
 demo.queue(api_open=False, default_concurrency_limit=40).launch(show_api=False, show_error=True)
