@@ -437,9 +437,9 @@ Vote to help the community find the best available text-to-speech model!
 INSTR = """
 ## 🗳️ Vote
 
-* Input text (🇺🇸 English only) to synthesize audio.
 * Press ⚡ to get cached sample pairs you've yet to vote on. (Fast 🐇)
-* Press 🎲 to randomly use text from a preselected list. (Slow 🐌)
+* Or press 🎲 to randomly use text from a preselected list. (Slow 🐢)
+* Or input text (🇺🇸 English only) to synthesize audio. (Slowest 🐌 due to _Toxicity_ test)
 * Listen to the two audio clips, one after the other.
 * Vote on which audio sounds more natural to you.
 * _Note: Model names are revealed after the vote is cast._
@@ -1195,7 +1195,7 @@ def give_cached_sample(session_hash: str, request: gr.Request):
         ]
 
     return (
-        pair[0].transcript,
+        gr.update(visible=True, value=pair[0].transcript, elem_classes=['blurred-text']),
         "Synthesize",
         gr.update(visible=True), # r2
         pair[0].modelName, # model1
@@ -1231,7 +1231,7 @@ def randomsent():
     return '⚡', random.choice(sents), '🎲'
 def clear_stuff():
     return [
-        "",
+        gr.update(visible=True, value="", elem_classes=[]),
         "Synthesize",
         gr.update(visible=False), # r2
         '', # model1
@@ -1251,7 +1251,8 @@ def disable():
     return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
     return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
-
+def unblur_text():
+    return gr.update(elem_classes=[])
 
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
@@ -1267,7 +1268,9 @@ with gr.Blocks() as vote:
             cachedt = gr.Button('⚡', scale=0, min_width=0, variant='tool', interactive=True)
             text = gr.Textbox(container=False, show_label=False, placeholder="Enter text to synthesize", lines=1, max_lines=1, scale=9999999, min_width=0)
             randomt = gr.Button('🎲', scale=0, min_width=0, variant='tool')
-        randomt.click(randomsent, outputs=[cachedt, text, randomt])
+        randomt\
+            .click(randomsent, outputs=[cachedt, text, randomt])\
+            .then(unblur_text, outputs=text)
         btn = gr.Button("Synthesize", variant='primary')
     model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
     #model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
@@ -1332,7 +1335,8 @@ with gr.Blocks() as vote:
     btn\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(synthandreturn, inputs=[text], outputs=outputs)\
-        .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])
+        .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])\
+        .then(unblur_text, outputs=text)
     nxtroundbtn\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
@@ -1363,7 +1367,16 @@ with gr.Blocks() as vote:
             unlock_vote,
             outputs=[abetter, bbetter, aplayed, bplayed],
             inputs=[gr.State(value=1), aplayed, bplayed],
-        )
+        )\
+        .then(unblur_text, outputs=text)
+    # aud1.input(
+    #     None,
+    #     js="() => {console.log(new Date().getTime().toString()+'input')}",
+    # )
+    # aud1.change(
+    #     None,
+    #     js="() => {console.log(new Date().getTime().toString()+'change')}",
+    # )
 
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
@@ -1394,7 +1407,7 @@ with gr.Blocks() as about:
 #         dbtext = gr.Textbox(label="Type \"delete db\" to confirm", placeholder="delete db")
 #         ddb = gr.Button("Delete DB")
 #     ddb.click(del_db, inputs=dbtext, outputs=ddb)
-with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}", js="cookie.js", title="TTS Arena") as demo:
+with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", js="cookie.js", title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
     gr.TabbedInterface([vote, leaderboard, about], ['🗳️ Vote', '🏆 Leaderboard', '📄 About'])
