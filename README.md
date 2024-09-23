@@ -9,7 +9,7 @@ emoji: 🤗🏆
 colorFrom: red
 colorTo: red
 pinned: false
-short_description: xVA vs The World
+short_description: Vote on the top HF TTS models!
 models:
 - coqui/XTTS-v2
 - fishaudio/fish-speech-1.4

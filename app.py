@@ -44,6 +44,9 @@ with open('harvard_sentences.txt') as f:
     sents += f.read().strip().splitlines()
 with open('llama3_command-r_sentences.txt') as f:
     sents += f.read().strip().splitlines()
+
+# Credit: llama3_command-r sentences generated made by user KingNish
+
 ####################################
 # Constants
 ####################################
@@ -213,8 +216,8 @@ DEFAULT_VOICE_TRANSCRIPT = "In the first half of the 20th century, science ficti
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
         1: 'en',
-        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
-        3: DEFAULT_VOICE_SAMPLE_STR, # voice sample
+        2: 'https://huggingface.co/spaces/coqui/xtts/resolve/main/examples/female.wav', # voice sample
+        3: 'https://huggingface.co/spaces/coqui/xtts/resolve/main/examples/female.wav', # mic voice sample
         4: False, #use_mic
         5: False, #cleanup_reference
         6: False, #auto_detect
@@ -248,7 +251,7 @@ OVERRIDE_INPUTS = {
         1: 'LikeManyWaters', # voice
     },
     'LeeSangHoon/HierSpeech_TTS': {
-        1: DEFAULT_VOICE_SAMPLE, # voice sample
+        1: file('https://huggingface.co/spaces/LeeSangHoon/HierSpeech_TTS/resolve/main/example/female.wav'), # voice sample
         2: 0.333,
         3: 0.333,
         4: 1,
@@ -266,6 +269,13 @@ OVERRIDE_INPUTS = {
         1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
         2: 1, # speed
         3: 'EN',	# language
+    },
+    'mrfakename/MetaVoice-1B-v0.1': {
+		1: 5,	# float (numeric value between 0.0 and 10.0) in 'Speech Stability - improves text following for a challenging speaker' Slider component
+		2: 5,	# float (numeric value between 1.0 and 5.0) in 'Speaker similarity - How closely to match speaker identity and speech style.' Slider component
+		3: "Preset voices",	# Literal['Preset voices', 'Upload target voice']  in 'Choose voice' Radio component
+		4: "Bria",	# Literal['Bria', 'Alex', 'Jacob']  in 'Preset voices' Dropdown component
+		5: None,	# filepath  in 'Upload a clean sample to clone. Sample should contain 1 speaker, be between 30-90 seconds and not contain background noise.' Audio component
     },
     'parler-tts/parler_tts': {
         1: 'Elisabeth. Elisabeth\'s clear sharp voice.', # description/prompt
@@ -438,13 +448,13 @@ INSTR = """
 ## 🗳️ Vote
 
 * Press ⚡ to get cached sample pairs you've yet to vote on. (Fast 🐇)
-* Or press 🎲 to randomly use text from a preselected list. (Slow 🐢)
+* Or press 🎲 to randomly use a sentence from the list. (Slow 🐢)
 * Or input text (🇺🇸 English only) to synthesize audio. (Slowest 🐌 due to _Toxicity_ test)
 * Listen to the two audio clips, one after the other.
-* Vote on which audio sounds more natural to you.
-* _Note: Model names are revealed after the vote is cast._
+* _Vote on which audio sounds more natural to you._
+* Model names are revealed after the vote is cast.
 
-Note: It may take up to 30 seconds to synthesize audio.
+⚠ Note: It **may take up to 30 seconds** to ***synthesize*** audio.
 """.strip()
 request = ''
 if SPACE_ID:
@@ -1391,12 +1401,17 @@ with gr.Blocks() as vote:
     # bothbad.click(both_bad, outputs=outputs, inputs=[model1, model2, useridstate])
     # bothgood.click(both_good, outputs=outputs, inputs=[model1, model2, useridstate])
 
-    vote.load(
-        None,
-        None,
-        session_hash,
-        js="() => { return getArenaCookie('session') }",
-    )
+    # get session cookie
+    vote\
+        .load(
+            None,
+            None,
+            session_hash,
+            js="() => { return getArenaCookie('session') }",
+        )
+    # give a cached sample pair to voter; .then() did not work here
+    vote\
+        .load(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])
 
 with gr.Blocks() as about:
     gr.Markdown(ABOUT)
@@ -1407,6 +1422,7 @@ with gr.Blocks() as about:
 #         dbtext = gr.Textbox(label="Type \"delete db\" to confirm", placeholder="delete db")
 #         ddb = gr.Button("Delete DB")
 #     ddb.click(del_db, inputs=dbtext, outputs=ddb)
+# Blur cached sample text so the voting user picks up mispronouncements
 with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", js="cookie.js", title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
