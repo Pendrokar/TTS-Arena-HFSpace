@@ -1264,6 +1264,8 @@ def enable():
 def unblur_text():
     return gr.update(elem_classes=[])
 
+unblur_js = 'document.getElementById("arena-text-input").classList.remove("blurred-text")'
+
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
 
@@ -1276,16 +1278,24 @@ with gr.Blocks() as vote:
     with gr.Group():
         with gr.Row():
             cachedt = gr.Button('⚡', scale=0, min_width=0, variant='tool', interactive=True)
-            text = gr.Textbox(container=False, show_label=False, placeholder="Enter text to synthesize", lines=1, max_lines=1, scale=9999999, min_width=0)
+            text = gr.Textbox(
+                container=False,
+                show_label=False,
+                placeholder="Enter text to synthesize",
+                lines=1,
+                max_lines=1,
+                scale=9999999,
+                min_width=0,
+                elem_id="arena-text-input",
+                elem_classes="blurred-text",
+            )
             randomt = gr.Button('🎲', scale=0, min_width=0, variant='tool')
         randomt\
             .click(randomsent, outputs=[cachedt, text, randomt])\
-            .then(unblur_text, outputs=text)
+            .then(None, js="() => "+ unblur_js)
         btn = gr.Button("Synthesize", variant='primary')
     model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
-    #model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
     model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
-    #model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
     with gr.Row(visible=False) as r2:
         with gr.Column():
             with gr.Group():
@@ -1346,7 +1356,7 @@ with gr.Blocks() as vote:
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(synthandreturn, inputs=[text], outputs=outputs)\
         .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])\
-        .then(unblur_text, outputs=text)
+        .then(None, js="() => "+ unblur_js)
     nxtroundbtn\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
@@ -1378,7 +1388,7 @@ with gr.Blocks() as vote:
             outputs=[abetter, bbetter, aplayed, bplayed],
             inputs=[gr.State(value=1), aplayed, bplayed],
         )\
-        .then(unblur_text, outputs=text)
+        .then(None, js="() => "+ unblur_js)
     # aud1.input(
     #     None,
     #     js="() => {console.log(new Date().getTime().toString()+'input')}",

@@ -8,7 +8,7 @@ tags:
 emoji: 🤗🏆
 colorFrom: red
 colorTo: red
-pinned: false
+pinned: true
 short_description: Vote on the top HF TTS models!
 models:
 - coqui/XTTS-v2
