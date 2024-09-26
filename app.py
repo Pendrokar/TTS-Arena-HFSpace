@@ -631,7 +631,7 @@ def get_leaderboard(reveal_prelim = False):
     cursor = conn.cursor()
     sql = 'SELECT name, upvote, downvote FROM model'
     # if not reveal_prelim: sql += ' WHERE EXISTS (SELECT 1 FROM model WHERE (upvote + downvote) > 750)'
-    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > 500'
+    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > 300'
     cursor.execute(sql)
     data = cursor.fetchall()
     df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote'])
@@ -656,9 +656,20 @@ def get_leaderboard(reveal_prelim = False):
     df['score'] = round(df['score'])
     ## ELO SCORE
     df = df.sort_values(by='score', ascending=False)
-    df['order'] = ['#' + str(i + 1) for i in range(len(df))]
-    # df = df[['name', 'score', 'upvote', 'votes']]
-    # df = df[['order', 'name', 'score', 'license', 'votes']]
+    # medals
+    def assign_medal(rank, assign):
+        rank = str(rank + 1)
+        if assign:
+            if rank == '1':
+                rank += '🥇'
+            elif rank == '2':
+                rank += '🥈'
+            elif rank == '3':
+                rank += '🥉'
+
+        return '#'+ rank
+
+    df['order'] = [assign_medal(i, not reveal_prelim and len(df) > 2) for i in range(len(df))]
     df = df[['order', 'name', 'score', 'votes']]
     return df
 
