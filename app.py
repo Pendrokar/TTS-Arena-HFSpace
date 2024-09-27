@@ -216,8 +216,8 @@ DEFAULT_VOICE_TRANSCRIPT = "In the first half of the 20th century, science ficti
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
         1: 'en',
-        2: 'https://huggingface.co/spaces/coqui/xtts/resolve/main/examples/female.wav', # voice sample
-        3: 'https://huggingface.co/spaces/coqui/xtts/resolve/main/examples/female.wav', # mic voice sample
+        2: 'https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav', # voice sample
+        3: None, # mic voice sample
         4: False, #use_mic
         5: False, #cleanup_reference
         6: False, #auto_detect
