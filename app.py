@@ -1276,6 +1276,31 @@ def unblur_text():
     return gr.update(elem_classes=[])
 
 unblur_js = 'document.getElementById("arena-text-input").classList.remove("blurred-text")'
+shortcut_js = """
+<script>
+function shortcuts(e) {
+    var event = document.all ? window.event : e;
+    switch (e.target.tagName.toLowerCase()) {
+        case "input":
+        case "textarea":
+            break;
+        default:
+            switch (e.key.toLowerCase()) {
+                case "a":
+                    document.getElementById("arena-a-better").click();
+                    break;
+                case "b":
+                    document.getElementById("arena-b-better").click();
+                    break;
+                case "n":
+                    document.getElementById("arena-next-round").click();
+                    break;
+            }
+    }
+}
+document.addEventListener('keypress', shortcuts, false);
+</script>
+"""
 
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
@@ -1318,7 +1343,12 @@ with gr.Blocks() as vote:
                     waveform_options={'waveform_progress_color': '#EF4444'},
                     # var(--color-red-500)'}); gradio only accepts HEX and CSS color
                 )
-                abetter = gr.Button("A is better", variant='primary', interactive=False)
+                abetter = gr.Button(
+                    "A is better [a]",
+                    elem_id='arena-a-better',
+                    variant='primary',
+                    interactive=False,
+                )
                 prevmodel1 = gr.HTML(show_label=False, value="Vote to reveal model A", visible=False)
         with gr.Column():
             with gr.Group():
@@ -1330,9 +1360,18 @@ with gr.Blocks() as vote:
                     waveform_options={'waveform_progress_color': '#3C82F6'},
                     # var(--secondary-500)'}); gradio only accepts HEX and CSS color
                 )
-                bbetter = gr.Button("B is better", variant='primary', interactive=False)
+                bbetter = gr.Button(
+                    "B is better [b]",
+                    elem_id='arena-b-better',
+                    variant='primary',
+                    interactive=False
+                )
                 prevmodel2 = gr.HTML(show_label=False, value="Vote to reveal model B", visible=False)
-    nxtroundbtn = gr.Button('⚡ Next round', visible=False)
+    nxtroundbtn = gr.Button(
+        '⚡ Next round [n]',
+        elem_id='arena-next-round',
+        visible=False
+    )
     # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
     outputs = [
         text,
@@ -1444,7 +1483,7 @@ with gr.Blocks() as about:
 #         ddb = gr.Button("Delete DB")
 #     ddb.click(del_db, inputs=dbtext, outputs=ddb)
 # Blur cached sample text so the voting user picks up mispronouncements
-with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", js="cookie.js", title="TTS Arena") as demo:
+with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", head=shortcut_js, js="cookie.js", title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
     gr.TabbedInterface([vote, leaderboard, about], ['🗳️ Vote', '🏆 Leaderboard', '📄 About'])
