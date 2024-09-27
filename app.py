@@ -278,10 +278,10 @@ OVERRIDE_INPUTS = {
 		5: None,	# filepath  in 'Upload a clean sample to clone. Sample should contain 1 speaker, be between 30-90 seconds and not contain background noise.' Audio component
     },
     'parler-tts/parler_tts': {
-        1: 'Elisabeth. Elisabeth\'s clear sharp voice.', # description/prompt
+        1: 'Elisabeth; Elisabeth\'s female voice; very clear audio', # description/prompt
     },
     'parler-tts/parler-tts-expresso': {
-        1: 'Elisabeth. Elisabeth\'s clear sharp voice.', # description/prompt
+        1: 'Elisabeth; Elisabeth\'s female voice; very clear audio', # description/prompt
     },
     'innoai/Edge-TTS-Text-to-Speech': {
         1: 'en-US-EmmaMultilingualNeural - en-US (Female)', # voice
@@ -293,7 +293,7 @@ OVERRIDE_INPUTS = {
 		1: True, # enable_reference_audio
 		2: file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
 		3: 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
-		4: 1024, # max_new_tokens
+		4: 0, # max_new_tokens
 		5: 200, # chunk_length
 		6: 0.7, # top_p
 		7: 1.2, # repetition_penalty
@@ -431,7 +431,7 @@ router = {}
 ####################################
 MUST_BE_LOGGEDIN = "Please login with Hugging Face to participate in the TTS Arena."
 DESCR = """
-# TTS Arena: Benchmarking TTS Models in the Wild
+# TTS Spaces Arena: Benchmarking Gradio hosted TTS Models in the Wild
 
 Vote to help the community find the best available text-to-speech model!
 """.strip()
@@ -1238,7 +1238,7 @@ def give_cached_sample(session_hash: str, request: gr.Request):
 # note the vote on cached sample pair
 def voted_on_cached(modelName1: str, modelName2: str, transcript: str, session_hash: str, request: gr.Request):
     userid = get_userid(session_hash, request)
-    print(f'userid voted on cached: {userid}')
+    # print(f'userid voted on cached: {userid}')
 
     if userid not in voting_users:
         voting_users[userid] = User(userid)
