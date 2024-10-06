@@ -1099,7 +1099,10 @@ def synthandreturn(text):
         if (already_cached):
             continue
 
-        cached_samples.append(Sample(results[model], text, model))
+        try:
+            cached_samples.append(Sample(results[model], text, model))
+        except:
+            pass
 
     # all_pairs = generate_matching_pairs(cached_samples)
 
