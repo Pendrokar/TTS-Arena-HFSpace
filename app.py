@@ -65,34 +65,35 @@ AVAILABLE_MODELS = {
     # 'VoiceCraft 2.0': 'voicecraft',
     # 'Parler TTS': 'parler'
 
-    # HF Gradio Spaces:
-    'coqui/xtts': 'coqui/xtts',
-    # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # old gradio?
-    'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # 4.29.0
-    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # 4.29.0
-    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29.0
-    #'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # EN-GB 4.29.0 4.42.0
+    # HF Gradio Spaces: # <works with gradio version #>
+    # gravio version that works with most spaces: 4.29
+    'coqui/xtts': 'coqui/xtts', # 4.29 4.32
+    'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
+    # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
+    # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
+    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
+    # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # EN-GB 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-    'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # 4.29.0
-    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29.0
-    'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29.0
+    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+    'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
 
-    # Parler
-    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29.0 4.42.0
-    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29.0 4.42.0
+    # # Parler
+    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
-    # Microsoft Edge TTS
-    'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech',
+    # # Microsoft Edge TTS
+    'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
-    # TTS w issues
+    # HF TTS w issues
+    # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
-    # 'amphion/Text-to-Speech': '/predict#0', # old running space, takes a whole minute to synthesize
+    # 'amphion/Text-to-Speech': '/predict#0', # disabled also on original HF space due to poor ratings
     # 'suno/bark': '3#0', # Hallucinates
     # 'shivammehta25/Matcha-TTS': '5#0', # seems to require multiple requests for setup
-    # 'styletts2/styletts2': '0#0', # API disabled
-    # 'Manmay/tortoise-tts': '/predict#0', # Cannot skip text-from-file parameter
+    # 'styletts2/styletts2': '0#0', # API disabled, awaiting approval of PR #15
+    # 'Manmay/tortoise-tts': '/predict#0', # Cannot retrieve streamed file; 403
     # 'pytorch/Tacotron2': '0#0', # old gradio
-    # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # old gradio - ValueError: Unsupported protocol: sse_v3
+    # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
 }
 
 HF_SPACES = {
@@ -167,7 +168,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
     },
-    # Parler
+    # Parler Mini
     'parler-tts/parler_tts_mini': {
         'name': 'Parler Mini',
         'function': '/gen_tts',
@@ -229,11 +230,11 @@ OVERRIDE_INPUTS = {
     },
     'myshell-ai/OpenVoice': {
         1: 'default', # style
-        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
+        2: 'https://huggingface.co/spaces/myshell-ai/OpenVoiceV2/resolve/main/examples/speaker0.mp3', # voice sample
     },
     'myshell-ai/OpenVoiceV2': {
-        1: 'en_default', # style
-        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
+        1: 'en_us', # style
+        2: 'https://huggingface.co/spaces/myshell-ai/OpenVoiceV2/resolve/main/examples/speaker0.mp3', # voice sample
     },
     'PolyAI/pheme': {
         1: 'YOU1000000044_S0000798', # voice
@@ -241,7 +242,7 @@ OVERRIDE_INPUTS = {
         3: 0.7, #Tempo - Gradio Slider issue: takes min. rather than value
     },
     'Pendrokar/xVASynth-TTS': {
-        1: 'ccby_nvidia_hifi_92_F', #fine-tuned voice model name; #92 BRITISH
+        1: 'x_ex04', #fine-tuned voice model name
         3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
     },
     'suno/bark': {
