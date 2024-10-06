@@ -72,7 +72,7 @@ AVAILABLE_MODELS = {
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
     'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
-    # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # EN-GB 4.29 4.32 4.42.0
+    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
     'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
