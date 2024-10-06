@@ -694,7 +694,7 @@ def make_link_to_space(model_name):
         model_basename = HF_SPACES[model_name]['name']
 
     if '/' in model_name:
-        return '🤗 <a target="_top" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
+        return '🤗 <a style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
 
     # otherwise just return the model name
     return model_name
