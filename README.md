@@ -18,7 +18,7 @@ models:
 - myshell-ai/OpenVoice
 - myshell-ai/OpenVoiceV2
 - parler-tts/parler-tts-mini-v1
-- Pendrokar/xvapitch_nvidia
+- Pendrokar/xvapitch_expresso
 - WhisperSpeech/WhisperSpeech
-sdk_version: 4.29.0
+sdk_version: 4.32
 ---
