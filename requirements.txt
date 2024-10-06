@@ -1,4 +1,4 @@
-gradio
+gradio==4.32
 datasets
 librosa
 soundfile
