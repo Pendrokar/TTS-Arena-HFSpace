@@ -175,9 +175,9 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
     },
-    # Parler, using Expresso dataset
+    # Parler Mini, using Expresso dataset
     'parler-tts/parler-tts-expresso': {
-        'name': 'Parler Expresso',
+        'name': 'Parler Mini Expresso',
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -189,6 +189,7 @@ HF_SPACES = {
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'is_proprietary': True,
     },
 
     'fishaudio/fish-speech-1': {
@@ -639,7 +640,7 @@ def get_leaderboard(reveal_prelim = False):
     # df['license'] = df['name'].map(model_license)
     df['name'] = df['name'].replace(model_names)
     for i in range(len(df)):
-        df.loc[i, "name"] = make_link_to_space(df['name'][i])
+        df.loc[i, "name"] = make_link_to_space(df['name'][i], True)
     df['votes'] = df['upvote'] + df['downvote']
     # df['score'] = round((df['upvote'] / df['votes']) * 100, 2) # Percentage score
 
@@ -674,36 +675,45 @@ def get_leaderboard(reveal_prelim = False):
     df = df[['order', 'name', 'score', 'votes']]
     return df
 
-def make_link_to_space(model_name):
+def make_link_to_space(model_name, for_leaderboard=False):
     # create a anchor link if a HF space
     style = 'text-decoration: underline;text-decoration-style: dotted;'
     title = ''
 
-    # bolden actual name
-    # model_name_split = model_name.split('/')
-    # model_name_split = model_name_split[:-1].join('/') +'/<strong>'+ model_name_split[-1] +'</strong>'
     if model_name in AVAILABLE_MODELS:
         style += 'color: var(--link-text-color);'
         title = model_name
     else:
         style += 'font-style: italic;'
-        title = 'Got disabled for Arena (See AVAILABLE_MODELS within code for why)'
+        title = 'Disabled for Arena (See AVAILABLE_MODELS within code for why)'
 
     model_basename = model_name
     if model_name in HF_SPACES:
         model_basename = HF_SPACES[model_name]['name']
+
+    try:
+        if(
+            for_leaderboard
+            and HF_SPACES[model_name]['is_proprietary']
+        ):
+            model_basename += ' 🔐'
+            title += '; 🔐 = online only or proprietary'
+    except:
+        pass
 
     if '/' in model_name:
         return '🤗 <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
 
     # otherwise just return the model name
     return model_name
+
 def markdown_link_to_space(model_name):
     # create a anchor link if a HF space using markdown syntax
     if '/' in model_name:
         return '🤗 [' + model_name + '](https://huggingface.co/spaces/' + model_name + ')'
     # otherwise just return the model name
     return model_name
+
 def mkuuid(uid):
     if not uid:
         uid = uuid.uuid4()
