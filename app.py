@@ -42,7 +42,12 @@ toxicity = Detoxify('original')
 sents = []
 with open('harvard_sentences.txt') as f:
     sents += f.read().strip().splitlines()
+# With other punctuation marks
+# Exclamations - # conversational characters/animation entertainment/tv
 with open('llama3_command-r_sentences.txt') as f:
+    sents += f.read().strip().splitlines()
+# Questions - # conversational characters/animation entertainment/tv
+with open('llama3_command-r_questions.txt') as f:
     sents += f.read().strip().splitlines()
 
 # Credit: llama3_command-r sentences generated made by user KingNish
