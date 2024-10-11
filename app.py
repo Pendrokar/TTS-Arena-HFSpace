@@ -1288,6 +1288,7 @@ def voted_on_cached(modelName1: str, modelName2: str, transcript: str, session_h
     hash2 = md5(bytes((modelName2 + transcript).encode('ascii'))).hexdigest()
 
     voting_users[userid].voted_pairs.add((hash1, hash2))
+    return []
 
 def randomsent():
     return '⚡', random.choice(sents), '🎲'
@@ -1364,7 +1365,6 @@ with gr.Blocks() as vote:
                 scale=9999999,
                 min_width=0,
                 elem_id="arena-text-input",
-                elem_classes="blurred-text",
             )
             randomt = gr.Button('🎲', scale=0, min_width=0, variant='tool')
         randomt\
@@ -1470,7 +1470,7 @@ with gr.Blocks() as vote:
         .then(
             None,
             inputs=[bplayed],
-            js="(b) => b ? 0 : document.querySelector('.stretch .gap+.gap button.play-pause-button').click()",
+            js="(b) => b ? 0 : document.querySelector('.row .gap+.gap button.play-pause-button').click()",
         )
     # autoplay if unplayed
     aud2\
@@ -1492,11 +1492,11 @@ with gr.Blocks() as vote:
     # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
     abetter\
-        .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])\
-        .then(voted_on_cached, inputs=[model1, model2, text, session_hash])
+        .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
+        .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
     bbetter\
-        .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate])\
-        .then(voted_on_cached, inputs=[model1, model2, text, session_hash])
+        .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
+        .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
     # skipbtn.click(b_is_better, outputs=outputs, inputs=[model1, model2, useridstate])
 
     # bothbad.click(both_bad, outputs=outputs, inputs=[model1, model2, useridstate])
@@ -1524,7 +1524,7 @@ with gr.Blocks() as about:
 #         ddb = gr.Button("Delete DB")
 #     ddb.click(del_db, inputs=dbtext, outputs=ddb)
 # Blur cached sample text so the voting user picks up mispronouncements
-with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", head=shortcut_js, js="cookie.js", title="TTS Arena") as demo:
+with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", head=shortcut_js, title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
     gr.TabbedInterface([vote, leaderboard, about], ['🗳️ Vote', '🏆 Leaderboard', '📄 About'])
