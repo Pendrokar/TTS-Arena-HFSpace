@@ -411,9 +411,15 @@ def create_db_if_missing():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS spokentext (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            votelog_id INTEGER UNIQUE,
             spokentext TEXT,
+            lang TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+    ''')
+    # foreign keys
+    cursor.execute('''
+        CREATE UNIQUE INDEX IF NOT EXISTS st_to_vl ON spokentext(votelog_id);
     ''')
 def get_db():
     return sqlite3.connect(DB_PATH)
@@ -755,10 +761,15 @@ def upvote_model(model, uname):
     with scheduler.lock:
         conn.commit()
     cursor.close()
-def log_text(text):
+def log_text(text, voteid):
+    # log only hardcoded sentences
+    if (text not in sents):
+        return
+
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO spokentext (spokentext) VALUES (?)', (text,))
+    # TODO: multilang
+    cursor.execute('INSERT INTO spokentext (spokentext, lang, votelog_id) VALUES (?,?,?)', (text,'en',voteid))
     with scheduler.lock:
         conn.commit()
     cursor.close()
@@ -773,36 +784,52 @@ def downvote_model(model, uname):
         conn.commit()
     cursor.close()
 
-def a_is_better(model1, model2, userid):
-    # print("A is better", model1, model2)
-    if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
+def a_is_better(model1, model2, userid, text):
+    return is_better(model1, model2, userid, text, True)
+def b_is_better(model1, model2, userid, text):
+    return is_better(model1, model2, userid, text, False)
+
+def is_better(model1, model2, userid, text, chose_a):
+    if(
+        (
+            not model1 in AVAILABLE_MODELS.keys()
+            and not model1 in AVAILABLE_MODELS.values()
+        )
+        or (
+            not model2 in AVAILABLE_MODELS.keys()
+            and not model2 in AVAILABLE_MODELS.values()
+        )
+    ):
         raise gr.Error('Sorry, please try voting again.')
+
+    # userid is unique for each cast vote pair
     userid = mkuuid(userid)
     if model1 and model2:
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO votelog (username, chosen, rejected) VALUES (?, ?, ?)', (str(userid), model1, model2,))
+        sql_query = 'INSERT INTO votelog (username, chosen, rejected) VALUES (?, ?, ?)'
+        if chose_a:
+            cursor.execute(sql_query, (str(userid), model1, model2))
+        else:
+            cursor.execute(sql_query, (str(userid), model2, model1))
+
         with scheduler.lock:
             conn.commit()
+            # also retrieve primary key ID
+            cursor.execute('SELECT last_insert_rowid()')
+            votelogid = cursor.fetchone()[0]
             cursor.close()
-        upvote_model(model1, str(userid))
-        downvote_model(model2, str(userid))
-    return reload(model1, model2, userid, chose_a=True)
-def b_is_better(model1, model2, userid):
-    # print("B is better", model1, model2)
-    if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
-        raise gr.Error('Sorry, please try voting again.')
-    userid = mkuuid(userid)
-    if model1 and model2:
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO votelog (username, chosen, rejected) VALUES (?, ?, ?)', (str(userid), model2, model1,))
-        with scheduler.lock:
-            conn.commit()
-            cursor.close()
-        upvote_model(model2, str(userid))
-        downvote_model(model1, str(userid))
-    return reload(model1, model2, userid, chose_b=True)
+
+        if chose_a:
+            upvote_model(model1, str(userid))
+            downvote_model(model2, str(userid))
+        else:
+            upvote_model(model2, str(userid))
+            downvote_model(model1, str(userid))
+        log_text(text, votelogid)
+
+    return reload(model1, model2, userid, chose_a=chose_a, chose_b=(not chose_a))
+
 def both_bad(model1, model2, userid):
     userid = mkuuid(userid)
     if model1 and model2:
@@ -954,17 +981,20 @@ def synthandreturn(text):
     except:
         pass
     # Get two random models
+
     # forced model: your TTS model versus The World!!!
     # mdl1 = 'Pendrokar/xVASynth'
-    vsModels = dict(AVAILABLE_MODELS)
+    # vsModels = dict(AVAILABLE_MODELS)
     # del vsModels[mdl1]
     # randomize position of the forced model
-    mdl2 = random.sample(list(vsModels.keys()), 1)
+    # mdl2 = random.sample(list(vsModels.keys()), 1)
     # forced random
     # mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
+
     # actual random
     mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
-    log_text(text)
+    # pointless saving of text to DB
+    # log_text(text)
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage):
         # 3 attempts
