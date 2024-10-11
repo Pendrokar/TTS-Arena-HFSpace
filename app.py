@@ -1535,5 +1535,5 @@ with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}
 
 
 demo\
-    .queue(api_open=False, default_concurrency_limit=40)\
+    .queue(api_open=False, default_concurrency_limit=3)\
     .launch(show_api=False, show_error=True)
