@@ -20,5 +20,5 @@ models:
 - parler-tts/parler-tts-mini-v1
 - Pendrokar/xvapitch_expresso
 - WhisperSpeech/WhisperSpeech
-sdk_version: 4.36.1
+sdk_version: 5.0.2
 ---
