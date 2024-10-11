@@ -5,7 +5,7 @@ from datasets import load_dataset
 import threading, time, uuid, sqlite3, shutil, os, random, asyncio, threading
 from pathlib import Path
 from huggingface_hub import CommitScheduler, delete_file, hf_hub_download
-from gradio_client import Client, file
+from gradio_client import Client, handle_file
 import pyloudnorm as pyln
 import soundfile as sf
 import librosa
@@ -83,6 +83,10 @@ AVAILABLE_MODELS = {
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
     'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
+
+    # E2 & F5 TTS
+    # F5 model
+    'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
 
     # # Parler
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
@@ -199,11 +203,20 @@ HF_SPACES = {
         'is_proprietary': True,
     },
 
+    # Fish Speech
     'fishaudio/fish-speech-1': {
         'name': 'Fish Speech',
         'function': '/inference_wrapper',
         'text_param_index': 0,
         'return_audio_index': 1,
+    },
+
+    # E2/F5 TTS
+    'mrfakename/E2-F5-TTS': {
+        'name': 'F5 of E2 TTS',
+        'function': '/infer',
+        'text_param_index': 2,
+        'return_audio_index': 0,
     },
 
     # TTS w issues
@@ -217,15 +230,15 @@ HF_SPACES = {
     # 'fishaudio/fish-speech-1': '/inference_wrapper#0', heavy hallucinations
 }
 
-# for zero-shot TTS - voice sample of Scarlett Johanson
-DEFAULT_VOICE_SAMPLE_STR = 'https://cdn-uploads.huggingface.co/production/uploads/641de0213239b631552713e4/iKHHqWxWy6Zfmp6QP6CZZ.wav'
-DEFAULT_VOICE_SAMPLE = file(DEFAULT_VOICE_SAMPLE_STR)
-DEFAULT_VOICE_TRANSCRIPT = "In the first half of the 20th century, science fiction familiarized the world with the concept of artificially intelligent robots. It began with the “heartless” Tin man from the Wizard of Oz and continued with the humanoid robot that impersonated Maria in Metropolis. By the 1950s, we had a generation of scientists, mathematicians, and philosophers with the concept of artificial intelligence (or AI) culturally assimilated in their minds."
+# for zero-shot TTS - voice sample used by XTTS (11 seconds)
+DEFAULT_VOICE_SAMPLE_STR = 'https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav'
+DEFAULT_VOICE_SAMPLE = handle_file(DEFAULT_VOICE_SAMPLE_STR)
+DEFAULT_VOICE_TRANSCRIPT = "The Hispaniola was rolling scuppers under in the ocean swell. The booms were tearing at the blocks, the rudder was banging to and fro, and the whole ship creaking, groaning, and jumping like a manufactory."
 
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
         1: 'en',
-        2: 'https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav', # voice sample
+        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
         3: None, # mic voice sample
         4: False, #use_mic
         5: False, #cleanup_reference
@@ -260,7 +273,7 @@ OVERRIDE_INPUTS = {
         1: 'LikeManyWaters', # voice
     },
     'LeeSangHoon/HierSpeech_TTS': {
-        1: file('https://huggingface.co/spaces/LeeSangHoon/HierSpeech_TTS/resolve/main/example/female.wav'), # voice sample
+        1: handle_file('https://huggingface.co/spaces/LeeSangHoon/HierSpeech_TTS/resolve/main/example/female.wav'), # voice sample
         2: 0.333,
         3: 0.333,
         4: 1,
@@ -300,7 +313,7 @@ OVERRIDE_INPUTS = {
 
     'fishaudio/fish-speech-1': {
 		1: True, # enable_reference_audio
-		2: file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
+		2: handle_file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
 		3: 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
 		4: 0, # max_new_tokens
 		5: 200, # chunk_length
@@ -309,6 +322,13 @@ OVERRIDE_INPUTS = {
 		8: 0.7, # temperature
 		9: 1, # batch_infer_num
 		10: False, # if_load_asr_model
+    },
+
+    'mrfakename/E2-F5-TTS': {
+		0: DEFAULT_VOICE_SAMPLE, # voice sample
+		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
+		3: "F5-TTS", # model
+		4: False, # cleanup silence
     },
 }
 

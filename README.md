@@ -20,5 +20,6 @@ models:
 - parler-tts/parler-tts-mini-v1
 - Pendrokar/xvapitch_expresso
 - WhisperSpeech/WhisperSpeech
+- SWivid/F5-TTS
 sdk_version: 5.0.2
 ---
