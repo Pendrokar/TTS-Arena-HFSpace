@@ -956,7 +956,7 @@ def doresample(path_to_wav):
 # 2x speedup (hopefully) #
 ##########################
 
-def synthandreturn(text):
+def synthandreturn(text, request: gr.Request):
     text = text.strip()
     if len(text) > MAX_SAMPLE_TXT_LENGTH:
         raise gr.Error(f'You exceeded the limit of {MAX_SAMPLE_TXT_LENGTH} characters')
@@ -996,7 +996,9 @@ def synthandreturn(text):
     # pointless saving of text to DB
     # log_text(text)
     print("[debug] Using", mdl1, mdl2)
-    def predict_and_update_result(text, model, result_storage):
+    def predict_and_update_result(text, model, result_storage, request:gr.Request):
+        
+        x_ip_token = request.headers['x-ip-token']
         # 3 attempts
         attempt_count = 0
         while attempt_count < 3:
@@ -1005,7 +1007,7 @@ def synthandreturn(text):
                     if '/' in model:
                         # Use public HF Space
                         #if (model not in hf_clients):
-                        hf_clients[model] = Client(model, hf_token=hf_token)
+                        hf_clients[model] = Client(model, hf_token=hf_token, headers={"X-IP-Token": x_ip_token})
                         mdl_space = hf_clients[model]
 
                         # print(f"{model}: Fetching endpoints of HF Space")
@@ -1131,8 +1133,8 @@ def synthandreturn(text):
     if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
     print(f"Sending models {mdl1k} and {mdl2k} to API")
-    thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results))
-    thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results))
+    thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
+    thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results, request))
 
     thread1.start()
     thread2.start()
