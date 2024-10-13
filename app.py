@@ -174,7 +174,7 @@ HF_SPACES = {
 
     # Parler
     'parler-tts/parler_tts': {
-        'name': 'Parler',
+        'name': 'Parler Mini',
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -186,7 +186,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
     },
-    # Parler Mini, using Expresso dataset
+    # Parler Mini which using Expresso dataset
     'parler-tts/parler-tts-expresso': {
         'name': 'Parler Mini Expresso',
         'function': '/gen_tts',
@@ -300,7 +300,7 @@ OVERRIDE_INPUTS = {
 		5: None,	# filepath  in 'Upload a clean sample to clone. Sample should contain 1 speaker, be between 30-90 seconds and not contain background noise.' Audio component
     },
     'parler-tts/parler_tts': {
-        1: 'Elisabeth; Elisabeth\'s female voice; very clear audio', # description/prompt
+        1: 'Laura; Laura\'s female voice; very clear audio', # description/prompt
     },
     'parler-tts/parler-tts-expresso': {
         1: 'Elisabeth; Elisabeth\'s female voice; very clear audio', # description/prompt
@@ -543,7 +543,7 @@ Vote to help the community determine the best text-to-speech (TTS) models.
 
 The leaderboard displays models in descending order of how natural they sound (based on votes cast by the community).
 
-Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate.
+Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate. [This dataset is public](https://huggingface.co/datasets/{DB_DATASET_ID}) and only saves the hardcoded sentences while keeping the voters anonymous.
 """.strip()
 
 
