@@ -536,7 +536,7 @@ Generated audio clips cannot be redistributed and may be used for personal, non-
 
 Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html).
 """.strip()
-LDESC = """
+LDESC = f"""
 ## 🏆 Leaderboard
 
 Vote to help the community determine the best text-to-speech (TTS) models.
