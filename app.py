@@ -997,17 +997,21 @@ def synthandreturn(text, request: gr.Request):
     # log_text(text)
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage, request:gr.Request):
-        
-        x_ip_token = request.headers['x-ip-token']
+
+        hf_headers = {}
+        try:
+            hf_headers = {"X-IP-Token": request.headers['x-ip-token']}
+        except:
+            pass
         # 3 attempts
         attempt_count = 0
-        while attempt_count < 3:
+        while attempt_count < 2:
             try:
                 if model in AVAILABLE_MODELS:
                     if '/' in model:
                         # Use public HF Space
                         #if (model not in hf_clients):
-                        hf_clients[model] = Client(model, hf_token=hf_token, headers={"X-IP-Token": x_ip_token})
+                        hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
                         mdl_space = hf_clients[model]
 
                         # print(f"{model}: Fetching endpoints of HF Space")
@@ -1065,6 +1069,7 @@ def synthandreturn(text, request: gr.Request):
                 time.sleep(3)
 
                 # Fetch and store client again
+                hf_headers = {}
                 #hf_clients[model] = Client(model, hf_token=hf_token)
 
         if attempt_count > 2:
