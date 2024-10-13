@@ -89,8 +89,12 @@ AVAILABLE_MODELS = {
     'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
 
     # # Parler
+    # Parler Large model
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
-    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    # Parler Mini model
+    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
+    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
@@ -104,7 +108,6 @@ AVAILABLE_MODELS = {
     # 'styletts2/styletts2': '0#0', # API disabled, awaiting approval of PR #15
     # 'Manmay/tortoise-tts': '/predict#0', # Cannot retrieve streamed file; 403
     # 'pytorch/Tacotron2': '0#0', # old gradio
-    # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
 }
 
 HF_SPACES = {
@@ -178,20 +181,23 @@ HF_SPACES = {
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'is_zero_gpu_space': True,
     },
     # Parler Mini
-    'parler-tts/parler_tts_mini': {
-        'name': 'Parler Mini',
-        'function': '/gen_tts',
-        'text_param_index': 0,
-        'return_audio_index': 0,
-    },
+    # 'parler-tts/parler_tts': {
+    #     'name': 'Parler Large',
+    #     'function': '/gen_tts',
+    #     'text_param_index': 0,
+    #     'return_audio_index': 0,
+    #     'is_zero_gpu_space': True,
+    # },
     # Parler Mini which using Expresso dataset
     'parler-tts/parler-tts-expresso': {
         'name': 'Parler Mini Expresso',
         'function': '/gen_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'is_zero_gpu_space': True,
     },
 
     # Microsoft Edge TTS
@@ -217,6 +223,7 @@ HF_SPACES = {
         'function': '/infer',
         'text_param_index': 2,
         'return_audio_index': 0,
+        'is_zero_gpu_space': True,
     },
 
     # TTS w issues
@@ -1000,7 +1007,8 @@ def synthandreturn(text, request: gr.Request):
 
         hf_headers = {}
         try:
-            hf_headers = {"X-IP-Token": request.headers['x-ip-token']}
+            if HF_SPACES[model]['is_zero_gpu_space']:
+                hf_headers = {"X-IP-Token": request.headers['x-ip-token']}
         except:
             pass
         # 3 attempts
