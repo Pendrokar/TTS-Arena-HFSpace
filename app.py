@@ -552,9 +552,21 @@ The leaderboard displays models in descending order of how natural they sound (b
 
 Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate. [This dataset is public](https://huggingface.co/datasets/{DB_DATASET_ID}) and only saves the hardcoded sentences while keeping the voters anonymous.
 """.strip()
+TTS_INFO = f"""
+## 🗣 Contenders
 
+### Open Source TTS Capabilities table
 
-
+See the Dataset itself for more in depth information for each model.
+""".strip()
+TTS_IFRAME = """
+<iframe
+  src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/viewer/default/train"
+  frameborder="0"
+  width="100%"
+  height="560px"
+></iframe>
+""".strip()
 
 # def reload_audio_dataset():
 #     global audio_dataset
@@ -1561,6 +1573,9 @@ with gr.Blocks() as vote:
 
 with gr.Blocks() as about:
     gr.Markdown(ABOUT)
+with gr.Blocks() as tts_info:
+    gr.Markdown(TTS_INFO)
+    gr.HTML(TTS_IFRAME)
 # with gr.Blocks() as admin:
 #     rdb = gr.Button("Reload Audio Dataset")
 #     # rdb.click(reload_audio_dataset, outputs=rdb)
@@ -1572,7 +1587,7 @@ with gr.Blocks() as about:
 with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", head=shortcut_js, title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
-    gr.TabbedInterface([vote, leaderboard, about], ['🗳️ Vote', '🏆 Leaderboard', '📄 About'])
+    gr.TabbedInterface([vote, leaderboard, about, tts_info], ['🗳️ Vote', '🏆 Leaderboard', '📄 About', '🗣 Contenders'])
     if CITATION_TEXT:
         with gr.Row():
             with gr.Accordion("Citation", open=False):
