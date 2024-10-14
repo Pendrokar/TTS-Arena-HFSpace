@@ -1023,15 +1023,16 @@ def synthandreturn(text, request: gr.Request):
                 hf_headers = {"X-IP-Token": request.headers['x-ip-token']}
         except:
             pass
-        # 3 attempts
+
+        # 2 attempts
         attempt_count = 0
         while attempt_count < 2:
             try:
                 if model in AVAILABLE_MODELS:
                     if '/' in model:
                         # Use public HF Space
-                        #if (model not in hf_clients):
-                        hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
+                        if (model not in hf_clients):
+                            hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
                         mdl_space = hf_clients[model]
 
                         # print(f"{model}: Fetching endpoints of HF Space")
@@ -1085,12 +1086,12 @@ def synthandreturn(text, request: gr.Request):
                 attempt_count += 1
                 print(repr(e))
                 print(f"{model}: Unable to call API (attempt: {attempt_count})")
-                # sleep for three seconds
+                # sleep for three seconds to avoid spamming the server with requests
                 time.sleep(3)
 
                 # Fetch and store client again
                 hf_headers = {}
-                #hf_clients[model] = Client(model, hf_token=hf_token)
+                hf_clients[model] = Client(model, hf_token=hf_token)
 
         if attempt_count > 2:
             raise gr.Error(f"{model}: Failed to call model")
