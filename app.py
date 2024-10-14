@@ -339,7 +339,7 @@ OVERRIDE_INPUTS = {
     },
 }
 
-hf_clients = {}
+hf_clients: Tuple[Client] = {}
 # cache audio samples for quick voting
 cached_samples: List[Sample] = []
 voting_users = {
@@ -1059,9 +1059,10 @@ def synthandreturn(text, request: gr.Request):
                             end_parameters = _get_param_examples(
                                 endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
                             )
-    
+
+                        # override some or all default parameters
                         space_inputs = _override_params(end_parameters, model)
-    
+
                         # force text
                         space_inputs[HF_SPACES[model]['text_param_index']] = text
 
@@ -1090,8 +1091,7 @@ def synthandreturn(text, request: gr.Request):
                 time.sleep(3)
 
                 # Fetch and store client again
-                hf_headers = {}
-                hf_clients[model] = Client(model, hf_token=hf_token)
+                hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
 
         if attempt_count > 2:
             raise gr.Error(f"{model}: Failed to call model")
@@ -1596,5 +1596,5 @@ with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none}
 
 
 demo\
-    .queue(api_open=False, default_concurrency_limit=3)\
+    .queue(api_open=False, default_concurrency_limit=4)\
     .launch(show_api=False, show_error=True)
