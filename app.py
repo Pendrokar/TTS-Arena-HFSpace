@@ -555,9 +555,9 @@ Important: In order to help keep results fair, the leaderboard hides results by 
 TTS_INFO = f"""
 ## 🗣 Contenders
 
-### Open Source TTS Capabilities table
+### Open Source TTS capabilities table
 
-See the Dataset itself for more in depth information for each model.
+See the dataset itself for the legend and more in depth information for each model. Not all the models listed have a HF Space to add to this TTS Arena.
 """.strip()
 TTS_IFRAME = """
 <iframe
