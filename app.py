@@ -492,15 +492,6 @@ DESCR = """
 
 Vote to help the community find the best available text-to-speech model!
 """.strip()
-# INSTR = """
-# ## Instructions
-
-# * Listen to two anonymous models
-# * Vote on which synthesized audio sounds more natural to you
-# * If there's a tie, click Skip
-
-# **When you're ready to begin, login and begin voting!** The model names will be revealed once you vote.
-# """.strip()
 INSTR = """
 ## 🗳️ Vote
 
@@ -683,17 +674,6 @@ model_links = {
     'speecht5': 'https://github.com/microsoft/SpeechT5',
     'metavoice': 'https://github.com/metavoiceio/metavoice-src',
 }
-# def get_random_split(existing_split=None):
-#     choice = random.choice(list(audio_dataset.keys()))
-#     if existing_split and choice == existing_split:
-#         return get_random_split(choice)
-#     else:
-#         return choice
-
-# def get_random_splits():
-#     choice1 = get_random_split()
-#     choice2 = get_random_split(choice1)
-#     return (choice1, choice2)
 def model_license(name):
     print(name)
     for k, v in AVAILABLE_MODELS.items():
@@ -885,26 +865,6 @@ def both_good(model1, model2, userid):
     return reload(model1, model2, userid)
 def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, chose_b=False):
     # Select random splits
-    # row = random.choice(list(audio_dataset['train']))
-    # options = list(random.choice(list(audio_dataset['train'])).keys())
-    # split1, split2 = random.sample(options, 2)
-    # choice1, choice2 = (row[split1], row[split2])
-    # if chosenmodel1 in model_names:
-    #     chosenmodel1 = model_names[chosenmodel1]
-    # if chosenmodel2 in model_names:
-    #     chosenmodel2 = model_names[chosenmodel2]
-    # out = [
-    #     (choice1['sampling_rate'], choice1['array']),
-    #     (choice2['sampling_rate'], choice2['array']),
-    #     split1,
-    #     split2
-    # ]
-    # if userid: out.append(userid)
-    # if chosenmodel1: out.append(f'This model was {chosenmodel1}')
-    # if chosenmodel2: out.append(f'This model was {chosenmodel2}')
-    # return out
-    # return (f'This model was {chosenmodel1}', f'This model was {chosenmodel2}', gr.update(visible=False), gr.update(visible=False))
-    # return (gr.update(variant='secondary', value=chosenmodel1, interactive=False), gr.update(variant='secondary', value=chosenmodel2, interactive=False))
     chosenmodel1 = make_link_to_space(chosenmodel1)
     chosenmodel2 = make_link_to_space(chosenmodel2)
     out = [
@@ -939,51 +899,6 @@ with gr.Blocks() as leaderboard:
     reloadbtn.click(get_leaderboard, inputs=[reveal_prelim], outputs=[df])
     # gr.Markdown("DISCLAIMER: The licenses listed may not be accurate or up to date, you are responsible for checking the licenses before using the models. Also note that some models may have additional usage restrictions.")
 
-# with gr.Blocks() as vote:
-#     useridstate = gr.State()
-#     gr.Markdown(INSTR)
-#     # gr.LoginButton()
-#     with gr.Row():
-#         gr.HTML('<div align="left"><h3>Model A</h3></div>')
-#         gr.HTML('<div align="right"><h3>Model B</h3></div>')
-#     model1 = gr.Textbox(interactive=False, visible=False, lines=1, max_lines=1)
-#     model2 = gr.Textbox(interactive=False, visible=False, lines=1, max_lines=1)
-#     # with gr.Group():
-#     #     with gr.Row():
-#     #         prevmodel1 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model A")
-#     #         prevmodel2 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model B", text_align="right")
-#     #     with gr.Row():
-#     #         aud1 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
-#     #         aud2 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
-#     with gr.Group():
-#         with gr.Row():
-#             with gr.Column():
-#                 with gr.Group():
-#                     prevmodel1 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model A", lines=1, max_lines=1)
-#                     aud1 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
-#             with gr.Column():
-#                 with gr.Group():
-#                     prevmodel2 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model B", text_align="right", lines=1, max_lines=1)
-#                     aud2 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False, waveform_options={'waveform_progress_color': '#3C82F6'})
-
-
-#     with gr.Row():
-#         abetter = gr.Button("A is Better", variant='primary', scale=4)
-#         # skipbtn = gr.Button("Skip", scale=1)
-#         bbetter = gr.Button("B is Better", variant='primary', scale=4)
-#     with gr.Row():
-#         bothbad = gr.Button("Both are Bad", scale=2)
-#         skipbtn = gr.Button("Skip", scale=1)
-#         bothgood = gr.Button("Both are Good", scale=2)
-#     outputs = [aud1, aud2, model1, model2, useridstate, prevmodel1, prevmodel2]
-#     abetter.click(a_is_better, outputs=outputs, inputs=[model1, model2, useridstate])
-#     bbetter.click(b_is_better, outputs=outputs, inputs=[model1, model2, useridstate])
-#     skipbtn.click(b_is_better, outputs=outputs, inputs=[model1, model2, useridstate])
-
-#     bothbad.click(both_bad, outputs=outputs, inputs=[model1, model2, useridstate])
-#     bothgood.click(both_good, outputs=outputs, inputs=[model1, model2, useridstate])
-
-#     vote.load(reload, outputs=[aud1, aud2, model1, model2])
 def doloudnorm(path):
     data, rate = sf.read(path)
     meter = pyln.Meter(rate)
@@ -1241,30 +1156,6 @@ def synthandreturn(text, request: gr.Request):
         False, #aplayed
         False, #bplayed
     )
-    # return (
-    #     text,
-    #     "Synthesize",
-    #     gr.update(visible=True), # r2
-    #     mdl1, # model1
-    #     mdl2, # model2
-    #     # 'Vote to reveal model A', # prevmodel1
-    #     gr.update(visible=True, value=router.predict(
-    #         text,
-    #         AVAILABLE_MODELS[mdl1],
-    #         api_name="/synthesize"
-    #     )), # aud1
-    #     # 'Vote to reveal model B', # prevmodel2
-    #     gr.update(visible=True, value=router.predict(
-    #         text,
-    #         AVAILABLE_MODELS[mdl2],
-    #         api_name="/synthesize"
-    #     )), # aud2
-    #     gr.update(visible=True, interactive=True),
-    #     gr.update(visible=True, interactive=True),
-    #     gr.update(visible=False),
-    #     gr.update(visible=False),
-    #     gr.update(visible=False), #nxt round btn
-    # )
 
 def unlock_vote(btn_index, aplayed, bplayed):
     # sample played
@@ -1493,7 +1384,6 @@ with gr.Blocks() as vote:
         elem_id='arena-next-round',
         visible=False
     )
-    # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
     outputs = [
         text,
         btn,
@@ -1560,16 +1450,7 @@ with gr.Blocks() as vote:
             inputs=[gr.State(value=1), aplayed, bplayed],
         )\
         .then(None, js="() => "+ unblur_js)
-    # aud1.input(
-    #     None,
-    #     js="() => {console.log(new Date().getTime().toString()+'input')}",
-    # )
-    # aud1.change(
-    #     None,
-    #     js="() => {console.log(new Date().getTime().toString()+'change')}",
-    # )
 
-    # nxt_outputs = [prevmodel1, prevmodel2, abetter, bbetter]
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
     abetter\
         .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
