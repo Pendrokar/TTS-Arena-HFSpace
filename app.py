@@ -117,6 +117,7 @@ HF_SPACES = {
         'function': '1',
         'text_param_index': 0,
         'return_audio_index': 1,
+        'series': 'XTTS',
     },
     # WhisperSpeech
     'collabora/WhisperSpeech': {
@@ -124,6 +125,7 @@ HF_SPACES = {
         'function': '/whisper_speech_demo',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'series': 'WhisperSpeech',
     },
     # OpenVoice (MyShell.ai)
     'myshell-ai/OpenVoice': {
@@ -131,6 +133,7 @@ HF_SPACES = {
         'function': '1',
         'text_param_index': 0,
         'return_audio_index': 1,
+        'series': 'OpenVoice',
     },
     # OpenVoice v2 (MyShell.ai)
     'myshell-ai/OpenVoiceV2': {
@@ -138,13 +141,15 @@ HF_SPACES = {
         'function': '1',
         'text_param_index': 0,
         'return_audio_index': 1,
+        'series': 'OpenVoice',
     },
     # MetaVoice
     'mrfakename/MetaVoice-1B-v0.1': {
-        'name':'MetaVoice',
+        'name':'MetaVoice-1B',
         'function': '/tts',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'series': 'MetaVoice-1B',
     },
     # xVASynth (CPU)
     'Pendrokar/xVASynth-TTS': {
@@ -152,6 +157,7 @@ HF_SPACES = {
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'series': 'xVASynth',
     },
     # CoquiTTS (CPU)
     'coqui/CoquiTTS': {
@@ -159,6 +165,7 @@ HF_SPACES = {
         'function': '0',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'series': 'CoquiTTS',
     },
     # HierSpeech_TTS
     'LeeSangHoon/HierSpeech_TTS': {
@@ -166,6 +173,7 @@ HF_SPACES = {
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'series': 'HierSpeech++',
     },
     # MeloTTS (MyShell.ai)
     'mrfakename/MeloTTS': {
@@ -173,6 +181,7 @@ HF_SPACES = {
         'function': '/synthesize',
         'text_param_index': 0,
         'return_audio_index': 0,
+        'series': 'MeloTTS',
     },
 
     # Parler
@@ -182,6 +191,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
+        'series': 'Parler',
     },
     # Parler Mini
     # 'parler-tts/parler_tts': {
@@ -190,6 +200,7 @@ HF_SPACES = {
     #     'text_param_index': 0,
     #     'return_audio_index': 0,
     #     'is_zero_gpu_space': True,
+    #    'series': 'Parler',
     # },
     # Parler Mini which using Expresso dataset
     'parler-tts/parler-tts-expresso': {
@@ -198,6 +209,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
+        'series': 'Parler',
     },
 
     # Microsoft Edge TTS
@@ -207,6 +219,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'is_proprietary': True,
+        'series': 'Edge TTS',
     },
 
     # Fish Speech
@@ -215,6 +228,7 @@ HF_SPACES = {
         'function': '/inference_wrapper',
         'text_param_index': 0,
         'return_audio_index': 1,
+        'series': 'Fish Speech',
     },
 
     # E2/F5 TTS
@@ -224,6 +238,7 @@ HF_SPACES = {
         'text_param_index': 2,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
+        'series': 'E2/F5 TTS',
     },
 
     # TTS w issues
@@ -543,6 +558,7 @@ Generated audio clips cannot be redistributed and may be used for personal, non-
 
 Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html).
 """.strip()
+
 LDESC = f"""
 ## 🏆 Leaderboard
 
@@ -552,19 +568,25 @@ The leaderboard displays models in descending order of how natural they sound (b
 
 Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate. [This dataset is public](https://huggingface.co/datasets/{DB_DATASET_ID}) and only saves the hardcoded sentences while keeping the voters anonymous.
 """.strip()
+
 TTS_INFO = f"""
 ## 🗣 Contenders
 
 ### Open Source TTS capabilities table
 
-See the dataset itself for the legend and more in depth information for each model. Not all the models listed have a HF Space to add to this TTS Arena.
+See [the below dataset itself](https://huggingface.co/datasets/Pendrokar/open_tts_tracker) for the legend and more in depth information for each model.
 """.strip()
-TTS_IFRAME = """
+
+model_series = []
+for model in HF_SPACES.values():
+    model_series.append('%27'+ model['series'].replace('+', '%2B') +'%27')
+TTS_DATASET_IFRAME_ORDER = '%2C+'.join(model_series)
+TTS_DATASET_IFRAME = f"""
 <iframe
-  src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/viewer/default/train"
-  frameborder="0"
-  width="100%"
-  height="560px"
+    src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/viewer/default/train?sql_console=true&sql=--+The+SQL+console+is+powered+by+DuckDB+WASM+and+runs+entirely+in+the+browser.%0A--+Get+started+by+typing+a+query+or+selecting+a+view+from+the+options+below.%0ASELECT+*%2C+%22Name%22+IN+%28{TTS_DATASET_IFRAME_ORDER}%29+AS+%22In+arena%22+FROM+train+WHERE+%22Insta-clone+%F0%9F%91%A5%22+IS+NOT+NULL+ORDER+BY+%22In+arena%22+DESC+LIMIT+50%3B&views%5B%5D=train"
+    frameborder="0"
+    width="100%"
+    height="650px"
 ></iframe>
 """.strip()
 
@@ -1576,7 +1598,7 @@ with gr.Blocks() as about:
     gr.Markdown(ABOUT)
 with gr.Blocks() as tts_info:
     gr.Markdown(TTS_INFO)
-    gr.HTML(TTS_IFRAME)
+    gr.HTML(TTS_DATASET_IFRAME)
 # with gr.Blocks() as admin:
 #     rdb = gr.Button("Reload Audio Dataset")
 #     # rdb.click(reload_audio_dataset, outputs=rdb)
