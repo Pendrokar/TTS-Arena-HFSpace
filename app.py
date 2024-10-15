@@ -547,7 +547,7 @@ We may store text you enter and generated audio. We store a unique ID for each s
 
 Generated audio clips cannot be redistributed and may be used for personal, non-commercial use only.
 
-Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html).
+Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html) and also from KingNish's generated LLM sentences.
 """.strip()
 
 LDESC = f"""
@@ -565,7 +565,7 @@ TTS_INFO = f"""
 
 ### Open Source TTS capabilities table
 
-See [the below dataset itself](https://huggingface.co/datasets/Pendrokar/open_tts_tracker) for the legend and more in depth information for each model.
+See [the below dataset itself](https://huggingface.co/datasets/Pendrokar/open_tts_tracker) for the legend and more in depth information of each model.
 """.strip()
 
 model_series = []
@@ -961,16 +961,17 @@ def synthandreturn(text, request: gr.Request):
         except:
             pass
 
-        # 2 attempts
+        # re-attempt if necessary
         attempt_count = 0
-        while attempt_count < 2:
+        while attempt_count < 1:
+        # while attempt_count < 3: # May cause 429 Too Many Request
             try:
                 if model in AVAILABLE_MODELS:
                     if '/' in model:
                         # Use public HF Space
-                        if (model not in hf_clients):
-                            hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
-                        mdl_space = hf_clients[model]
+                        # if (model not in hf_clients):
+                        #     hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
+                        mdl_space = Client(model, hf_token=hf_token, headers=hf_headers)
 
                         # print(f"{model}: Fetching endpoints of HF Space")
                         # assume the index is one of the first 9 return params
@@ -1028,7 +1029,7 @@ def synthandreturn(text, request: gr.Request):
                 time.sleep(3)
 
                 # Fetch and store client again
-                hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
+                # hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
 
         if attempt_count > 2:
             raise gr.Error(f"{model}: Failed to call model")
