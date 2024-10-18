@@ -360,6 +360,7 @@ cached_samples: List[Sample] = []
 voting_users = {
     # userid as the key and USER() as the value
 }
+top_five = []
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
     transcript_groups: Dict[str, List[Sample]] = {}
@@ -685,12 +686,12 @@ def model_license(name):
 def get_leaderboard(reveal_prelim = False):
     conn = get_db()
     cursor = conn.cursor()
-    sql = 'SELECT name, upvote, downvote FROM model'
+    sql = 'SELECT name, upvote, downvote, name AS orig_name FROM model'
     # if not reveal_prelim: sql += ' WHERE EXISTS (SELECT 1 FROM model WHERE (upvote + downvote) > 750)'
     if not reveal_prelim: sql += ' WHERE (upvote + downvote) > 300'
     cursor.execute(sql)
     data = cursor.fetchall()
-    df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote'])
+    df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote', 'orig_name'])
     # df['license'] = df['name'].map(model_license)
     df['name'] = df['name'].replace(model_names)
     for i in range(len(df)):
@@ -726,6 +727,12 @@ def get_leaderboard(reveal_prelim = False):
         return '#'+ rank
 
     df['order'] = [assign_medal(i, not reveal_prelim and len(df) > 2) for i in range(len(df))]
+    # fetch top_five
+    for orig_name in df['orig_name']:
+        if reveal_prelim and len(top_five) < 5:
+            top_five.append(orig_name)
+
+    print(top_five)    
     df = df[['order', 'name', 'score', 'votes']]
     return df
 
@@ -940,17 +947,20 @@ def synthandreturn(text, request: gr.Request):
 
     # forced model: your TTS model versus The World!!!
     # mdl1 = 'Pendrokar/xVASynth'
-    # vsModels = dict(AVAILABLE_MODELS)
-    # del vsModels[mdl1]
-    # randomize position of the forced model
-    # mdl2 = random.sample(list(vsModels.keys()), 1)
-    # forced random
-    # mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
 
-    # actual random
-    mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
-    # pointless saving of text to DB
-    # log_text(text)
+    # scrutinize the top five by always picking one of them
+    if (len(top_five) >= 5):
+        mdl1 = random.sample(top_five, 1)[0]
+        vsModels = dict(AVAILABLE_MODELS)
+        del vsModels[mdl1]
+        # randomize position of the forced model
+        mdl2 = random.sample(list(vsModels.keys()), 1)
+        # forced random
+        mdl1, mdl2 = random.sample(list([mdl1, mdl2[0]]), 2)
+    else:
+        # actual random
+        mdl1, mdl2 = random.sample(list(AVAILABLE_MODELS.keys()), 2)
+
     print("[debug] Using", mdl1, mdl2)
     def predict_and_update_result(text, model, result_storage, request:gr.Request):
 
