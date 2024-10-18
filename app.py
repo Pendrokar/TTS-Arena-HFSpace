@@ -1033,10 +1033,10 @@ def synthandreturn(text, request: gr.Request):
                 break
             except Exception as e:
                 attempt_count += 1
-                print(repr(e))
-                print(f"{model}: Unable to call API (attempt: {attempt_count})")
+                raise gr.Error(f"{model}:"+ repr(e))
+                # print(f"{model}: Unable to call API (attempt: {attempt_count})")
                 # sleep for three seconds to avoid spamming the server with requests
-                time.sleep(3)
+                # time.sleep(3)
 
                 # Fetch and store client again
                 # hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
@@ -1061,6 +1061,7 @@ def synthandreturn(text, request: gr.Request):
                 audio.export(f.name, format="wav")
                 os.unlink(result)
                 result = f.name
+                gr.Info('Audio from a TTS model received')
         except:
             print(f"{model}: [WARN] Unable to resample audio")
             pass
@@ -1107,13 +1108,15 @@ def synthandreturn(text, request: gr.Request):
     if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
     print(f"Sending models {mdl1k} and {mdl2k} to API")
-    thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
-    thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results, request))
+    # thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
+    # thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results, request))
 
-    thread1.start()
-    thread2.start()
-    thread1.join(180)
-    thread2.join(180)
+    # thread1.start()
+    # thread2.start()
+    # thread1.join(180)
+    # thread2.join(180)
+    predict_and_update_result(text, mdl1k, results, request)
+    predict_and_update_result(text, mdl2k, results, request)
     #debug
     # print(results)
     # print(list(results.keys())[0])
