@@ -1302,6 +1302,8 @@ def enable():
 def unblur_text():
     return gr.update(elem_classes=[])
 
+# JavaScript within HTML head
+head_js = ""
 unblur_js = 'document.getElementById("arena-text-input").classList.remove("blurred-text")'
 shortcut_js = """
 <script>
@@ -1326,8 +1328,11 @@ function shortcuts(e) {
     }
 }
 document.addEventListener('keypress', shortcuts, false);
-</script>
+
 """
+head_js += shortcut_js
+head_js += open("cookie.js").read()
+head_js += '</script>'
 
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
@@ -1502,7 +1507,7 @@ with gr.Blocks() as tts_info:
 #         ddb = gr.Button("Delete DB")
 #     ddb.click(del_db, inputs=dbtext, outputs=ddb)
 # Blur cached sample text so the voting user picks up mispronouncements
-with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", head=shortcut_js, title="TTS Arena") as demo:
+with gr.Blocks(theme=theme, css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}", head=head_js, title="TTS Arena") as demo:
     gr.Markdown(DESCR)
     # gr.TabbedInterface([vote, leaderboard, about, admin], ['Vote', 'Leaderboard', 'About', 'Admin (ONLY IN BETA)'])
     gr.TabbedInterface([vote, leaderboard, about, tts_info], ['🗳️ Vote', '🏆 Leaderboard', '📄 About', '🗣 Contenders'])

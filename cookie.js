@@ -1,31 +1,30 @@
-function () {
-    window.getArenaCookie = function getArenaCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(window.document.cookie);
-        let ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-            }
+window.getArenaCookie = function getArenaCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(window.document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+        c = c.substring(1);
         }
-        return "";
+        if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+        }
     }
+    return "";
+}
 
-    window.setArenaCookie = function setArenaCookie(cname, cvalue, exdays) {
-        const d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        let expires = "expires=" + d.toUTCString();
-        window.document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
+window.setArenaCookie = function setArenaCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    window.document.cookie = cname + "=" + cvalue + ";" + expires + ";Domain=.huggingface.co; path=/; SameSite=None;";
+}
 
-    if (window.getArenaCookie('session').length == 0)
-    {
-        const d = new Date();
-        window.setArenaCookie('session', d.getTime().toString(), 90);
-        console.log('Session cookie created')
-    }
+if (window.getArenaCookie('session').length == 0)
+{
+    const d = new Date();
+    // store cookie for 90 days, about the time the the cached audio should be deleted
+    window.setArenaCookie('session', d.getTime().toString(), 90);
+    console.log('Session cookie created')
 }
