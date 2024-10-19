@@ -74,36 +74,36 @@ AVAILABLE_MODELS = {
 
     # HF Gradio Spaces: # <works with gradio version #>
     # gravio version that works with most spaces: 4.29
-    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32
-    # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
+    'coqui/xtts': 'coqui/xtts', # 4.29 4.32
+    'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
-    # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
-    # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
+    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
+    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
-    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
+    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+    'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
 
     # E2 & F5 TTS
     # F5 model
-    # 'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
+    'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
 
     # # Parler
     # Parler Large model
     # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
-    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
-    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
-    # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
-
-    # IMS-Toucan
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
+    # IMS-Toucan
+    'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+
     # HF TTS w issues
-    # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
+    'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
     # 'amphion/Text-to-Speech': '/predict#0', # disabled also on original HF space due to poor ratings
     # 'suno/bark': '3#0', # Hallucinates
@@ -373,7 +373,7 @@ OVERRIDE_INPUTS = {
 		4: 41, #voice_seed
 		5: -7.5, #emb1
 		6: None, #reference_audio
-    }
+    },
 
 }
 
