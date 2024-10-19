@@ -18,7 +18,7 @@ window.setArenaCookie = function setArenaCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    window.document.cookie = cname + "=" + cvalue + ";" + expires + ";Domain=.huggingface.co; path=/; SameSite=None;";
+    window.document.cookie = cname + "=" + cvalue + ";" + expires + "; path=/; SameSite=None; Secure";
 }
 
 if (window.getArenaCookie('session').length == 0)

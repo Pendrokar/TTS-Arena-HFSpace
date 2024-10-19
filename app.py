@@ -732,7 +732,6 @@ def get_leaderboard(reveal_prelim = False):
         if reveal_prelim and len(top_five) < 5:
             top_five.append(orig_name)
 
-    print(top_five)    
     df = df[['order', 'name', 'score', 'votes']]
     return df
 
