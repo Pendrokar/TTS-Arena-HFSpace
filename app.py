@@ -74,29 +74,32 @@ AVAILABLE_MODELS = {
 
     # HF Gradio Spaces: # <works with gradio version #>
     # gravio version that works with most spaces: 4.29
-    'coqui/xtts': 'coqui/xtts', # 4.29 4.32
-    'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
+    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32
+    # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
-    'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
+    # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
-    'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
+    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
 
     # E2 & F5 TTS
     # F5 model
-    'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
+    # 'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
 
     # # Parler
     # Parler Large model
-    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
     # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
+    # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
+
+    # IMS-Toucan
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
     # HF TTS w issues
@@ -241,6 +244,15 @@ HF_SPACES = {
         'series': 'E2/F5 TTS',
     },
 
+    # IMS-Toucan
+    'Flux9665/MassivelyMultilingualTTS': {
+        'name': 'IMS-Toucan',
+		'function': "/predict",
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'IMS-Toucan',
+    }
+
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
     # 'amphion/Text-to-Speech': '/predict#0', #takes a whole minute to synthesize
@@ -352,6 +364,17 @@ OVERRIDE_INPUTS = {
 		3: "F5-TTS", # model
 		4: False, # cleanup silence
     },
+
+    # IMS-Toucan
+    'Flux9665/MassivelyMultilingualTTS': {
+		1: "English (eng)", #language
+		2: 0.6, #prosody_creativity
+		3: 1, #duration_scaling_factor
+		4: 41, #voice_seed
+		5: -7.5, #emb1
+		6: None, #reference_audio
+    }
+
 }
 
 hf_clients: Tuple[Client] = {}
