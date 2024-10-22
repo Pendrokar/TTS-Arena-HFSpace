@@ -363,6 +363,8 @@ OVERRIDE_INPUTS = {
 		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
 		3: "F5-TTS", # model
 		4: False, # cleanup silence
+        5: 0.15, #crossfade
+        6: 1, #speed
     },
 
     # IMS-Toucan
