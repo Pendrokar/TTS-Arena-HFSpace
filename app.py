@@ -383,7 +383,7 @@ cached_samples: List[Sample] = []
 voting_users = {
     # userid as the key and USER() as the value
 }
-top_five = []
+top_five = ['mrfakename/E2-F5-TTS', 'Flux9665/MassivelyMultilingualTTS']
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
     transcript_groups: Dict[str, List[Sample]] = {}
