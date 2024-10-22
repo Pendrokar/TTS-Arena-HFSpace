@@ -5,3 +5,5 @@ git+https://github.com/unitaryai/detoxify
 pyloudnorm
 langdetect
 pydub
+transformers
+yt-dlp
