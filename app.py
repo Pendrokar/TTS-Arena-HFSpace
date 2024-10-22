@@ -371,7 +371,7 @@ OVERRIDE_INPUTS = {
 		2: 0.6, #prosody_creativity
 		3: 1, #duration_scaling_factor
 		4: 41, #voice_seed
-		5: -7.5, #emb1
+		5: 7.5, #emb1
 		6: None, #reference_audio
     },
 
