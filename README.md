@@ -21,7 +21,7 @@ models:
 - Pendrokar/xvapitch_expresso
 - WhisperSpeech/WhisperSpeech
 - SWivid/F5-TTS
-sdk_version: 5.2.1
+sdk_version: 5.3.0
 custom_headers:
   cross-origin-embedder-policy: require-corp
   cross-origin-opener-policy: same-origin
