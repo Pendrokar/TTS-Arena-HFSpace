@@ -21,5 +21,5 @@ models:
 - Pendrokar/xvapitch_expresso
 - WhisperSpeech/WhisperSpeech
 - SWivid/F5-TTS
-sdk_version: 5.1.0
+sdk_version: 5.3.0
 ---
