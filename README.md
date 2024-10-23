@@ -22,8 +22,4 @@ models:
 - WhisperSpeech/WhisperSpeech
 - SWivid/F5-TTS
 sdk_version: 5.3.0
-custom_headers:
-  cross-origin-embedder-policy: require-corp
-  cross-origin-opener-policy: same-origin
-  cross-origin-resource-policy: cross-origin
 ---
