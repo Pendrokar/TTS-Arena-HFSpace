@@ -100,7 +100,9 @@ AVAILABLE_MODELS = {
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
     # IMS-Toucan
-    'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+
+    # StyleTTS v2
+    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
 
     # HF TTS w issues
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -251,7 +253,17 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'IMS-Toucan',
-    }
+    },
+
+    # StyleTTS v2
+    'Pendrokar/style-tts-2': {
+        'name': 'StyleTTS v2',
+        'function': '/synthesize',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'StyleTTS',
+    },
 
     # TTS w issues
     # 'PolyAI/pheme': '/predict#0', #sleepy HF Space
@@ -373,6 +385,12 @@ OVERRIDE_INPUTS = {
 		4: 41, #voice_seed
 		5: -7.5, #emb1
 		6: None, #reference_audio
+    },
+
+    # StyleTTS 2
+    'Pendrokar/style-tts-2': {
+		1: "f-us-1", #voice
+		2: 8, # lngsteps
     },
 
 }
