@@ -1140,6 +1140,28 @@ def synthandreturn(text, request: gr.Request):
             pass
 
         return inputs
+    
+    def _cache_sample(text, model):
+        # skip caching if not hardcoded sentence
+        if (text not in sents):
+            return False
+
+        already_cached = False
+        # check if already cached
+        for cached_sample in cached_samples:
+            # TODO:replace cached with newer version
+            if (cached_sample.transcript == text and cached_sample.modelName == model):
+                already_cached = True
+                return True
+
+        if (already_cached):
+            return False
+
+        try:
+            cached_samples.append(Sample(results[model], text, model))
+        except:
+            print('Error when trying to cache sample')
+            return False
 
     mdl1k = mdl1
     mdl2k = mdl2
@@ -1148,15 +1170,39 @@ def synthandreturn(text, request: gr.Request):
     if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
     print(f"Sending models {mdl1k} and {mdl2k} to API")
-    # thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
-    # thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results, request))
 
-    # thread1.start()
-    # thread2.start()
-    # thread1.join(180)
-    # thread2.join(180)
-    predict_and_update_result(text, mdl1k, results, request)
-    predict_and_update_result(text, mdl2k, results, request)
+    # do not use multithreading when both spaces are ZeroGPU type
+    if (
+        # exists
+        'is_zero_gpu_space' in HF_SPACES[mdl1]
+        # is True
+        and HF_SPACES[mdl1]['is_zero_gpu_space']
+        and 'is_zero_gpu_space' in HF_SPACES[mdl2]
+        and HF_SPACES[mdl2]['is_zero_gpu_space']
+    ):
+        # run Zero-GPU spaces one at a time
+        predict_and_update_result(text, mdl1k, results, request)
+        _cache_sample(text, mdl1k)
+
+        predict_and_update_result(text, mdl2k, results, request)
+        _cache_sample(text, mdl2k)
+    else:
+        # use multithreading
+        thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
+        thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results, request))
+
+        thread1.start()
+        # wait 3 seconds to calm hf.space domain
+        time.sleep(3)
+        thread2.start()
+        # timeout in 2 minutes
+        thread1.join(120)
+        thread2.join(120)
+
+        # cache the result
+        for model in [mdl1k, mdl2k]:
+            _cache_sample(text, model)
+    
     #debug
     # print(results)
     # print(list(results.keys())[0])
@@ -1167,28 +1213,6 @@ def synthandreturn(text, request: gr.Request):
     # print(sr)
     #debug
     #     outputs = [text, btn, r2, model1, model2, aud1, aud2, abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
-
-    # cache the result
-    for model in [mdl1k, mdl2k]:
-        # skip caching if not hardcoded sentence
-        if (text not in sents):
-            break
-
-        already_cached = False
-        # check if already cached
-        for cached_sample in cached_samples:
-            # TODO:replace cached
-            if (cached_sample.transcript == text and cached_sample.modelName == model):
-                already_cached = True
-                break
-
-        if (already_cached):
-            continue
-
-        try:
-            cached_samples.append(Sample(results[model], text, model))
-        except:
-            pass
 
     # all_pairs = generate_matching_pairs(cached_samples)
 
