@@ -1515,7 +1515,8 @@ with gr.Blocks() as vote:
         .then(enable, outputs=[btn, gr.State(), gr.State(), cachedt])\
         .then(None, js="() => "+ unblur_js)
     nxtroundbtn\
-        .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
+        .click(clear_stuff, outputs=outputs)\
+        .then(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
         .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
 
@@ -1536,7 +1537,7 @@ with gr.Blocks() as vote:
         .then(
             None,
             inputs=[bplayed],
-            js="(b) => b ? 0 : document.querySelector('.row .gap+.gap button.play-pause-button').click()",
+            js="(b) => b ? 0 : document.querySelector('.row .gap+.gap button.play-pause-button[aria-label=Play]').click()",
         )
     # autoplay if unplayed
     aud2\
