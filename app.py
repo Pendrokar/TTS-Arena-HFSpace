@@ -600,7 +600,7 @@ for model in HF_SPACES.values():
 TTS_DATASET_IFRAME_ORDER = '%2C+'.join(model_series)
 TTS_DATASET_IFRAME = f"""
 <iframe
-    src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/viewer/default/train?sql_console=true&sql=--+The+SQL+console+is+powered+by+DuckDB+WASM+and+runs+entirely+in+the+browser.%0A--+Get+started+by+typing+a+query+or+selecting+a+view+from+the+options+below.%0ASELECT+*%2C+%22Name%22+IN+%28{TTS_DATASET_IFRAME_ORDER}%29+AS+%22In+arena%22+FROM+train+WHERE+%22Insta-clone+%F0%9F%91%A5%22+IS+NOT+NULL+ORDER+BY+%22In+arena%22+DESC+LIMIT+50%3B&views%5B%5D=train"
+    src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/sql-console/default/train?sql_console=true&sql=--+The+SQL+console+is+powered+by+DuckDB+WASM+and+runs+entirely+in+the+browser.%0A--+Get+started+by+typing+a+query+or+selecting+a+view+from+the+options+below.%0ASELECT+*%2C+%22Name%22+IN+%28{TTS_DATASET_IFRAME_ORDER}%29+AS+%22In+arena%22+FROM+train+WHERE+%22Insta-clone+%F0%9F%91%A5%22+IS+NOT+NULL+ORDER+BY+%22In+arena%22+DESC+LIMIT+50%3B&views%5B%5D=train"
     frameborder="0"
     width="100%"
     height="650px"
