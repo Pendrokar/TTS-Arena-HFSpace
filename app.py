@@ -77,7 +77,7 @@ AVAILABLE_MODELS = {
     'coqui/xtts': 'coqui/xtts', # 4.29 4.32
     'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
-    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
+    # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
     'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
@@ -94,13 +94,13 @@ AVAILABLE_MODELS = {
     # Parler Mini model
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
-    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0 # overlly jolly
 
     # # Microsoft Edge TTS
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
     # IMS-Toucan
-    'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+    # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
 
     # IMS-Toucan English non-artificial
     'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1
@@ -416,7 +416,7 @@ cached_samples: List[Sample] = []
 voting_users = {
     # userid as the key and USER() as the value
 }
-top_five = ['mrfakename/E2-F5-TTS', 'Flux9665/MassivelyMultilingualTTS']
+top_five = []
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
     transcript_groups: Dict[str, List[Sample]] = {}
