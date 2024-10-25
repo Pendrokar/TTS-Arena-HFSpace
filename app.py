@@ -533,6 +533,22 @@ scheduler = CommitScheduler(
 # Load audio dataset
 # audio_dataset = load_dataset(AUDIO_DATASET_ID)
 
+
+# prioritize low vote models
+sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
+conn = get_db()
+cursor = conn.cursor()
+cursor.execute(sql)
+data = cursor.fetchall()
+for model in data:
+    if (
+        len(top_five) >= 5
+    ):
+        break
+
+    if model[0] in AVAILABLE_MODELS.keys():
+        top_five.append(model[0])
+
 ####################################
 # Router API
 ####################################
@@ -783,7 +799,11 @@ def get_leaderboard(reveal_prelim = False):
     df['order'] = [assign_medal(i, not reveal_prelim and len(df) > 2) for i in range(len(df))]
     # fetch top_five
     for orig_name in df['orig_name']:
-        if reveal_prelim and len(top_five) < 5:
+        if (
+            reveal_prelim
+            and len(top_five) < 5
+            and orig_name in AVAILABLE_MODELS.keys()
+        ):
             top_five.append(orig_name)
 
     df = df[['order', 'name', 'score', 'votes']]
