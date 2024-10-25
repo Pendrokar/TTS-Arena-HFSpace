@@ -388,6 +388,8 @@ OVERRIDE_INPUTS = {
 		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
 		3: "F5-TTS", # model
 		4: False, # cleanup silence
+        5: 0.15, #crossfade
+        6: 1, #speed
     },
 
     # IMS-Toucan
@@ -396,7 +398,7 @@ OVERRIDE_INPUTS = {
 		2: 0.6, #prosody_creativity
 		3: 1, #duration_scaling_factor
 		4: 41, #voice_seed
-		5: -7.5, #emb1
+		5: 7.5, #emb1
 		6: None, #reference_audio
     },
 
@@ -414,7 +416,7 @@ cached_samples: List[Sample] = []
 voting_users = {
     # userid as the key and USER() as the value
 }
-top_five = []
+top_five = ['mrfakename/E2-F5-TTS', 'Flux9665/MassivelyMultilingualTTS']
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
     transcript_groups: Dict[str, List[Sample]] = {}
@@ -645,7 +647,7 @@ for model in HF_SPACES.values():
 TTS_DATASET_IFRAME_ORDER = '%2C+'.join(model_series)
 TTS_DATASET_IFRAME = f"""
 <iframe
-    src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/viewer/default/train?sql_console=true&sql=--+The+SQL+console+is+powered+by+DuckDB+WASM+and+runs+entirely+in+the+browser.%0A--+Get+started+by+typing+a+query+or+selecting+a+view+from+the+options+below.%0ASELECT+*%2C+%22Name%22+IN+%28{TTS_DATASET_IFRAME_ORDER}%29+AS+%22In+arena%22+FROM+train+WHERE+%22Insta-clone+%F0%9F%91%A5%22+IS+NOT+NULL+ORDER+BY+%22In+arena%22+DESC+LIMIT+50%3B&views%5B%5D=train"
+    src="https://huggingface.co/datasets/Pendrokar/open_tts_tracker/embed/sql-console/default/train?sql_console=true&sql=--+The+SQL+console+is+powered+by+DuckDB+WASM+and+runs+entirely+in+the+browser.%0A--+Get+started+by+typing+a+query+or+selecting+a+view+from+the+options+below.%0ASELECT+*%2C+%22Name%22+IN+%28{TTS_DATASET_IFRAME_ORDER}%29+AS+%22In+arena%22+FROM+train+WHERE+%22Insta-clone+%F0%9F%91%A5%22+IS+NOT+NULL+ORDER+BY+%22In+arena%22+DESC+LIMIT+50%3B&views%5B%5D=train"
     frameborder="0"
     width="100%"
     height="650px"
