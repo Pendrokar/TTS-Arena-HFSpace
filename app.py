@@ -100,6 +100,10 @@ AVAILABLE_MODELS = {
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
     # IMS-Toucan
+    'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+
+    # IMS-Toucan English non-artificial
+    'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1
 
     # StyleTTS v2
     'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
@@ -249,6 +253,15 @@ HF_SPACES = {
     # IMS-Toucan
     'Flux9665/MassivelyMultilingualTTS': {
         'name': 'IMS-Toucan',
+		'function': "/predict",
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'IMS-Toucan',
+    },
+
+    # IMS-Toucan English non-artificial
+    'Flux9665/EnglishToucan': {
+        'name': 'IMS-Toucan EN',
 		'function': "/predict",
         'text_param_index': 0,
         'return_audio_index': 0,
