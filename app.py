@@ -405,8 +405,8 @@ OVERRIDE_INPUTS = {
     # StyleTTS 2
     'Pendrokar/style-tts-2': {
 		1: "f-us-1", #voice
-		2: 8, # lngsteps
-        3: 'en-us', # lang
+        2: 'en-us', # lang
+		3: 8, # lngsteps
     },
 
 }
