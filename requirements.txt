@@ -6,4 +6,3 @@ pyloudnorm
 langdetect
 pydub
 transformers
-yt-dlp
