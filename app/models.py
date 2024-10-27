@@ -1,21 +1,342 @@
+from gradio_client import handle_file
+
 # Models to include in the leaderboard, only include models that users can vote on
 AVAILABLE_MODELS = {
-    'XTTSv2': 'xtts',
+    # 'XTTSv2': 'xtts',
     # 'WhisperSpeech': 'whisperspeech',
-    'ElevenLabs': 'eleven',
+    # 'ElevenLabs': 'eleven',
     # 'OpenVoice': 'openvoice',
-    'OpenVoice V2': 'openvoicev2',
-    'Play.HT 2.0': 'playht',
-    'Play.HT 3.0 Mini': 'playht3',
+    # 'OpenVoice V2': 'openvoicev2',
+    # 'Play.HT 2.0': 'playht',
+    # 'Play.HT 3.0 Mini': 'playht3',
     # 'MetaVoice': 'metavoice',
-    'MeloTTS': 'melo',
-    'StyleTTS 2': 'styletts2',
-    'GPT-SoVITS': 'sovits',
+    # 'MeloTTS': 'melo',
+    # 'StyleTTS 2': 'styletts2',
+    # 'GPT-SoVITS': 'sovits',
     # 'Vokan TTS': 'vokan',
-    'VoiceCraft 2.0': 'voicecraft',
-    'Parler TTS': 'parler',
-    'Parler TTS Large': 'parlerlarge',
-    'Fish Speech v1.4': 'fish',
+    # 'VoiceCraft 2.0': 'voicecraft',
+    # 'Parler TTS': 'parler',
+    # 'Parler TTS Large': 'parlerlarge',
+    # 'Fish Speech v1.4': 'fish',
+
+    # HF Gradio Spaces: # <works with gradio version #>
+    # gravio version that works with most spaces: 4.29
+    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32
+    # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
+    # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
+    # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
+    # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
+    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
+    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
+
+    # E2 & F5 TTS
+    # F5 model
+    # 'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
+
+    # # Parler
+    # Parler Large model
+    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    # Parler Mini model
+    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
+    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+
+    # # Microsoft Edge TTS
+    # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
+
+    # IMS-Toucan
+    # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+
+    # HF TTS w issues
+    'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
+    # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
+    # 'amphion/Text-to-Speech': '/predict#0', # disabled also on original HF space due to poor ratings
+    # 'suno/bark': '3#0', # Hallucinates
+    # 'shivammehta25/Matcha-TTS': '5#0', # seems to require multiple requests for setup
+    # 'styletts2/styletts2': '0#0', # API disabled, awaiting approval of PR #15
+    # 'Manmay/tortoise-tts': '/predict#0', # Cannot retrieve streamed file; 403
+    # 'pytorch/Tacotron2': '0#0', # old gradio
+}
+
+HF_SPACES = {
+    # XTTS v2
+    'coqui/xtts': {
+        'name': 'XTTS v2',
+        'function': '1',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+        'series': 'XTTS',
+    },
+    # WhisperSpeech
+    'collabora/WhisperSpeech': {
+        'name': 'WhisperSpeech',
+        'function': '/whisper_speech_demo',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'WhisperSpeech',
+    },
+    # OpenVoice (MyShell.ai)
+    'myshell-ai/OpenVoice': {
+        'name':'OpenVoice',
+        'function': '1',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+        'series': 'OpenVoice',
+    },
+    # OpenVoice v2 (MyShell.ai)
+    'myshell-ai/OpenVoiceV2': {
+        'name':'OpenVoice v2',
+        'function': '1',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+        'series': 'OpenVoice',
+    },
+    # MetaVoice
+    'mrfakename/MetaVoice-1B-v0.1': {
+        'name':'MetaVoice-1B',
+        'function': '/tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'MetaVoice-1B',
+    },
+    # xVASynth (CPU)
+    'Pendrokar/xVASynth-TTS': {
+        'name': 'xVASynth v3',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'xVASynth',
+    },
+    # CoquiTTS (CPU)
+    'coqui/CoquiTTS': {
+        'name': 'CoquiTTS',
+        'function': '0',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'CoquiTTS',
+    },
+    # HierSpeech_TTS
+    'LeeSangHoon/HierSpeech_TTS': {
+        'name': 'HierSpeech++',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'HierSpeech++',
+    },
+    # MeloTTS (MyShell.ai)
+    'mrfakename/MeloTTS': {
+        'name': 'MeloTTS',
+        'function': '/synthesize',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'MeloTTS',
+    },
+
+    # Parler
+    'parler-tts/parler_tts': {
+        'name': 'Parler Mini',
+        'function': '/gen_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Parler',
+    },
+    # Parler Mini
+    # 'parler-tts/parler_tts': {
+    #     'name': 'Parler Large',
+    #     'function': '/gen_tts',
+    #     'text_param_index': 0,
+    #     'return_audio_index': 0,
+    #     'is_zero_gpu_space': True,
+    #    'series': 'Parler',
+    # },
+    # Parler Mini which using Expresso dataset
+    'parler-tts/parler-tts-expresso': {
+        'name': 'Parler Mini Expresso',
+        'function': '/gen_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Parler',
+    },
+
+    # Microsoft Edge TTS
+    'innoai/Edge-TTS-Text-to-Speech': {
+        'name': 'Edge TTS',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_proprietary': True,
+        'series': 'Edge TTS',
+    },
+
+    # Fish Speech
+    'fishaudio/fish-speech-1': {
+        'name': 'Fish Speech',
+        'function': '/inference_wrapper',
+        'text_param_index': 0,
+        'return_audio_index': 1,
+        'series': 'Fish Speech',
+    },
+
+    # E2/F5 TTS
+    'mrfakename/E2-F5-TTS': {
+        'name': 'F5 of E2 TTS',
+        'function': '/infer',
+        'text_param_index': 2,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'E2/F5 TTS',
+    },
+
+    # IMS-Toucan
+    'Flux9665/MassivelyMultilingualTTS': {
+        'name': 'IMS-Toucan',
+		'function': "/predict",
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'IMS-Toucan',
+    },
+
+    # IMS-Toucan English non-artificial
+    'Flux9665/EnglishToucan': {
+        'name': 'IMS-Toucan EN',
+		'function': "/predict",
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'IMS-Toucan',
+    },
+
+    # StyleTTS v2
+    'Pendrokar/style-tts-2': {
+        'name': 'StyleTTS v2',
+        'function': '/synthesize',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'StyleTTS',
+    },
+}
+
+# for zero-shot TTS - voice sample used by XTTS (11 seconds)
+DEFAULT_VOICE_SAMPLE_STR = 'https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav'
+DEFAULT_VOICE_SAMPLE = handle_file(DEFAULT_VOICE_SAMPLE_STR)
+DEFAULT_VOICE_TRANSCRIPT = "The Hispaniola was rolling scuppers under in the ocean swell. The booms were tearing at the blocks, the rudder was banging to and fro, and the whole ship creaking, groaning, and jumping like a manufactory."
+
+OVERRIDE_INPUTS = {
+    'coqui/xtts': {
+        1: 'en',
+        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
+        3: None, # mic voice sample
+        4: False, #use_mic
+        5: False, #cleanup_reference
+        6: False, #auto_detect
+    },
+    'collabora/WhisperSpeech': {
+        1: DEFAULT_VOICE_SAMPLE, # voice sample
+        2: DEFAULT_VOICE_SAMPLE, # voice sample URL
+        3: 14.0, #Tempo - Gradio Slider issue: takes min. rather than value
+    },
+    'myshell-ai/OpenVoice': {
+        1: 'default', # style
+        2: 'https://huggingface.co/spaces/myshell-ai/OpenVoiceV2/resolve/main/examples/speaker0.mp3', # voice sample
+    },
+    'myshell-ai/OpenVoiceV2': {
+        1: 'en_us', # style
+        2: 'https://huggingface.co/spaces/myshell-ai/OpenVoiceV2/resolve/main/examples/speaker0.mp3', # voice sample
+    },
+    'PolyAI/pheme': {
+        1: 'YOU1000000044_S0000798', # voice
+        2: 210,
+        3: 0.7, #Tempo - Gradio Slider issue: takes min. rather than value
+    },
+    'Pendrokar/xVASynth-TTS': {
+        1: 'x_ex04', #fine-tuned voice model name
+        3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
+    },
+    'suno/bark': {
+        1: 'Speaker 3 (en)', # voice
+    },
+    'amphion/Text-to-Speech': {
+        1: 'LikeManyWaters', # voice
+    },
+    'LeeSangHoon/HierSpeech_TTS': {
+        1: handle_file('https://huggingface.co/spaces/LeeSangHoon/HierSpeech_TTS/resolve/main/example/female.wav'), # voice sample
+        2: 0.333,
+        3: 0.333,
+        4: 1,
+        5: 1,
+        6: 0,
+        7: 1111,
+    },
+    'Manmay/tortoise-tts': {
+        1: None, # text-from-file
+        2: 'angie', # voice
+        3: 'disabled', # second voice for a dialogue
+        4: 'No', # split by newline
+    },
+    'mrfakename/MeloTTS': {
+        1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
+        2: 1, # speed
+        3: 'EN',	# language
+    },
+    'mrfakename/MetaVoice-1B-v0.1': {
+		1: 5,	# float (numeric value between 0.0 and 10.0) in 'Speech Stability - improves text following for a challenging speaker' Slider component
+		2: 5,	# float (numeric value between 1.0 and 5.0) in 'Speaker similarity - How closely to match speaker identity and speech style.' Slider component
+		3: "Preset voices",	# Literal['Preset voices', 'Upload target voice']  in 'Choose voice' Radio component
+		4: "Bria",	# Literal['Bria', 'Alex', 'Jacob']  in 'Preset voices' Dropdown component
+		5: None,	# filepath  in 'Upload a clean sample to clone. Sample should contain 1 speaker, be between 30-90 seconds and not contain background noise.' Audio component
+    },
+    'parler-tts/parler_tts': {
+        1: 'Laura; Laura\'s female voice; very clear audio', # description/prompt
+    },
+    'parler-tts/parler-tts-expresso': {
+        1: 'Elisabeth; Elisabeth\'s female voice; very clear audio', # description/prompt
+    },
+    'innoai/Edge-TTS-Text-to-Speech': {
+        1: 'en-US-EmmaMultilingualNeural - en-US (Female)', # voice
+        2: 0, # pace rate
+        3: 0, # pitch
+    },
+
+    'fishaudio/fish-speech-1': {
+		1: True, # enable_reference_audio
+		2: handle_file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
+		3: 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
+		4: 0, # max_new_tokens
+		5: 200, # chunk_length
+		6: 0.7, # top_p
+		7: 1.2, # repetition_penalty
+		8: 0.7, # temperature
+		9: 1, # batch_infer_num
+		10: False, # if_load_asr_model
+    },
+
+    'mrfakename/E2-F5-TTS': {
+		0: DEFAULT_VOICE_SAMPLE, # voice sample
+		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
+		3: "F5-TTS", # model
+		4: False, # cleanup silence
+    },
+
+    # IMS-Toucan
+    'Flux9665/MassivelyMultilingualTTS': {
+		1: "English (eng)", #language
+		2: 0.6, #prosody_creativity
+		3: 1, #duration_scaling_factor
+		4: 41, #voice_seed
+		5: -7.5, #emb1
+		6: None, #reference_audio
+    },
+
+    # StyleTTS 2
+    'Pendrokar/style-tts-2': {
+		1: "f-us-2", #voice
+        2: 'en-us', # lang
+		3: 8, # lngsteps
+    },
 }
 
 

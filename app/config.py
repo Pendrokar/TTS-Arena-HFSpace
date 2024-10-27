@@ -15,7 +15,8 @@ MIN_SAMPLE_TXT_LENGTH = 10 # Minimum text length (characters)
 
 DB_PATH = f"/data/{DB_NAME}" if os.path.isdir("/data") else DB_NAME # If /data available => means local storage is enabled => let's use it!
 
-ROUTER_ID = "TTS-AGI/tts-router" # You should use a router space to route TTS models to avoid exposing your API keys!
+ROUTER_ID = "Pendrokar/xVASynth-TTS" # You should use a router space to route TTS models to avoid exposing your API keys!
+# ROUTER_ID = "TTS-AGI/tts-router" # You should use a router space to route TTS models to avoid exposing your API keys!
 
 SYNC_DB = True # Sync DB to HF dataset?
 DB_DATASET_ID = os.getenv('DATASET_ID') # HF dataset ID, can be None if not syncing
