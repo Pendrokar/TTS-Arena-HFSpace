@@ -419,6 +419,7 @@ cached_samples: List[Sample] = []
 voting_users = {
     # userid as the key and USER() as the value
 }
+# top five models in order to always have one of them picked and scrutinized
 top_five = []
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
@@ -594,7 +595,7 @@ if SPACE_ID:
     request = f"""
 ### Request a model
 
-Please [create a Discussion](https://huggingface.co/spaces/{SPACE_ID}/discussions/new) to request a model.
+Clone the repo of this space, add your model by adding the parameters required of the HF Space. Then make a pull request to {SPACE_ID}.
 """
 ABOUT = f"""
 ## 📄 About
@@ -611,7 +612,7 @@ The leaderboard allows a user to enter text, which will be synthesized by two mo
 
 ### Credits
 
-Thank you to the following individuals who helped make this project possible:
+Thank you to the following individuals who helped make this* project possible:
 
 * VB ([Twitter](https://twitter.com/reach_vb) / [Hugging Face](https://huggingface.co/reach-vb))
 * Clémentine Fourrier ([Twitter](https://twitter.com/clefourrier) / [Hugging Face](https://huggingface.co/clefourrier))
@@ -621,6 +622,8 @@ Thank you to the following individuals who helped make this project possible:
 * Sanchit Gandhi ([Twitter](https://twitter.com/sanchitgandhi99) / [Hugging Face](https://huggingface.co/sanchit-gandhi))
 * Apolinário Passos ([Twitter](https://twitter.com/multimodalart) / [Hugging Face](https://huggingface.co/multimodalart))
 * Pedro Cuenca ([Twitter](https://twitter.com/pcuenq) / [Hugging Face](https://huggingface.co/pcuenq))
+
+\* ***You are currently in a cloned/forked space of TTS-AGI/TTS-Arena***
 
 {request}
 
@@ -853,7 +856,7 @@ def make_link_to_space(model_name, for_leaderboard=False):
         return '🤗 <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
 
     # otherwise just return the model name
-    return model_name
+    return '<span style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_name +'</span>'
 
 def markdown_link_to_space(model_name):
     # create a anchor link if a HF space using markdown syntax
@@ -1060,8 +1063,8 @@ def synthandreturn(text, request: gr.Request):
 
         # re-attempt if necessary
         attempt_count = 0
-        while attempt_count < 1:
-        # while attempt_count < 3: # May cause 429 Too Many Request
+        max_attempts = 1 # 3 =May cause 429 Too Many Request
+        while attempt_count < max_attempts:
             try:
                 if model in AVAILABLE_MODELS:
                     if '/' in model:
@@ -1128,7 +1131,7 @@ def synthandreturn(text, request: gr.Request):
                 # Fetch and store client again
                 # hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
 
-        if attempt_count > 2:
+        if attempt_count >= max_attempts:
             raise gr.Error(f"{model}: Failed to call model")
         else:
             print('Done with', model)
