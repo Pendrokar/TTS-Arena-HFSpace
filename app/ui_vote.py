@@ -4,6 +4,8 @@ from .synth import *
 from .vote import *
 from .messages import *
 
+unblur_js = 'document.getElementById("arena-text-input").classList.remove("blurred-text")'
+
 def disable():
     return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
@@ -19,7 +21,16 @@ with gr.Blocks() as vote:
     gr.Markdown(INSTR)
     with gr.Group():
         with gr.Row():
-            text = gr.Textbox(container=False, show_label=False, placeholder="Enter text to synthesize", lines=1, max_lines=1, scale=9999999, min_width=0)
+            text = gr.Textbox(
+                container=False,
+                show_label=False,
+                placeholder="Enter text to synthesize",
+                lines=1,
+                max_lines=1,
+                scale=9999999,
+                min_width=0,
+                elem_id="arena-text-input",
+            )
             randomt = gr.Button('🎲', scale=0, min_width=0, variant='tool')
         randomt.click(randomsent, outputs=[text, randomt])
         btn = gr.Button("Synthesize", variant='primary')
@@ -31,14 +42,29 @@ with gr.Blocks() as vote:
         with gr.Column():
             with gr.Group():
                 aud1 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False)
-                abetter = gr.Button("A is better", variant='primary')
+                abetter = gr.Button(
+                    "[A] is better",
+                    elem_id='arena-a-better',
+                    variant='primary',
+                    interactive=False,
+                )
                 prevmodel1 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model A", text_align="center", lines=1, max_lines=1, visible=False)
         with gr.Column():
             with gr.Group():
                 aud2 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False)
-                bbetter = gr.Button("B is better", variant='primary')
+                bbetter = gr.Button(
+                    "[B] is better",
+                    elem_id='arena-b-better',
+                    variant='primary',
+                    interactive=False,
+                )
                 prevmodel2 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model B", text_align="center", lines=1, max_lines=1, visible=False)
-    nxtroundbtn = gr.Button('Next round', visible=False)
+    nxtroundbtn = gr.Button(
+        '⚡ [N]ext round',
+        elem_id='arena-next-round',
+        visible=False,
+        variant='primary',
+    )
     # outputs = [text, btn, r2, model1, model2, prevmodel1, aud1, prevmodel2, aud2, abetter, bbetter]
     outputs = [
         text,
