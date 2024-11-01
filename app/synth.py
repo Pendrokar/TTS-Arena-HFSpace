@@ -257,6 +257,9 @@ def synthandreturn(text, autoplay, request: gr.Request):
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
         gr.update(visible=False), #nxt round btn
+        # reset gr.State aplayed & bplayed
+        False, #aplayed
+        False, #bplayed
     )
 
 # Battle Mode
@@ -376,4 +379,19 @@ def randomsent():
 def randomsent_battle():
     return tuple(randomsent()) + tuple(random_m())
 def clear_stuff():
-    return "", "Synthesize", gr.update(visible=False), '', '', gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
+    return [
+        gr.update(visible=True, value="", elem_classes=[]),
+        "Synthesize",
+        gr.update(visible=False), # r2
+        '', # model1
+        '', # model2
+        gr.update(visible=False, interactive=False, autoplay=False), # aud1
+        gr.update(visible=False, interactive=False, autoplay=False), # aud2
+        gr.update(visible=False, interactive=False), #abetter
+        gr.update(visible=False, interactive=False), #bbetter
+        gr.update(visible=False), #prevmodel1
+        gr.update(visible=False), #prevmodel2
+        gr.update(visible=False), #nxt round btn
+        False, #aplayed
+        False, #bplayed
+    ]

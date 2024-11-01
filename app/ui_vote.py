@@ -119,7 +119,9 @@ with gr.Blocks() as vote:
         bbetter,
         prevmodel1,
         prevmodel2,
-        nxtroundbtn
+        nxtroundbtn,
+        aplayed,
+        bplayed,
     ]
     """
     text,
@@ -153,8 +155,8 @@ with gr.Blocks() as vote:
     aud1\
         .stop(
             unlock_vote,
-            outputs=[abetter, bbetter, aplayed, bplayed],
             inputs=[autoplay, gr.State(value=0), aplayed, bplayed],
+            outputs=[abetter, bbetter, aplayed, bplayed],
         )\
         .then(
             None,
@@ -165,8 +167,8 @@ with gr.Blocks() as vote:
     aud2\
         .stop(
             unlock_vote,
-            outputs=[abetter, bbetter, aplayed, bplayed],
             inputs=[autoplay, gr.State(value=1), aplayed, bplayed],
+            outputs=[abetter, bbetter, aplayed, bplayed],
         )
     # unblur text with JS; faster than sending output with elem_classes
     aud2.stop(None, inputs=[aplayed], js="(a) => a ? "+ unblur_text_js +" : 0;")
