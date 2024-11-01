@@ -112,3 +112,20 @@ def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, cho
         out.append(gr.update(value=f'Your vote: {chosenmodel2}', interactive=False, visible=True))
     out.append(gr.update(visible=True))
     return out
+
+def unlock_vote(autoplay, btn_index, aplayed, bplayed):
+    if autoplay == False:
+        return [gr.update(), gr.update(), aplayed, bplayed]
+
+    # sample played
+    if btn_index == 0:
+        aplayed = True
+    if btn_index == 1:
+        bplayed = True
+
+    # both audio samples played
+    if bool(aplayed) and bool(bplayed):
+        # print('Both audio samples played, voting unlocked')
+        return [gr.update(interactive=True), gr.update(interactive=True), True, True]
+
+    return [gr.update(), gr.update(), aplayed, bplayed]
