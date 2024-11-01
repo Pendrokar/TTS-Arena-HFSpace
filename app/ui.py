@@ -33,6 +33,7 @@ document.addEventListener('keypress', shortcuts, false);
 
 """
 head_js += shortcut_js
+head_js += open("app/cookie.js").read()
 head_js += '</script>'
 
 with gr.Blocks() as about:

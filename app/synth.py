@@ -3,6 +3,7 @@ from .models import *
 from .utils import *
 from .config import *
 from .init import *
+from .sample_caching import *
 
 import gradio as gr
 from pydub import AudioSegment
@@ -203,6 +204,28 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
         return inputs
 
+    def _cache_sample(text, model):
+        # skip caching if not hardcoded sentence
+        if (text not in sents):
+            return False
+
+        already_cached = False
+        # check if already cached
+        for cached_sample in cached_samples:
+            # TODO:replace cached with newer version
+            if (cached_sample.transcript == text and cached_sample.modelName == model):
+                already_cached = True
+                return True
+
+        if (already_cached):
+            return False
+
+        try:
+            cached_samples.append(Sample(results[model], text, model))
+        except:
+            print('Error when trying to cache sample')
+            return False
+
     mdl1k = mdl1
     mdl2k = mdl2
     print(mdl1k, mdl2k)
@@ -222,10 +245,10 @@ def synthandreturn(text, autoplay, request: gr.Request):
     ):
         # run Zero-GPU spaces one at a time
         predict_and_update_result(text, mdl1k, results, request)
-        # _cache_sample(text, mdl1k)
+        _cache_sample(text, mdl1k)
 
         predict_and_update_result(text, mdl2k, results, request)
-        # _cache_sample(text, mdl2k)
+        _cache_sample(text, mdl2k)
     else:
         # use multithreading
         thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
@@ -240,8 +263,8 @@ def synthandreturn(text, autoplay, request: gr.Request):
         thread2.join(120)
 
         # cache the result
-        # for model in [mdl1k, mdl2k]:
-        #     _cache_sample(text, model)
+        for model in [mdl1k, mdl2k]:
+            _cache_sample(text, model)
 
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
@@ -358,24 +381,8 @@ def synthandreturn_battle(text, mdl1, mdl2, autoplay):
         gr.update(visible=False), #nxt round btn
     )
 
-# Unlock vote
-
-def unlock_vote(btn_index, aplayed, bplayed):
-    # sample played
-    if btn_index == 0:
-        aplayed = gr.State(value=True)
-    if btn_index == 1:
-        bplayed = gr.State(value=True)
-
-    # both audio samples played
-    if bool(aplayed) and bool(bplayed):
-        print('Both audio samples played, voting unlocked')
-        return [gr.update(interactive=True), gr.update(interactive=True), gr.update(), gr.update()]
-
-    return [gr.update(), gr.update(), aplayed, bplayed]
-
 def randomsent():
-    return random.choice(sents), '🎲'
+    return '⚡', random.choice(sents), '🎲'
 def randomsent_battle():
     return tuple(randomsent()) + tuple(random_m())
 def clear_stuff():

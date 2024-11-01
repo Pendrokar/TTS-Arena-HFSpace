@@ -60,56 +60,68 @@ def b_is_better_battle(model1, model2, userid):
 
 # A/B better
 
-def a_is_better(model1, model2, userid, battle=False):
-    print("A is better", model1, model2)
-    if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
+def a_is_better(model1, model2, userid, text):
+    return is_better(model1, model2, userid, text, True)
+def b_is_better(model1, model2, userid, text):
+    return is_better(model1, model2, userid, text, False)
+
+def is_better(model1, model2, userid, text, chose_a):
+    if(
+        (
+            not model1 in AVAILABLE_MODELS.keys()
+            and not model1 in AVAILABLE_MODELS.values()
+        )
+        or (
+            not model2 in AVAILABLE_MODELS.keys()
+            and not model2 in AVAILABLE_MODELS.values()
+        )
+    ):
         raise gr.Error('Sorry, please try voting again.')
+
+    # userid is unique for each cast vote pair
     userid = mkuuid(userid)
     if model1 and model2:
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO votelog (username, chosen, rejected) VALUES (?, ?, ?)', (str(userid), model1, model2,))
-        if scheduler:
-            with scheduler.lock:
-                conn.commit()
+        sql_query = 'INSERT INTO votelog (username, chosen, rejected) VALUES (?, ?, ?)'
+        if chose_a:
+            cursor.execute(sql_query, (str(userid), model1, model2))
         else:
+            cursor.execute(sql_query, (str(userid), model2, model1))
+
+        with scheduler.lock:
             conn.commit()
-        cursor.close()
-        upvote_model(model1, str(userid), battle)
-        downvote_model(model2, str(userid), battle)
-    return reload(model1, model2, userid, chose_a=True)
-def b_is_better(model1, model2, userid, battle=False):
-    print("B is better", model1, model2)
-    if not model1 in AVAILABLE_MODELS.keys() and not model1 in AVAILABLE_MODELS.values():
-        raise gr.Error('Sorry, please try voting again.')
-    userid = mkuuid(userid)
-    if model1 and model2:
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO votelog (username, chosen, rejected) VALUES (?, ?, ?)', (str(userid), model2, model1,))
-        if scheduler:
-            with scheduler.lock:
-                conn.commit()
+            # also retrieve primary key ID
+            cursor.execute('SELECT last_insert_rowid()')
+            votelogid = cursor.fetchone()[0]
+            cursor.close()
+
+        if chose_a:
+            upvote_model(model1, str(userid))
+            downvote_model(model2, str(userid))
         else:
-            conn.commit()
-        cursor.close()
-        upvote_model(model2, str(userid), battle)
-        downvote_model(model1, str(userid), battle)
-    return reload(model1, model2, userid, chose_b=True)
+            upvote_model(model2, str(userid))
+            downvote_model(model1, str(userid))
+        log_text(text)
+        # log_text(text, votelogid)
+
+    return reload(model1, model2, userid, chose_a=chose_a, chose_b=(not chose_a))
 
 # Reload
-
 def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, chose_b=False):
+    # chosenmodel1 = make_link_to_space(chosenmodel1)
+    # chosenmodel2 = make_link_to_space(chosenmodel2)
     out = [
         gr.update(interactive=False, visible=False),
         gr.update(interactive=False, visible=False)
     ]
+    style = 'text-align: center; font-size: 1rem; margin-bottom: 0; padding: var(--input-padding)'
     if chose_a == True:
-        out.append(gr.update(value=f'Your vote: {chosenmodel1}', interactive=False, visible=True))
-        out.append(gr.update(value=f'{chosenmodel2}', interactive=False, visible=True))
+        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel1}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">{chosenmodel2}</p>', visible=True))
     else:
-        out.append(gr.update(value=f'{chosenmodel1}', interactive=False, visible=True))
-        out.append(gr.update(value=f'Your vote: {chosenmodel2}', interactive=False, visible=True))
+        out.append(gr.update(value=f'<p style="{style}">{chosenmodel1}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel2}</p>', visible=True))
     out.append(gr.update(visible=True))
     return out
 
