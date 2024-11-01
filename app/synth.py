@@ -21,7 +21,7 @@ def check_toxicity(text):
         return False
     return toxicity.predict(text)['toxicity'] > 0.8
 
-def synthandreturn(text, request: gr.Request):
+def synthandreturn(text, autoplay, request: gr.Request):
     text = text.strip()
     if len(text) > MAX_SAMPLE_TXT_LENGTH:
         raise gr.Error(f'You exceeded the limit of {MAX_SAMPLE_TXT_LENGTH} characters')
@@ -250,8 +250,8 @@ def synthandreturn(text, request: gr.Request):
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
-        gr.update(visible=True, value=results[mdl1k]), # aud1
-        gr.update(visible=True, value=results[mdl2k]), # aud2
+        gr.update(visible=True, value=results[mdl1k], autoplay=autoplay), # aud1
+        gr.update(visible=True, value=results[mdl2k], autoplay=False), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
@@ -261,7 +261,7 @@ def synthandreturn(text, request: gr.Request):
 
 # Battle Mode
 
-def synthandreturn_battle(text, mdl1, mdl2):
+def synthandreturn_battle(text, mdl1, mdl2, autoplay):
     if mdl1 == mdl2:
         raise gr.Error('You can\'t pick two of the same models.')
     text = text.strip()
@@ -346,8 +346,8 @@ def synthandreturn_battle(text, mdl1, mdl2):
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
-        gr.update(visible=True, value=results[mdl1k]), # aud1
-        gr.update(visible=True, value=results[mdl2k]), # aud2
+        gr.update(visible=True, value=results[mdl1k], autoplay=autoplay), # aud1
+        gr.update(visible=True, value=results[mdl2k], autoplay=False), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1

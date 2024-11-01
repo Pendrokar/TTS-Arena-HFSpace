@@ -13,7 +13,7 @@ def enable():
 
 with gr.Blocks() as battle:
     battle_useridstate = gr.State()
-    
+
     gr.Markdown(BATTLE_INSTR)
     model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
     model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
@@ -39,6 +39,11 @@ with gr.Blocks() as battle:
                 aud2 = gr.Audio(interactive=False, show_label=False, show_download_button=False, show_share_button=False)
                 bbetter = gr.Button("B is better", variant='primary')
                 prevmodel2 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model B", text_align="center", lines=1, max_lines=1, visible=False)
+    autoplay = gr.Checkbox(
+        label="Autoplay audio",
+        value=True
+    )
+
     outputs = [
         text,
         btn,
@@ -52,8 +57,19 @@ with gr.Blocks() as battle:
         prevmodel1,
         prevmodel2,
     ]
-    btn.click(disable, outputs=[btn, abetter, bbetter]).then(synthandreturn_battle, inputs=[text, model1s, model2s], outputs=outputs).then(enable, outputs=[btn, abetter, bbetter])
+    btn\
+        .click(disable, outputs=[btn, abetter, bbetter])\
+        .then(synthandreturn_battle, inputs=[text, model1s, model2s, autoplay], outputs=outputs)\
+        .then(enable, outputs=[btn, abetter, bbetter])
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2]
     abetter.click(a_is_better_battle, outputs=nxt_outputs, inputs=[model1, model2, battle_useridstate])
     bbetter.click(b_is_better_battle, outputs=nxt_outputs, inputs=[model1, model2, battle_useridstate])
     battle.load(random_m, outputs=[model1s, model2s])
+
+    # Autoplay second audio using JS
+    aud1\
+        .stop(
+            None,
+            inputs=[autoplay],
+            js="(b) => b ? 0 : document.querySelector('.row .gap+.gap button.play-pause-button[aria-label=Play]').click()",
+        )
