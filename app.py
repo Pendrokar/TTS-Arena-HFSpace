@@ -435,6 +435,15 @@ def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]
 
     return matching_pairs
 
+cached_audio = []
+
+@spaces.GPU(duration=10)
+def asr_cached_for_dataset():
+
+    for caudio in cached_audio:
+        pass
+    return True
+
 # List[Tuple[Sample, Sample]]
 all_pairs = []
 
