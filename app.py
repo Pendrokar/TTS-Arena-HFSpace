@@ -107,7 +107,7 @@ AVAILABLE_MODELS = {
     'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1
 
     # StyleTTS v2
-    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
+    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
     # StyleTTS kokoro
     'hexgrad/kokoro': 'hexgrad/kokoro',
 
@@ -115,7 +115,7 @@ AVAILABLE_MODELS = {
     # DEMANDS 300 seconds of ZeroGPU
     # 'amphion/maskgct': 'amphion/maskgct',
     # default ZeroGPU borrow time
-    # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab',
+    'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab',
 
     # HF TTS w issues
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -624,6 +624,7 @@ for model in data:
 
     if model[0] in AVAILABLE_MODELS.keys():
         top_five.append(model[0])
+print(f"low vote top_five: {top_five}")
 
 ####################################
 # Router API
