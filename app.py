@@ -98,16 +98,24 @@ AVAILABLE_MODELS = {
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0 # overlly jolly
 
     # # Microsoft Edge TTS
-    #'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
+    'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
     # IMS-Toucan
-    # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+    # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1 # randomly changes pitch
 
     # IMS-Toucan English non-artificial
     'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1
 
     # StyleTTS v2
-    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
+    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
+    # StyleTTS kokoro
+    'hexgrad/kokoro': 'hexgrad/kokoro',
+
+    # MaskGCT (by Amphion)
+    # DEMANDS 300 seconds of ZeroGPU
+    # 'amphion/maskgct': 'amphion/maskgct',
+    # default ZeroGPU borrow time
+    # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab',
 
     # HF TTS w issues
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -276,8 +284,36 @@ HF_SPACES = {
         'function': '/synthesize',
         'text_param_index': 0,
         'return_audio_index': 0,
+        # 'is_zero_gpu_space': True,
+        'series': 'StyleTTS',
+    },
+
+    # StyleTTS v2 kokoro fine tune
+    'hexgrad/kokoro': {
+        'name': 'StyleTTS kokoro',
+        'function': '/generate',
+        'text_param_index': 0,
+        'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'StyleTTS',
+    },
+
+    # StyleTTS v2 kokoro fine tune
+    'amphion/maskgct': {
+        'name': 'MaskGCT',
+        'function': '/predict',
+        'text_param_index': 1,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'MaskGCT',
+    },
+    'Svngoku/maskgct-audio-lab': {
+        'name': 'MaskGCT',
+        'function': '/predict',
+        'text_param_index': 1,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'MaskGCT',
     },
 
     # TTS w issues
@@ -411,6 +447,31 @@ OVERRIDE_INPUTS = {
 		3: 8, # lngsteps
     },
 
+    # StyleTTS 2 kokoro
+    'hexgrad/kokoro': {
+		1: "af_0", #voice
+		2: None, #ps
+		3: 1, #speed
+		4: 0.5, #reduce_noise
+		5: 4000, #opening_cut
+		6: 2000, #closing_cut
+		7: 3000, #ease_in
+		8: 1000, #ease_out
+		9: 5000, #pad_before
+		10: 5000, #pad_after
+    },
+
+    # maskGCT (by amphion)
+    'amphion/maskgct': {
+        0: DEFAULT_VOICE_SAMPLE, #prompt_wav
+		2: -1, #target_len
+		3: 25, #n_timesteps
+    },
+    'Svngoku/maskgct-audio-lab': {
+        0: DEFAULT_VOICE_SAMPLE, #prompt_wav
+		2: -1, #target_len
+		3: 25, #n_timesteps
+    },
 }
 
 hf_clients: Tuple[Client] = {}
