@@ -251,8 +251,8 @@ HF_SPACES = {
 
     # E2/F5 TTS
     'mrfakename/E2-F5-TTS': {
-        'name': 'F5 of E2 TTS',
-        'function': '/infer',
+        'name': 'F5 TTS',
+        'function': '/basic_tts',
         'text_param_index': 2,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
@@ -298,7 +298,7 @@ HF_SPACES = {
         'series': 'StyleTTS',
     },
 
-    # StyleTTS v2 kokoro fine tune
+    # MaskGCT (by Amphion)
     'amphion/maskgct': {
         'name': 'MaskGCT',
         'function': '/predict',
@@ -424,10 +424,9 @@ OVERRIDE_INPUTS = {
     'mrfakename/E2-F5-TTS': {
 		0: DEFAULT_VOICE_SAMPLE, # voice sample
 		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
-		3: "F5-TTS", # model
-		4: False, # cleanup silence
-        5: 0.15, #crossfade
-        6: 1, #speed
+		3: False, # cleanup silence
+        4: 0.15, #crossfade
+        5: 1, #speed
     },
 
     # IMS-Toucan
