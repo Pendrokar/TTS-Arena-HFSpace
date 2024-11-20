@@ -448,7 +448,7 @@ OVERRIDE_INPUTS = {
 
     # StyleTTS 2 kokoro
     'hexgrad/kokoro': {
-		1: "af_0", #voice
+		1: "af", #voice
 		2: None, #ps
 		3: 1, #speed
 		4: 0.5, #reduce_noise
