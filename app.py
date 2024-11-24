@@ -451,13 +451,6 @@ OVERRIDE_INPUTS = {
 		1: "af", #voice
 		2: None, #ps
 		3: 1, #speed
-		4: 0.5, #reduce_noise
-		5: 4000, #opening_cut
-		6: 2000, #closing_cut
-		7: 3000, #ease_in
-		8: 1000, #ease_out
-		9: 5000, #pad_before
-		10: 5000, #pad_after
     },
 
     # maskGCT (by amphion)
