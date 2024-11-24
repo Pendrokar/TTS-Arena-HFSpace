@@ -76,10 +76,10 @@ AVAILABLE_MODELS = {
     # HF Gradio Spaces: # <works with gradio version #>
     # gravio version that works with most spaces: 4.29
     'coqui/xtts': 'coqui/xtts', # 4.29 4.32
-    'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
+    # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1 DEAD SPACE
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
-    #'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
+    #'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32 DEAD SPACE
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
@@ -107,7 +107,7 @@ AVAILABLE_MODELS = {
     'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1
 
     # StyleTTS v2
-    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2',
+    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', # saving ZeroGPU resources; more votes in OG arena; emotionless
     # StyleTTS kokoro
     'hexgrad/kokoro': 'hexgrad/kokoro',
 
@@ -290,7 +290,7 @@ HF_SPACES = {
 
     # StyleTTS v2 kokoro fine tune
     'hexgrad/kokoro': {
-        'name': 'StyleTTS kokoro',
+        'name': 'StyleTTS Kokoro',
         'function': '/generate',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -451,6 +451,8 @@ OVERRIDE_INPUTS = {
 		1: "af", #voice
 		2: None, #ps
 		3: 1, #speed
+		5: 3000, #trim
+		11: False, #use_gpu; fast enough with multithreaded with CPU
     },
 
     # maskGCT (by amphion)
