@@ -3,38 +3,22 @@ from .db import *
 from .models import *
 
 import pandas as pd
-def get_leaderboard(reveal_prelim = False, hide_battle_votes = False):
+def get_leaderboard(reveal_prelim = False):
+
     conn = get_db()
     cursor = conn.cursor()
-    
-    if hide_battle_votes:
-        sql = '''
-        SELECT m.name, 
-               SUM(CASE WHEN v.username NOT LIKE '%_battle' AND v.vote = 1 THEN 1 ELSE 0 END) as upvote, 
-               SUM(CASE WHEN v.username NOT LIKE '%_battle' AND v.vote = -1 THEN 1 ELSE 0 END) as downvote
-        FROM model m
-        LEFT JOIN vote v ON m.name = v.model
-        GROUP BY m.name
-        '''
-    else:
-        sql = '''
-        SELECT name, 
-               SUM(CASE WHEN vote = 1 THEN 1 ELSE 0 END) as upvote, 
-               SUM(CASE WHEN vote = -1 THEN 1 ELSE 0 END) as downvote
-        FROM model
-        LEFT JOIN vote ON model.name = vote.model
-        GROUP BY name
-        '''
-    
+    sql = 'SELECT name, upvote, downvote, name AS orig_name FROM model'
+    # if not reveal_prelim: sql += ' WHERE EXISTS (SELECT 1 FROM model WHERE (upvote + downvote) > 750)'
+    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > 300'
     cursor.execute(sql)
     data = cursor.fetchall()
-    df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote'])
+    df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote', 'orig_name'])
+    # df['license'] = df['name'].map(model_license)
     df['name'] = df['name'].replace(model_names)
+    for i in range(len(df)):
+        df.loc[i, "name"] = make_link_to_space(df['name'][i], True)
     df['votes'] = df['upvote'] + df['downvote']
-
-    # Filter out rows with insufficient votes if not revealing preliminary results
-    if not reveal_prelim:
-        df = df[df['votes'] > 500]
+    # df['score'] = round((df['upvote'] / df['votes']) * 100, 2) # Percentage score
 
     ## ELO SCORE
     df['score'] = 1200
@@ -46,14 +30,76 @@ def get_leaderboard(reveal_prelim = False, hide_battle_votes = False):
                     expected_b = 1 / (1 + 10 ** ((df['score'].iloc[i] - df['score'].iloc[j]) / 400))
                     actual_a = df['upvote'].iloc[i] / df['votes'].iloc[i] if df['votes'].iloc[i] > 0 else 0.5
                     actual_b = df['upvote'].iloc[j] / df['votes'].iloc[j] if df['votes'].iloc[j] > 0 else 0.5
-                    df.iloc[i, df.columns.get_loc('score')] += 32 * (actual_a - expected_a)
-                    df.iloc[j, df.columns.get_loc('score')] += 32 * (actual_b - expected_b)
+                    df.at[i, 'score'] += round(32 * (actual_a - expected_a))
+                    df.at[j, 'score'] += round(32 * (actual_b - expected_b))
                 except Exception as e:
                     print(f"Error in ELO calculation for rows {i} and {j}: {str(e)}")
                     continue
     df['score'] = round(df['score'])
     ## ELO SCORE
     df = df.sort_values(by='score', ascending=False)
-    df['order'] = ['#' + str(i + 1) for i in range(len(df))]
+    # medals
+    def assign_medal(rank, assign):
+        rank = str(rank + 1)
+        if assign:
+            if rank == '1':
+                rank += '🥇'
+            elif rank == '2':
+                rank += '🥈'
+            elif rank == '3':
+                rank += '🥉'
+
+        return '#'+ rank
+
+    df['order'] = [assign_medal(i, not reveal_prelim and len(df) > 2) for i in range(len(df))]
+    # fetch top_five
+    top_five = []
+    for orig_name in df['orig_name']:
+        if (
+            reveal_prelim
+            and len(top_five) < 5
+            and orig_name in AVAILABLE_MODELS.keys()
+        ):
+            top_five.append(orig_name)
+
     df = df[['order', 'name', 'score', 'votes']]
     return df
+
+def make_link_to_space(model_name, for_leaderboard=False):
+    # create a anchor link if a HF space
+    style = 'text-decoration: underline;text-decoration-style: dotted;'
+    title = ''
+
+    if model_name in AVAILABLE_MODELS:
+        style += 'color: var(--link-text-color);'
+        title = model_name
+    else:
+        style += 'font-style: italic;'
+        title = 'Disabled for Arena (See AVAILABLE_MODELS within code for why)'
+
+    model_basename = model_name
+    if model_name in HF_SPACES:
+        model_basename = HF_SPACES[model_name]['name']
+
+    try:
+        if(
+            for_leaderboard
+            and HF_SPACES[model_name]['is_proprietary']
+        ):
+            model_basename += ' 🔐'
+            title += '; 🔐 = online only or proprietary'
+    except:
+        pass
+
+    if '/' in model_name:
+        return '🤗 <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
+
+    # otherwise just return the model name
+    return '<span style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_name +'</span>'
+
+def markdown_link_to_space(model_name):
+    # create a anchor link if a HF space using markdown syntax
+    if '/' in model_name:
+        return '🤗 [' + model_name + '](https://huggingface.co/spaces/' + model_name + ')'
+    # otherwise just return the model name
+    return model_name
