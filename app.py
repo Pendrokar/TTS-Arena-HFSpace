@@ -451,8 +451,8 @@ OVERRIDE_INPUTS = {
 		1: "af", #voice
 		2: None, #ps
 		3: 1, #speed
-		5: 3000, #trim
-		11: False, #use_gpu; fast enough with multithreaded with CPU
+		4: 3000, #trim
+		5: False, #use_gpu; fast enough with multithreaded with CPU
     },
 
     # maskGCT (by amphion)
