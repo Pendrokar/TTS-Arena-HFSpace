@@ -117,11 +117,11 @@ def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, cho
     ]
     style = 'text-align: center; font-size: 1rem; margin-bottom: 0; padding: var(--input-padding)'
     if chose_a == True:
-        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel1}</p>', visible=True))
-        out.append(gr.update(value=f'<p style="{style}">{chosenmodel2}</p>', visible=True))
+        out.append(gr.HTML(value=f'<p style="{style}">Your vote: {chosenmodel1}</p>', visible=True))
+        out.append(gr.HTML(value=f'<p style="{style}">{chosenmodel2}</p>', visible=True))
     else:
-        out.append(gr.update(value=f'<p style="{style}">{chosenmodel1}</p>', visible=True))
-        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel2}</p>', visible=True))
+        out.append(gr.HTML(value=f'<p style="{style}">{chosenmodel1}</p>', visible=True))
+        out.append(gr.HTML(value=f'<p style="{style}">Your vote: {chosenmodel2}</p>', visible=True))
     out.append(gr.update(visible=True))
     return out
 

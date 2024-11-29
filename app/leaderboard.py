@@ -1,14 +1,18 @@
 from .config import *
 from .db import *
 from .models import *
+from .synth import top_five
 
 import pandas as pd
+
+# for diff
+leaderboard_df = {}
 def get_leaderboard(reveal_prelim = False):
+    global leaderboard_df
 
     conn = get_db()
     cursor = conn.cursor()
     sql = 'SELECT name, upvote, downvote, name AS orig_name FROM model'
-    # if not reveal_prelim: sql += ' WHERE EXISTS (SELECT 1 FROM model WHERE (upvote + downvote) > 750)'
     if not reveal_prelim: sql += ' WHERE (upvote + downvote) > 300'
     cursor.execute(sql)
     data = cursor.fetchall()
@@ -22,6 +26,7 @@ def get_leaderboard(reveal_prelim = False):
 
     ## ELO SCORE
     df['score'] = 1200
+    df['score_diff'] = ""
     for i in range(len(df)):
         for j in range(len(df)):
             if i != j:
@@ -36,6 +41,26 @@ def get_leaderboard(reveal_prelim = False):
                     print(f"Error in ELO calculation for rows {i} and {j}: {str(e)}")
                     continue
     df['score'] = round(df['score'])
+    df['score_diff'] = df['score']
+
+    if (
+        reveal_prelim == False
+        and len(leaderboard_df) == 0
+    ):
+        leaderboard_df = df
+
+    if (reveal_prelim == False):
+        for i in range(len(df)):
+            score_diff = (df['score'].iloc[i] - leaderboard_df['score'].iloc[i])
+            if (score_diff == 0):
+                continue
+            if (score_diff > 0):
+                plus = '<em style="color: green; font-family: monospace">+'
+            else:
+                plus = '<em style="color: red; font-family: monospace">'
+
+            df.at[i, 'score_diff'] = str(df['score'].iloc[i]) + plus + str(score_diff) +'</em>'
+
     ## ELO SCORE
     df = df.sort_values(by='score', ascending=False)
     # medals
@@ -53,7 +78,6 @@ def get_leaderboard(reveal_prelim = False):
 
     df['order'] = [assign_medal(i, not reveal_prelim and len(df) > 2) for i in range(len(df))]
     # fetch top_five
-    top_five = []
     for orig_name in df['orig_name']:
         if (
             reveal_prelim
@@ -62,6 +86,7 @@ def get_leaderboard(reveal_prelim = False):
         ):
             top_five.append(orig_name)
 
+    df['score'] = df['score_diff']
     df = df[['order', 'name', 'score', 'votes']]
     return df
 
