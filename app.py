@@ -232,11 +232,11 @@ HF_SPACES = {
 
     # Microsoft Edge TTS
     'innoai/Edge-TTS-Text-to-Speech': {
-        'name': 'Edge TTS',
+        'name': 'Microsoft™ Edge TTS',
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
-        'is_proprietary': True,
+        'is_closed_off': True,
         'series': 'Edge TTS',
     },
 
@@ -245,7 +245,7 @@ HF_SPACES = {
         'name': 'Fish Speech',
         'function': '/inference_wrapper',
         'text_param_index': 0,
-        'return_audio_index': 1,
+        'return_audio_index': 0,
         'series': 'Fish Speech',
     },
 
@@ -295,6 +295,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
+        'is_closed_off': True,
         'series': 'StyleTTS',
     },
 
@@ -409,7 +410,7 @@ OVERRIDE_INPUTS = {
     },
 
     'fishaudio/fish-speech-1': {
-		1: True, # enable_reference_audio
+        1: False, # normalize
 		2: handle_file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
 		3: 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
 		4: 0, # max_new_tokens
@@ -417,8 +418,8 @@ OVERRIDE_INPUTS = {
 		6: 0.7, # top_p
 		7: 1.2, # repetition_penalty
 		8: 0.7, # temperature
-		9: 1, # batch_infer_num
-		10: False, # if_load_asr_model
+		9: 0, #seed
+		10: "never", #use_memory_cache
     },
 
     'mrfakename/E2-F5-TTS': {
@@ -475,7 +476,7 @@ voting_users = {
     # userid as the key and USER() as the value
 }
 # top five models in order to always have one of them picked and scrutinized
-top_five = []
+top_five = ['fishaudio/fish-speech-1'] # fish 1.5
 
 def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]]:
     transcript_groups: Dict[str, List[Sample]] = {}
@@ -493,7 +494,7 @@ def generate_matching_pairs(samples: List[Sample]) -> List[Tuple[Sample, Sample]
 
 cached_audio = []
 
-@spaces.GPU(duration=10)
+# @spaces.GPU(duration=10)
 def asr_cached_for_dataset():
 
     for caudio in cached_audio:
@@ -901,7 +902,7 @@ def make_link_to_space(model_name, for_leaderboard=False):
     try:
         if(
             for_leaderboard
-            and HF_SPACES[model_name]['is_proprietary']
+            and HF_SPACES[model_name]['is_closed_off']
         ):
             model_basename += ' 🔐'
             title += '; 🔐 = online only or proprietary'
