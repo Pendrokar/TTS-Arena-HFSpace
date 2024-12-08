@@ -454,6 +454,7 @@ OVERRIDE_INPUTS = {
 		3: 1, #speed
 		4: 3000, #trim
 		5: False, #use_gpu; fast enough with multithreaded with CPU
+        6: os.getenv('KOKORO'), #sk
     },
 
     # maskGCT (by amphion)
