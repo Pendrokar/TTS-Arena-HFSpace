@@ -101,13 +101,13 @@ AVAILABLE_MODELS = {
     'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
 
     # IMS-Toucan
-    # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1 # randomly changes pitch
+    # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1 # randomly changes pitch male<=>female
 
     # IMS-Toucan English non-artificial
-    'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1
+    # 'Flux9665/EnglishToucan': 'Flux9665/EnglishToucan', # 5.1; poor ratings => saving ZeroGPU resources;
 
     # StyleTTS v2
-    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', # saving ZeroGPU resources; more votes in OG arena; emotionless
+    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
     # StyleTTS kokoro
     'hexgrad/kokoro': 'hexgrad/kokoro',
 
