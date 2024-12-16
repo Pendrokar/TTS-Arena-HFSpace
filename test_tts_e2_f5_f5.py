@@ -9,6 +9,7 @@ result = client.predict(
 		gen_text_input="Please surprise me and speak in whatever voice you enjoy.",
 		remove_silence=False,
 		cross_fade_duration_slider=0.15,
+		nfe_slider=32,
 		speed_slider=1,
 		api_name="/basic_tts",
 )

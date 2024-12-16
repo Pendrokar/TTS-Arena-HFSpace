@@ -427,7 +427,8 @@ OVERRIDE_INPUTS = {
 		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
 		3: False, # cleanup silence
         4: 0.15, #crossfade
-        5: 1, #speed
+        5: 32, #nfe_slider
+        6: 1, #speed
     },
 
     # IMS-Toucan
@@ -1135,7 +1136,7 @@ def synthandreturn(text, request: gr.Request):
                         # assume the index is one of the first 9 return params
                         return_audio_index = int(HF_SPACES[model]['return_audio_index'])
                         endpoints = mdl_space.view_api(all_endpoints=True, print_info=False, return_format='dict')
-    
+
                         api_name = None
                         fn_index = None
                         end_parameters = None
@@ -1143,7 +1144,7 @@ def synthandreturn(text, request: gr.Request):
                         if '/' == HF_SPACES[model]['function'][0]:
                             # audio sync function name
                             api_name = HF_SPACES[model]['function']
-    
+
                             end_parameters = _get_param_examples(
                                 endpoints['named_endpoints'][api_name]['parameters']
                             )
@@ -1151,7 +1152,7 @@ def synthandreturn(text, request: gr.Request):
                         else:
                             # endpoint index is the first character
                             fn_index = int(HF_SPACES[model]['function'])
-    
+
                             end_parameters = _get_param_examples(
                                 endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
                             )
@@ -1248,7 +1249,7 @@ def synthandreturn(text, request: gr.Request):
             pass
 
         return inputs
-    
+
     def _cache_sample(text, model):
         # skip caching if not hardcoded sentence
         if (text not in sents):
@@ -1310,7 +1311,7 @@ def synthandreturn(text, request: gr.Request):
         # cache the result
         for model in [mdl1k, mdl2k]:
             _cache_sample(text, model)
-    
+
     #debug
     # print(results)
     # print(list(results.keys())[0])
