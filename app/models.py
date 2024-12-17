@@ -365,3 +365,42 @@ model_names = {
     'speecht5': 'SpeechT5',
     'metavoice': 'MetaVoice-1B',
 }
+
+def make_link_to_space(model_name, for_leaderboard=False):
+    # create a anchor link if a HF space
+    style = 'text-decoration: underline;text-decoration-style: dotted;'
+    title = ''
+
+    if model_name in AVAILABLE_MODELS:
+        style += 'color: var(--link-text-color);'
+        title = model_name
+    else:
+        style += 'font-style: italic;'
+        title = 'Disabled for Arena (See AVAILABLE_MODELS within code for why)'
+
+    model_basename = model_name
+    if model_name in HF_SPACES:
+        model_basename = HF_SPACES[model_name]['name']
+
+    try:
+        if(
+            for_leaderboard
+            and HF_SPACES[model_name]['is_proprietary']
+        ):
+            model_basename += ' 🔐'
+            title += '; 🔐 = online only or proprietary'
+    except:
+        pass
+
+    if '/' in model_name:
+        return '🤗 <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
+
+    # otherwise just return the model name
+    return '<span style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_name +'</span>'
+
+def markdown_link_to_space(model_name):
+    # create a anchor link if a HF space using markdown syntax
+    if '/' in model_name:
+        return '🤗 [' + model_name + '](https://huggingface.co/spaces/' + model_name + ')'
+    # otherwise just return the model name
+    return model_name

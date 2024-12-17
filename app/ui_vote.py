@@ -45,9 +45,7 @@ with gr.Blocks() as vote:
             .then(None, js="() => "+ unblur_text_js)
         btn = gr.Button("Synthesize", variant='primary')
     model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
-    #model1 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
     model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=False)
-    #model2 = gr.Textbox(interactive=False, lines=1, max_lines=1, visible=True)
     with gr.Row(visible=False) as r2:
         with gr.Column():
             with gr.Group():
@@ -65,7 +63,11 @@ with gr.Blocks() as vote:
                     variant='primary',
                     interactive=False,
                 )
-                prevmodel1 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model A", text_align="center", lines=1, max_lines=1, visible=False)
+                prevmodel1 = gr.HTML(
+                    show_label=False,
+                    value="Vote to reveal model A",
+                    visible=False,
+                )
         with gr.Column():
             with gr.Group():
                 aud2 = gr.Audio(
@@ -82,7 +84,11 @@ with gr.Blocks() as vote:
                     variant='primary',
                     interactive=False,
                 )
-                prevmodel2 = gr.Textbox(interactive=False, show_label=False, container=False, value="Vote to reveal model B", text_align="center", lines=1, max_lines=1, visible=False)
+                prevmodel2 = gr.HTML(
+                    show_label=False,
+                    value="Vote to reveal model B",
+                    visible=False,
+                )
     nxtroundbtn = gr.Button(
         '⚡ [N]ext round',
         elem_id='arena-next-round',
@@ -133,7 +139,7 @@ with gr.Blocks() as vote:
     nxtroundbtn\
         .click(clear_stuff, outputs=outputs)\
         .then(disable, outputs=[btn, abetter, bbetter, cachedt])\
-        .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
+        .then(give_cached_sample, inputs=[session_hash, autoplay], outputs=[*outputs, cachedt])\
         .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
     # blur text
     nxtroundbtn.click(None, js="() => "+ blur_text_js)
@@ -141,7 +147,7 @@ with gr.Blocks() as vote:
     # fetch a comparison pair from cache
     cachedt\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
-        .then(give_cached_sample, inputs=[session_hash], outputs=[*outputs, cachedt])\
+        .then(give_cached_sample, inputs=[session_hash, autoplay], outputs=[*outputs, cachedt])\
         .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
     # TODO: await download of sample before allowing playback
 

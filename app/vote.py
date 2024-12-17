@@ -109,8 +109,8 @@ def is_better(model1, model2, userid, text, chose_a):
 
 # Reload
 def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, chose_b=False):
-    # chosenmodel1 = make_link_to_space(chosenmodel1)
-    # chosenmodel2 = make_link_to_space(chosenmodel2)
+    chosenmodel1 = make_link_to_space(chosenmodel1)
+    chosenmodel2 = make_link_to_space(chosenmodel2)
     out = [
         gr.update(interactive=False, visible=False),
         gr.update(interactive=False, visible=False)
