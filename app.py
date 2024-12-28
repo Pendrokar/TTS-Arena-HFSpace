@@ -295,7 +295,6 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'is_closed_off': True,
         'series': 'StyleTTS',
     },
 
