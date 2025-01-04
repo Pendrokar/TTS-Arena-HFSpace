@@ -1,8 +1,8 @@
 datasets
 librosa
 soundfile
+gradio-client
 git+https://github.com/unitaryai/detoxify
 pyloudnorm
 langdetect
 pydub
-transformers
