@@ -1,3 +1,4 @@
+import os
 from gradio_client import handle_file
 
 # Models to include in the leaderboard, only include models that users can vote on
@@ -48,6 +49,16 @@ AVAILABLE_MODELS = {
 
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+    # StyleTTS v2
+    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
+    # StyleTTS kokoro
+    'hexgrad/kokoro': 'hexgrad/kokoro',
+
+    # MaskGCT (by Amphion)
+    # DEMANDS 300 seconds of ZeroGPU
+    # 'amphion/maskgct': 'amphion/maskgct',
+    # default ZeroGPU borrow time
+    'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab',
 
     # HF TTS w issues
     'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -168,7 +179,7 @@ HF_SPACES = {
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
-        'is_proprietary': True,
+        'is_closed_source': True,
         'series': 'Edge TTS',
     },
 
@@ -217,6 +228,34 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'StyleTTS',
+    },
+
+    # StyleTTS v2 kokoro fine tune
+    'hexgrad/kokoro': {
+        'name': 'StyleTTS Kokoro',
+        'function': '/generate',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'StyleTTS',
+    },
+
+    # MaskGCT (by Amphion)
+    'amphion/maskgct': {
+        'name': 'MaskGCT',
+        'function': '/predict',
+        'text_param_index': 1,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'MaskGCT',
+    },
+    'Svngoku/maskgct-audio-lab': {
+        'name': 'MaskGCT',
+        'function': '/predict',
+        'text_param_index': 1,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'MaskGCT',
     },
 }
 
@@ -317,8 +356,10 @@ OVERRIDE_INPUTS = {
     'mrfakename/E2-F5-TTS': {
 		0: DEFAULT_VOICE_SAMPLE, # voice sample
 		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
-		3: "F5-TTS", # model
-		4: False, # cleanup silence
+		3: False, # cleanup silence
+        4: 0.15, #crossfade
+        5: 32, #nfe_slider
+        6: 1, #speed
     },
 
     # IMS-Toucan
@@ -336,6 +377,28 @@ OVERRIDE_INPUTS = {
 		1: "f-us-2", #voice
         2: 'en-us', # lang
 		3: 8, # lngsteps
+    },
+
+    # StyleTTS 2 kokoro
+    'hexgrad/kokoro': {
+		1: "af", #voice
+		2: None, #ps
+		3: 1, #speed
+		4: 3000, #trim
+		5: False, #use_gpu; fast enough with multithreaded with CPU
+        6: os.getenv('KOKORO'), #sk
+    },
+
+    # maskGCT (by amphion)
+    'amphion/maskgct': {
+        0: DEFAULT_VOICE_SAMPLE, #prompt_wav
+		2: -1, #target_len
+		3: 25, #n_timesteps
+    },
+    'Svngoku/maskgct-audio-lab': {
+        0: DEFAULT_VOICE_SAMPLE, #prompt_wav
+		2: -1, #target_len
+		3: 25, #n_timesteps
     },
 }
 
@@ -385,7 +448,7 @@ def make_link_to_space(model_name, for_leaderboard=False):
     try:
         if(
             for_leaderboard
-            and HF_SPACES[model_name]['is_proprietary']
+            and HF_SPACES[model_name]['is_closed_source']
         ):
             model_basename += ' 🔐'
             title += '; 🔐 = online only or proprietary'
