@@ -18,12 +18,12 @@ Choose 2 candidates and vote on which one is better! Currently in beta.
 * Vote on which audio sounds more natural to you.
 """
 INSTR = """
-## Vote
-* Input text (English only) to synthesize audio (or press 🎲 for random text).
-* Listen to the two audio clips, one after the other.
-* Vote on which audio sounds more natural to you.
-* _Note: Model names are revealed after the vote is cast._
-Note: It may take up to 30 seconds to synthesize audio.
+* Press ⚡ to quickly get cached sample pairs you've yet to vote on. (Fast 🐇)
+* Or press 🎲 to randomly use a sentence from the list. (Slow 🐢)
+* Or input text (🇺🇸 English only) to synthesize audio. (Slowest 🐌)
+* _Listen to the two audio clips, one after the other and then vote on which audio sounds more natural to you._
+* Model names are revealed after the vote is cast.
+⚠ Note: It **may take up to 30 seconds** to ***synthesize*** audio.
 """.strip()
 request = ""
 if SPACE_ID:
@@ -48,6 +48,9 @@ Thank you to the following individuals who helped make this project possible:
 * Sanchit Gandhi ([Twitter](https://twitter.com/sanchitgandhi99) / [Hugging Face](https://huggingface.co/sanchit-gandhi))
 * Apolinário Passos ([Twitter](https://twitter.com/multimodalart) / [Hugging Face](https://huggingface.co/multimodalart))
 * Pedro Cuenca ([Twitter](https://twitter.com/pcuenq) / [Hugging Face](https://huggingface.co/pcuenq))
+
+\* ***You are currently in a cloned/forked space of TTS-AGI/TTS-Arena***
+
 {request}
 ### Privacy statement
 We may store text you enter and generated audio. We store a unique ID for each session. You agree that we may collect, share, and/or publish any data you input for research and/or commercial purposes.
@@ -56,10 +59,9 @@ Generated audio clips cannot be redistributed and may be used for personal, non-
 Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html).
 """.strip()
 LDESC = """
-## 🏆 Leaderboard
 Vote to help the community determine the best text-to-speech (TTS) models.
 The leaderboard displays models in descending order of how natural they sound (based on votes cast by the community).
-Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate.
+Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate. [This dataset is public](https://huggingface.co/datasets/{DB_DATASET_ID}) and only saves the hardcoded sentences while keeping the voters anonymous.
 """.strip()
 
 
