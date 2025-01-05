@@ -22,7 +22,8 @@ if SYNC_DB:
 create_db()
 
 # Load TTS Router
-router = Client(ROUTER_ID, hf_token=os.getenv('HF_TOKEN'))
+router = {}
+# router = Client(ROUTER_ID, hf_token=os.getenv('HF_TOKEN'))
 
 if TOXICITY_CHECK:
     # Load toxicity model
