@@ -194,8 +194,8 @@ HF_SPACES = {
 
     # E2/F5 TTS
     'mrfakename/E2-F5-TTS': {
-        'name': 'F5 of E2 TTS',
-        'function': '/infer',
+        'name': 'F5 TTS',
+        'function': '/basic_tts',
         'text_param_index': 2,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
