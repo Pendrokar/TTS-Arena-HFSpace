@@ -7,32 +7,34 @@ from .models import *
 
 MUST_BE_LOGGEDIN = "Please login with Hugging Face to participate in the TTS Arena."
 DESCR = """
-# TTS Arena: Benchmarking TTS Models in the Wild
-Vote to help the community find the best available text-to-speech model!
+# TTS Arena: Benchmarking TTS Models on HuggingFace
 """.strip()
+
 BATTLE_INSTR = """
-## Battle
 Choose 2 candidates and vote on which one is better! Currently in beta.
 * Input text (English only) to synthesize audio (or press 🎲 for random text).
 * Listen to the two audio clips, one after the other.
 * Vote on which audio sounds more natural to you.
 """
+
 INSTR = """
 * Press ⚡ to quickly get cached sample pairs you've yet to vote on. (Fast 🐇)
 * Or press 🎲 to randomly use a sentence from the list. (Slow 🐢)
 * Or input text (🇺🇸 English only) to synthesize audio. (Slowest 🐌)
 * _Listen to the two audio clips, one after the other and then vote on which audio sounds more natural to you._
 * Model names are revealed after the vote is cast.
+
 ⚠ Note: It **may take up to 30 seconds** to ***synthesize*** audio.
 """.strip()
+
 request = ""
 if SPACE_ID:
     request = f"""
 ### Request a model
 Please [create a Discussion](https://huggingface.co/spaces/{SPACE_ID}/discussions/new) to request a model.
 """
+
 ABOUT = f"""
-## About
 The TTS Arena evaluates leading speech synthesis models. It is inspired by LMsys's [Chatbot Arena](https://chat.lmsys.org/).
 ### Motivation
 The field of speech synthesis has long lacked an accurate method to measure the quality of different models. Objective metrics like WER (word error rate) are unreliable measures of model quality, and subjective measures such as MOS (mean opinion score) are typically small-scale experiments conducted with few listeners. As a result, these measurements are generally not useful for comparing two models of roughly similar quality. To address these drawbacks, we are inviting the community to rank models in an easy-to-use interface, and opening it up to the public in order to make both the opportunity to rank models, as well as the results, more easily accessible to everyone.
@@ -58,7 +60,8 @@ We may store text you enter and generated audio. We store a unique ID for each s
 Generated audio clips cannot be redistributed and may be used for personal, non-commercial use only.
 Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html).
 """.strip()
-LDESC = """
+
+LDESC = f"""
 Vote to help the community determine the best text-to-speech (TTS) models.
 The leaderboard displays models in descending order of how natural they sound (based on votes cast by the community).
 Important: In order to help keep results fair, the leaderboard hides results by default until the number of votes passes a threshold. Tick the `Reveal preliminary results` to show models without sufficient votes. Please note that preliminary results may be inaccurate. [This dataset is public](https://huggingface.co/datasets/{DB_DATASET_ID}) and only saves the hardcoded sentences while keeping the voters anonymous.
