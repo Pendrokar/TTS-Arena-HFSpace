@@ -12,7 +12,7 @@ from langdetect import detect
 from .vote import log_text
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['fishaudio/fish-speech-1'] # fish 1.5
+top_five = []
 hf_token=os.getenv('HF_TOKEN')
 
 # prioritize low vote models
