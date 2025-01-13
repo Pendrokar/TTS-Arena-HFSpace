@@ -171,7 +171,7 @@ with gr.Blocks() as vote:
             outputs=[abetter, bbetter, aplayed, bplayed],
         )
     # unblur text with JS; faster than sending output with elem_classes
-    aud2.stop(None, inputs=[aplayed], js="(a) => a ? "+ unblur_text_js +" : 0;")
+    aud2.stop(None, inputs=[aplayed], js="(a) => a ? "+ unblur_text_js +" : 0")
 
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
     abetter\
