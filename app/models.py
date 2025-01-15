@@ -148,7 +148,7 @@ HF_SPACES = {
     'mrfakename/MeloTTS': {
         'name': 'MeloTTS',
         'function': '/synthesize',
-        'text_param_index': 0,
+        'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'MeloTTS',
     },
@@ -206,7 +206,7 @@ HF_SPACES = {
     'mrfakename/E2-F5-TTS': {
         'name': 'F5 TTS',
         'function': '/basic_tts',
-        'text_param_index': 2,
+        'text_param_index': 'gen_text_input',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'E2/F5 TTS',
@@ -347,9 +347,6 @@ OVERRIDE_INPUTS = {
         4: 'No', # split by newline
     },
     'mrfakename/MeloTTS': {
-        # 1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
-        # 2: 1, # speed
-        # 3: 'EN',	# language
         'speaker': 'EN-Default',	# DEFAULT_VOICE_SAMPLE=EN-Default
         'speed': 1.0,
         'language': 'EN',
