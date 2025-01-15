@@ -280,7 +280,7 @@ HF_SPACES = {
         'series': 'GPT-SoVITS',
     },
     'ameerazam08/OuteTTS-0.2-500M-Demo': {
-        'name': 'OuteTTS 500M',
+        'name': 'OuteTTS 0.2 500M',
         'function': '/generate_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -493,6 +493,8 @@ def make_link_to_space(model_name, for_leaderboard=False):
 
     if model_name in AVAILABLE_MODELS:
         style += 'color: var(--link-text-color);'
+        if '/' in model_name:
+            title += model_name
     else:
         style += 'font-style: italic;'
         title += model_name +'; Disabled (See AVAILABLE_MODELS within code for why)'

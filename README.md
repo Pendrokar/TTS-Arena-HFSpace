@@ -16,10 +16,12 @@ models:
 - fishaudio/fish-speech-1.4
 - fishaudio/fish-speech-1.5
 - hexgrad/Kokoro-82M
+- lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
 - myshell-ai/OpenVoice
 - myshell-ai/OpenVoiceV2
+- OuteAI/OuteTTS-0.2-500M
 - parler-tts/parler-tts-mini-v1
 - Pendrokar/xvapitch_expresso
 - SWivid/F5-TTS
