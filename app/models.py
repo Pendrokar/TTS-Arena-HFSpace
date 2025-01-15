@@ -45,7 +45,7 @@ AVAILABLE_MODELS = {
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
-    # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # 4.29
+    # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
 
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
@@ -55,10 +55,15 @@ AVAILABLE_MODELS = {
     'hexgrad/kokoro': 'hexgrad/kokoro',
 
     # MaskGCT (by Amphion)
-    # DEMANDS 300 seconds of ZeroGPU
-    # 'amphion/maskgct': 'amphion/maskgct',
-    # default ZeroGPU borrow time
-    'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab',
+    # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
+    # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
+
+    # GPT-SoVITS
+    'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
+
+    # OuteTTS
+    # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
+    'ameerazam08/OuteTTS-0.2-500M-Demo': 'ameerazam08/OuteTTS-0.2-500M-Demo', # ZeroGPU Space
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -230,7 +235,7 @@ HF_SPACES = {
     'Pendrokar/style-tts-2': {
         'name': 'StyleTTS v2',
         'function': '/synthesize',
-        'text_param_index': 0,
+        'text_param_index': 'text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'StyleTTS',
@@ -239,12 +244,12 @@ HF_SPACES = {
 
     # StyleTTS v2 kokoro fine tune
     'hexgrad/kokoro': {
-        'name': 'StyleTTS Kokoro',
+        'name': 'StyleTTS Kokoro v19',
         'function': '/generate',
         'text_param_index': 0,
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'StyleTTS',
+        'series': 'Kokoro',
     },
 
     # MaskGCT (by Amphion)
@@ -266,10 +271,26 @@ HF_SPACES = {
         'series': 'MaskGCT',
         'emoji': '🥵', # 300s minimum ZeroGPU!
     },
+    'lj1995/GPT-SoVITS-v2': {
+        'name': 'GPT-SoVITS',
+        'function': '/get_tts_wav',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'GPT-SoVITS',
+    },
+    'ameerazam08/OuteTTS-0.2-500M-Demo': {
+        'name': 'OuteTTS 500M',
+        'function': '/generate_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'OuteTTS',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
-DEFAULT_VOICE_SAMPLE_STR = 'https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav'
+DEFAULT_VOICE_SAMPLE_STR = 'voice_samples/xtts_sample.wav'
 DEFAULT_VOICE_SAMPLE = handle_file(DEFAULT_VOICE_SAMPLE_STR)
 DEFAULT_VOICE_TRANSCRIPT = "The Hispaniola was rolling scuppers under in the ocean swell. The booms were tearing at the blocks, the rudder was banging to and fro, and the whole ship creaking, groaning, and jumping like a manufactory."
 
@@ -326,9 +347,12 @@ OVERRIDE_INPUTS = {
         4: 'No', # split by newline
     },
     'mrfakename/MeloTTS': {
-        1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
-        2: 1, # speed
-        3: 'EN',	# language
+        # 1: 'EN-Default',	# speaker; DEFAULT_VOICE_SAMPLE=EN-Default
+        # 2: 1, # speed
+        # 3: 'EN',	# language
+        'speaker': 'EN-Default',	# DEFAULT_VOICE_SAMPLE=EN-Default
+        'speed': 1.0,
+        'language': 'EN',
     },
     'mrfakename/MetaVoice-1B-v0.1': {
 		1: 5,	# float (numeric value between 0.0 and 10.0) in 'Speech Stability - improves text following for a challenging speaker' Slider component
@@ -362,13 +386,14 @@ OVERRIDE_INPUTS = {
 		10: "never", #use_memory_cache
     },
 
+    # F5
     'mrfakename/E2-F5-TTS': {
-		0: DEFAULT_VOICE_SAMPLE, # voice sample
-		1: DEFAULT_VOICE_TRANSCRIPT, # transcript of sample (< 15 seconds required)
-		3: False, # cleanup silence
-        4: 0.15, #crossfade
-        5: 32, #nfe_slider
-        6: 1, #speed
+        'ref_audio_input': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
+        'ref_text_input': 'Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we\'ll call Kruger Bern.',
+        'remove_silence': False,
+        'cross_fade_duration_slider': 0.15,
+        'nfe_slider': 32,
+        'speed_slider': 1,
     },
 
     # IMS-Toucan
@@ -383,9 +408,9 @@ OVERRIDE_INPUTS = {
 
     # StyleTTS 2
     'Pendrokar/style-tts-2': {
-		1: "f-us-2", #voice
-        2: 'en-us', # lang
-		3: 8, # lngsteps
+        'voice': "f-us-2",
+        'lang': 'en-us',
+        'lngsteps': 8,
     },
 
     # StyleTTS 2 kokoro
@@ -408,6 +433,29 @@ OVERRIDE_INPUTS = {
         0: DEFAULT_VOICE_SAMPLE, #prompt_wav
 		2: -1, #target_len
 		3: 25, #n_timesteps
+    },
+    'lj1995/GPT-SoVITS-v2': {
+        'ref_wav_path': handle_file('voice_samples/EN_B00004_S00051_W000213.wav'),
+        'prompt_text': "Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we'll call",
+        'prompt_language': "English",
+        # text: "Please surprise me and speak in whatever voice you enjoy.",
+        'text_language': "English",
+        'how_to_cut': "No slice",
+        'top_k': 15,
+        'top_p': 1,
+        'temperature': 1,
+        'ref_free': False,
+        'speed': 1,
+        'if_freeze': False,
+        'inp_refs': None,
+    },
+    'ameerazam08/OuteTTS-0.2-500M-Demo': {
+        1: 0.1, # temperature
+        2: 1.1, # repetition_penalty
+        3: "en", # language
+        4: "female_1", # speaker_selection
+        5: None, # reference_audio
+        6: None, # reference_text
     },
 }
 
