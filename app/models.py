@@ -87,6 +87,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'WhisperSpeech',
+        'emoji': '😷', # broken space
     },
     # OpenVoice (MyShell.ai)
     'myshell-ai/OpenVoice': {
@@ -111,6 +112,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'MetaVoice-1B',
+        'emoji': '😷', # broken space
     },
     # xVASynth (CPU)
     'Pendrokar/xVASynth-TTS': {
@@ -135,6 +137,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'HierSpeech++',
+        'emoji': '😒', # unemotional
     },
     # MeloTTS (MyShell.ai)
     'mrfakename/MeloTTS': {
@@ -171,6 +174,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Parler',
+        'emoji': '😃', # overlly jolly voice
     },
 
     # Microsoft Edge TTS
@@ -181,6 +185,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_closed_source': True,
         'series': 'Edge TTS',
+        'emoji': '😑', # api disabled
     },
 
     # Fish Speech
@@ -218,6 +223,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'IMS-Toucan',
+        'emoji': '😒', # unemotional
     },
 
     # StyleTTS v2
@@ -228,6 +234,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'StyleTTS',
+        'emoji': '😪',
     },
 
     # StyleTTS v2 kokoro fine tune
@@ -248,6 +255,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
+        'emoji': '🥵', # 300s minimum ZeroGPU!
     },
     'Svngoku/maskgct-audio-lab': {
         'name': 'MaskGCT',
@@ -256,6 +264,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
+        'emoji': '🥵', # 300s minimum ZeroGPU!
     },
 }
 
@@ -436,10 +445,9 @@ def make_link_to_space(model_name, for_leaderboard=False):
 
     if model_name in AVAILABLE_MODELS:
         style += 'color: var(--link-text-color);'
-        title = model_name
     else:
         style += 'font-style: italic;'
-        title = 'Disabled for Arena (See AVAILABLE_MODELS within code for why)'
+        title += model_name +'; Disabled (See AVAILABLE_MODELS within code for why)'
 
     model_basename = model_name
     if model_name in HF_SPACES:
@@ -456,7 +464,12 @@ def make_link_to_space(model_name, for_leaderboard=False):
         pass
 
     if '/' in model_name:
-        return '🤗 <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
+        emoji = '🤗' # HF
+        try:
+            emoji = HF_SPACES[model_name]['emoji']
+        except:
+            pass
+        return emoji +' <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_basename +'</a>'
 
     # otherwise just return the model name
     return '<span style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ model_name +'">'+ model_name +'</span>'
