@@ -64,6 +64,8 @@ AVAILABLE_MODELS = {
     # OuteTTS
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
     'ameerazam08/OuteTTS-0.2-500M-Demo': 'ameerazam08/OuteTTS-0.2-500M-Demo', # ZeroGPU Space
+    # OuteTTS 1B
+    'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -272,7 +274,7 @@ HF_SPACES = {
         'emoji': '🥵', # 300s minimum ZeroGPU!
     },
     'lj1995/GPT-SoVITS-v2': {
-        'name': 'GPT-SoVITS',
+        'name': 'GPT-SoVITS v2',
         'function': '/get_tts_wav',
         'text_param_index': 'text',
         'return_audio_index': 0,
@@ -280,9 +282,17 @@ HF_SPACES = {
         'series': 'GPT-SoVITS',
     },
     'ameerazam08/OuteTTS-0.2-500M-Demo': {
-        'name': 'OuteTTS 0.2 500M',
+        'name': 'OuteTTS v2 500M',
         'function': '/generate_tts',
         'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'OuteTTS',
+    },
+    'OuteAI/OuteTTS-0.3-1B-Demo': {
+        'name': 'OuteTTS v3 1B',
+        'function': '/generate_tts',
+        'text_param_index': 'text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
@@ -453,6 +463,12 @@ OVERRIDE_INPUTS = {
         4: "female_1", # speaker_selection
         5: None, # reference_audio
         6: None, # reference_text
+    },
+    'OuteAI/OuteTTS-0.3-1B-Demo': {
+		'temperature': 0.1,
+		'repetition_penalty': 1.1,
+		'speaker_selection': "en_female_1",
+		'reference_audio': None,
     },
 }
 

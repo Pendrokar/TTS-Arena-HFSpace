@@ -81,8 +81,6 @@ except:
     pass
 
 TTS_INFO = f"""
-## 🗣 Contenders
-
 ### 🔐 Closed Source TTS
 * Microsoft _Edge TTS_
 

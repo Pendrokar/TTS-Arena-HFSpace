@@ -29,4 +29,5 @@ models:
 sdk_version: 5.4.0
 ---
 
-[Saved votes](https://huggingface.co/datasets/Pendrokar/open_tts_tracker)
+[Saved votes dataset](https://huggingface.co/datasets/Pendrokar/TTS_Arena)
+[TTS tracker dataset](https://huggingface.co/datasets/Pendrokar/open_tts_tracker)
