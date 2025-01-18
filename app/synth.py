@@ -288,6 +288,14 @@ def synthandreturn(text, autoplay, request: gr.Request):
             print('Error when trying to cache sample')
             return False
 
+        # save list to JSON file
+        cached_sample_dict = [cached_sample.to_dict() for cached_sample in cached_samples]
+        try:
+            with open("_cached_samples.json", "w") as write:
+                json.dump( cached_sample_dict , write )
+        except:
+            pass
+
     mdl1k = mdl1
     mdl2k = mdl2
     print(mdl1k, mdl2k)
@@ -331,7 +339,7 @@ def synthandreturn(text, autoplay, request: gr.Request):
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
         text,
-        "Synthesize",
+        "Synthesize 🐢",
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
@@ -430,7 +438,7 @@ def synthandreturn_battle(text, mdl1, mdl2, autoplay):
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (
         text,
-        "Synthesize",
+        "Synthesize 🐢",
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
@@ -450,7 +458,7 @@ def randomsent_battle():
 def clear_stuff():
     return [
         gr.update(visible=True, value="", elem_classes=[]),
-        "Synthesize",
+        "Synthesize 🐢",
         gr.update(visible=False), # r2
         '', # model1
         '', # model2

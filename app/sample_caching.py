@@ -1,6 +1,7 @@
 import gradio as gr
 import itertools
 import random
+import json
 from typing import List, Tuple, Set, Dict
 from hashlib import md5, sha1
 import spaces
@@ -17,8 +18,26 @@ class Sample:
         self.transcript = transcript
         self.modelName = modelName
 
+    def to_dict(self):
+        return {
+            'filename': self.filename,
+            'transcript': self.transcript,
+            'modelName': self.modelName,
+        }
+
 # cache audio samples for quick voting
 cached_samples: List[Sample] = []
+# cached_samples.append(Sample("audio1.mp3", "Hello, how are you?", "model1"))
+# cached_samples.append(Sample("audio2.mp3", "Hello, how are you?", "model2"))
+
+# load temporary samples
+json_data = ''
+try:
+    with open("_cached_samples.json", "r") as read:
+        loaded_samples = json.load(read)
+    cached_samples = [Sample(**json_data) for json_data in loaded_samples]
+except:
+    pass
 
 @spaces.GPU(duration=10)
 def asr_cached_for_dataset():
