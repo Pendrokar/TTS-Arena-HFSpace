@@ -42,7 +42,7 @@ AVAILABLE_MODELS = {
     # Parler Mini model
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
-    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
@@ -50,13 +50,13 @@ AVAILABLE_MODELS = {
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
     # StyleTTS v2
-    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
+    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
     # StyleTTS kokoro
     'hexgrad/kokoro': 'hexgrad/kokoro',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
-    # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
+    'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
 
     # GPT-SoVITS
     'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
@@ -181,7 +181,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Parler',
-        'emoji': '😃', # overlly jolly voice
+        # 'emoji': '😃', # overlly jolly voice
     },
 
     # Microsoft Edge TTS
@@ -241,7 +241,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'StyleTTS',
-        'emoji': '😪',
+        # 'emoji': '😪',
     },
 
     # StyleTTS v2 kokoro fine tune
@@ -262,7 +262,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
-        'emoji': '🥵', # 300s minimum ZeroGPU!
+        # 'emoji': '🥵', # 300s minimum ZeroGPU!
     },
     'Svngoku/maskgct-audio-lab': {
         'name': 'MaskGCT',
@@ -271,7 +271,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
-        'emoji': '🥵', # 300s minimum ZeroGPU!
+        # 'emoji': '🥵', # 300s minimum ZeroGPU!
     },
     'lj1995/GPT-SoVITS-v2': {
         'name': 'GPT-SoVITS v2',
