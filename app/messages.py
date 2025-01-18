@@ -19,12 +19,11 @@ Choose 2 candidates and vote on which one is better! Currently in beta.
 
 INSTR = """
 * Press ⚡ to quickly get cached sample pairs you've yet to vote on. (Fast 🐇)
-* Or press 🎲 to randomly use a sentence from the list. (Slow 🐢)
+* Or press 🎲 pick a random sentence from a prepared list. (Slow 🐢)
 * Or input text (🇺🇸 English only) to synthesize audio. (Slowest 🐌)
 * _Listen to the two audio clips, one after the other and then vote on which audio sounds more natural to you._
 * Model names are revealed after the vote is cast.
-
-⚠ Note: It **may take up to 30 seconds** to ***synthesize*** audio.
+* You can use a [hotkey] for quicker voting.
 """.strip()
 
 request = ""
@@ -39,7 +38,7 @@ The TTS Arena evaluates leading speech synthesis models. It is inspired by LMsys
 ### Motivation
 The field of speech synthesis has long lacked an accurate method to measure the quality of different models. Objective metrics like WER (word error rate) are unreliable measures of model quality, and subjective measures such as MOS (mean opinion score) are typically small-scale experiments conducted with few listeners. As a result, these measurements are generally not useful for comparing two models of roughly similar quality. To address these drawbacks, we are inviting the community to rank models in an easy-to-use interface, and opening it up to the public in order to make both the opportunity to rank models, as well as the results, more easily accessible to everyone.
 ### The Arena
-The leaderboard allows a user to enter text, which will be synthesized by two models. After listening to each sample, the user can vote on which model sounds more natural. Due to the risks of human bias and abuse, model names are revealed only after a vote is submitted.
+The leaderboard allows a user to enter text, which will be synthesized by two models. Only after fully listening to each sample, the user can vote on which model sounds more natural. Due to the risks of human bias and abuse, model names are revealed only after a vote is submitted.
 ### Credits
 Thank you to the following individuals who helped make this project possible:
 * VB ([Twitter](https://twitter.com/reach_vb) / [Hugging Face](https://huggingface.co/reach-vb))
@@ -51,14 +50,14 @@ Thank you to the following individuals who helped make this project possible:
 * Apolinário Passos ([Twitter](https://twitter.com/multimodalart) / [Hugging Face](https://huggingface.co/multimodalart))
 * Pedro Cuenca ([Twitter](https://twitter.com/pcuenq) / [Hugging Face](https://huggingface.co/pcuenq))
 
-\* ***You are currently in a cloned/forked space of TTS-AGI/TTS-Arena***
+\* ***You are currently in a cloned/forked HF space of [TTS-AGI/TTS-Arena](https://huggingface.co/spaces/TTS-AGI/TTS-Arena)***
 
 {request}
 ### Privacy statement
 We may store text you enter and generated audio. We store a unique ID for each session. You agree that we may collect, share, and/or publish any data you input for research and/or commercial purposes.
 ### License
 Generated audio clips cannot be redistributed and may be used for personal, non-commercial use only.
-Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html).
+Random sentences are sourced from a filtered subset of the [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html) and also from [KingNish](https://huggingface.co/KingNish)'s generated LLM sentences.
 """.strip()
 
 LDESC = f"""
