@@ -18,6 +18,14 @@ class Sample:
 
 # cache audio samples for quick voting
 cached_samples: List[Sample] = []
+
+@spaces.GPU(duration=10)
+def asr_cached_for_dataset():
+
+    for caudio in cached_samples:
+        pass
+    return True
+
 voting_users = {
     # userid as the key and USER() as the value
 }
