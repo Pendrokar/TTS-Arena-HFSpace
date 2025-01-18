@@ -3,6 +3,7 @@ import itertools
 import random
 from typing import List, Tuple, Set, Dict
 from hashlib import md5, sha1
+import spaces
 # from .synth import clear_stuff
 
 class User:
