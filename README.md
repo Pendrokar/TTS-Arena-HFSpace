@@ -22,7 +22,9 @@ models:
 - myshell-ai/OpenVoice
 - myshell-ai/OpenVoiceV2
 - OuteAI/OuteTTS-0.2-500M
+- OuteAI/OuteTTS-0.3-1B
 - parler-tts/parler-tts-mini-v1
+- parler-tts/parler-tts-mini-expresso
 - Pendrokar/xvapitch_expresso
 - SWivid/F5-TTS
 - WhisperSpeech/WhisperSpeech
