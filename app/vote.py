@@ -7,20 +7,20 @@ from .init import *
 import gradio as gr
 
 # Logging
+def log_text(text, voteid):
+    # log only hardcoded sentences
+    if (text not in sents):
+        return
 
-def log_text(text):
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO spokentext (spokentext) VALUES (?)', (text,))
-    if scheduler:
-        with scheduler.lock:
-            conn.commit()
-    else:
+    # TODO: multilang
+    cursor.execute('INSERT INTO spokentext (spokentext, lang, votelog_id) VALUES (?,?,?)', (text,'en',voteid))
+    with scheduler.lock:
         conn.commit()
     cursor.close()
 
 # Vote
-
 def upvote_model(model, uname, battle=False):
     conn = get_db()
     cursor = conn.cursor()
@@ -102,8 +102,7 @@ def is_better(model1, model2, userid, text, chose_a):
         else:
             upvote_model(model2, str(userid))
             downvote_model(model1, str(userid))
-        log_text(text)
-        # log_text(text, votelogid)
+        log_text(text, votelogid)
 
     return reload(model1, model2, userid, chose_a=chose_a, chose_b=(not chose_a))
 
