@@ -33,3 +33,17 @@ sdk_version: 5.4.0
 
 [Saved votes dataset](https://huggingface.co/datasets/Pendrokar/TTS_Arena)
 [TTS tracker dataset](https://huggingface.co/datasets/Pendrokar/open_tts_tracker)
+
+# TTS Arena
+
+The codebase for TTS Arena v2.
+
+The TTS Arena is a Gradio app with several components. Please refer to the `app` directory for more information.
+
+## Running the app
+
+```bash
+RUNNING_LOCALLY=1 python app.py
+```
+
+You must set the `RUNNING_LOCALLY` environment variable to `1` when running the app locally. This prevents it from syncing with the database

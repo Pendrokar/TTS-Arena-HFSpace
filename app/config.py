@@ -1,5 +1,11 @@
 import os
 
+RUNNING_LOCALLY = os.getenv('RUNNING_LOCALLY', '0').lower() in ('true', '1', 't')
+if RUNNING_LOCALLY:
+    print("Running locally, not syncing DB to HF dataset")
+else:
+    print("Running in HF Space, syncing DB to HF dataset")
+
 # NOTE: Configure models in `models.py`
 
 #########################
@@ -18,7 +24,7 @@ DB_PATH = f"/data/{DB_NAME}" if os.path.isdir("/data") else DB_NAME # If /data a
 ROUTER_ID = "Pendrokar/xVASynth-TTS" # You should use a router space to route TTS models to avoid exposing your API keys!
 # ROUTER_ID = "TTS-AGI/tts-router" # You should use a router space to route TTS models to avoid exposing your API keys!
 
-SYNC_DB = True # Sync DB to HF dataset?
+SYNC_DB = not RUNNING_LOCALLY # Sync DB to HF dataset?
 DB_DATASET_ID = os.getenv('DATASET_ID') # HF dataset ID, can be None if not syncing
 
 SPACE_ID = os.getenv('SPACE_ID') # Don't change this! It detects if we're running in a HF Space
@@ -49,3 +55,7 @@ CITATION_TEXT = """@misc{tts-arena,
 	publisher    = {Hugging Face},
 	howpublished = "\\url{https://huggingface.co/spaces/TTS-AGI/TTS-Arena}"
 }"""
+
+#- 2025/01/21: New leaderboard UI released with enhanced UI and improved performance.
+NEWS = """
+"""
