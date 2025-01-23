@@ -9,8 +9,8 @@ with gr.Blocks() as leaderboard:
         interactive=False,
         min_width=0,
         wrap=False,
-        column_widths=[30, 200, 50, 50],
-        datatype=["str", "html", "html", "number"]
+        column_widths=[30, 200, 50, 50, 50],
+        datatype=["str", "html", "html", "html", "number"]
     )
     reloadbtn = gr.Button("Refresh")
     with gr.Row():
