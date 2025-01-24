@@ -54,6 +54,7 @@ with gr.Blocks() as vote:
                     show_label=False,
                     show_download_button=False,
                     show_share_button=False,
+                    elem_id="vote-a-audio",
                     # waveform_options={'waveform_progress_color': '#EF4444'},
                     # var(--color-red-500)'}); gradio only accepts HEX and CSS color
                 )
@@ -76,6 +77,7 @@ with gr.Blocks() as vote:
                     show_download_button=False,
                     show_share_button=False,
                     waveform_options={'waveform_progress_color': '#3C82F6'},
+                    elem_id="vote-b-audio",
                     # var(--secondary-500)'}); gradio only accepts HEX and CSS color
                 )
                 bbetter = gr.Button(
@@ -161,7 +163,7 @@ with gr.Blocks() as vote:
         .then(
             None,
             inputs=[bplayed if autoplay else True],
-            js="(b) => b ? 0 : document.querySelector('.row .gap+.gap button.play-pause-button[aria-label=Play]').click()",
+            js="(b) => b ? 0 : document.getElementById('vote-b-audio')?.querySelector('button.play-pause-button')?.click()",
         )
     # autoplay if unplayed
     aud2\
