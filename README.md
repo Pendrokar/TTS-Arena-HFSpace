@@ -9,13 +9,14 @@ emoji: 🤗🏆
 colorFrom: red
 colorTo: red
 pinned: true
-short_description: Vote on the top HF TTS models!
+short_description: Blind vote on HF TTS models!
 models:
 - amphion/MaskGCT
 - coqui/XTTS-v2
 - fishaudio/fish-speech-1.4
 - fishaudio/fish-speech-1.5
 - hexgrad/Kokoro-82M
+- HKUSTAudio/Llasa-3B
 - lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
@@ -24,6 +25,7 @@ models:
 - myshell-ai/OpenVoiceV2
 - OuteAI/OuteTTS-0.2-500M
 - OuteAI/OuteTTS-0.3-1B
+- parler-tts/parler-tts-large-v1
 - parler-tts/parler-tts-mini-v1
 - parler-tts/parler-tts-mini-expresso
 - Pendrokar/xvapitch_expresso
@@ -48,3 +50,5 @@ RUNNING_LOCALLY=1 python app.py
 ```
 
 You must set the `RUNNING_LOCALLY` environment variable to `1` when running the app locally. This prevents it from syncing with the database
+
+The only other needed environmental variable may be 'HF_TOKEN' as anonymous accounts may get more restrictions.

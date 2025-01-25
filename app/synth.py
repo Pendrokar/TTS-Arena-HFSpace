@@ -101,7 +101,7 @@ def synthandreturn(text, autoplay, request: gr.Request):
                         # Use public HF Space
                         # if (model not in hf_clients):
                         #     hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
-                        mdl_space = Client(model, hf_token=hf_token, headers=hf_headers)
+                        mdl_space = Client(AVAILABLE_MODELS[model], hf_token=hf_token, headers=hf_headers)
 
                         # print(f"{model}: Fetching endpoints of HF Space")
                         # assume the index is one of the first 9 return params
@@ -197,7 +197,7 @@ def synthandreturn(text, autoplay, request: gr.Request):
         except:
             print(f"{model}: [WARN] Unable to resample audio")
             pass
-        if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
+        # if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
         result_storage[model] = result
 
     def _get_param_examples(parameters):
@@ -269,8 +269,8 @@ def synthandreturn(text, autoplay, request: gr.Request):
     mdl1k = mdl1
     mdl2k = mdl2
     print(mdl1k, mdl2k)
-    if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
-    if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
+    # if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
+    # if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
     print(f"Sending models {mdl1k} and {mdl2k} to API")
 
@@ -381,7 +381,7 @@ def synthandreturn_battle(text, mdl1, mdl2, autoplay):
                 result = f.name
         except:
             pass
-        if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
+        # if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
         print(model)
         print(f"Running model {model}")
         result_storage[model] = result
@@ -392,8 +392,8 @@ def synthandreturn_battle(text, mdl1, mdl2, autoplay):
     mdl1k = mdl1
     mdl2k = mdl2
     print(mdl1k, mdl2k)
-    if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
-    if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
+    # if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
+    # if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
     print(f"Sending models {mdl1k} and {mdl2k} to API")
     thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results))

@@ -23,6 +23,8 @@ AVAILABLE_MODELS = {
     # HF Gradio Spaces: # <works with gradio version #>
     # gravio version that works with most spaces: 4.29
      'coqui/xtts': 'coqui/xtts', # 4.29 4.32
+    # '<keyname>':'<Space URL>'
+    # gradio version that works with most spaces: 4.29
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
@@ -35,10 +37,12 @@ AVAILABLE_MODELS = {
     # E2 & F5 TTS
     # F5 model
     'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
+    # E2 model
+    # 'mrfakename/E2-F5-TTS/E2': 'mrfakename/E2-F5-TTS', # seems to require multiple requests for setup
 
     # # Parler
     # Parler Large model
-    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
     'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
@@ -76,7 +80,6 @@ AVAILABLE_MODELS = {
     # 'amphion/Text-to-Speech': '/predict#0', # disabled also on original HF space due to poor ratings
     # 'suno/bark': '3#0', # Hallucinates
     # 'shivammehta25/Matcha-TTS': '5#0', # seems to require multiple requests for setup
-    # 'styletts2/styletts2': '0#0', # API disabled, awaiting approval of PR #15
     # 'Manmay/tortoise-tts': '/predict#0', # Cannot retrieve streamed file; 403
     # 'pytorch/Tacotron2': '0#0', # old gradio
 }
@@ -158,7 +161,7 @@ HF_SPACES = {
         'series': 'MeloTTS',
     },
 
-    # Parler
+    # Parler Mini
     'parler-tts/parler_tts': {
         'name': 'Parler Mini',
         'function': '/gen_tts',
@@ -167,16 +170,16 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Parler',
     },
-    # Parler Mini
-    # 'parler-tts/parler_tts': {
-    #     'name': 'Parler Large',
-    #     'function': '/gen_tts',
-    #     'text_param_index': 0,
-    #     'return_audio_index': 0,
-    #     'is_zero_gpu_space': True,
-    #    'series': 'Parler',
-    # },
-    # Parler Mini which using Expresso dataset
+    # Parler Large
+    'parler-tts/parler_tts/large': {
+        'name': 'Parler Large',
+        'function': '/gen_tts',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Parler',
+    },
+    # Parler Mini trained on Expresso dataset
     'parler-tts/parler-tts-expresso': {
         'name': 'Parler Mini Expresso',
         'function': '/gen_tts',
@@ -207,14 +210,24 @@ HF_SPACES = {
         'series': 'Fish Speech',
     },
 
-    # E2/F5 TTS
+    # F5 TTS
     'mrfakename/E2-F5-TTS': {
         'name': 'F5 TTS',
         'function': '/basic_tts',
         'text_param_index': 'gen_text_input',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'E2/F5 TTS',
+        'series': 'F5 TTS',
+    },
+
+    # E2 TTS TODO: call switch model function
+    'mrfakename/E2-F5-TTS': {
+        'name': 'E2 TTS',
+        'function': '/basic_tts',
+        'text_param_index': 'gen_text_input',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'E2 TTS',
     },
 
     # IMS-Toucan
@@ -247,11 +260,21 @@ HF_SPACES = {
         # 'emoji': '😪',
     },
 
-    # StyleTTS v2 kokoro fine tune
+    # StyleTTS Kokoro v0.19
     'hexgrad/kokoro': {
         'name': 'StyleTTS Kokoro v19',
         'function': '/generate',
-        'text_param_index': 0,
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': False,
+        'series': 'Kokoro',
+    },
+
+    # StyleTTS Kokoro v0.23
+    'hexgrad/Kokoro-TTS/0.23': {
+        'name': 'StyleTTS Kokoro v23',
+        'function': '/multilingual',
+        'text_param_index': 'text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Kokoro',
@@ -314,6 +337,7 @@ HF_SPACES = {
 DEFAULT_VOICE_SAMPLE_STR = 'voice_samples/xtts_sample.wav'
 DEFAULT_VOICE_SAMPLE = handle_file(DEFAULT_VOICE_SAMPLE_STR)
 DEFAULT_VOICE_TRANSCRIPT = "The Hispaniola was rolling scuppers under in the ocean swell. The booms were tearing at the blocks, the rudder was banging to and fro, and the whole ship creaking, groaning, and jumping like a manufactory."
+DEFAULT_VOICE_PROMPT = "female voice; very clear audio"
 
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
@@ -379,11 +403,16 @@ OVERRIDE_INPUTS = {
 		4: "Bria",	# Literal['Bria', 'Alex', 'Jacob']  in 'Preset voices' Dropdown component
 		5: None,	# filepath  in 'Upload a clean sample to clone. Sample should contain 1 speaker, be between 30-90 seconds and not contain background noise.' Audio component
     },
-    'parler-tts/parler_tts': {
-        1: 'Laura; Laura\'s female voice; very clear audio', # description/prompt
+    'parler-tts/parler_tts': { # mini
+        1: 'Laura; Laura\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
+        2: False, #use_large
+    },
+    'parler-tts/parler_tts/large': {
+        1: 'Laura; Laura\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
+        2: True, #use_large
     },
     'parler-tts/parler-tts-expresso': {
-        1: 'Elisabeth; Elisabeth\'s female voice; very clear audio', # description/prompt
+        1: 'Elisabeth; Elisabeth\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
     },
     'innoai/Edge-TTS-Text-to-Speech': {
         1: 'en-US-EmmaMultilingualNeural - en-US (Female)', # voice
@@ -414,6 +443,16 @@ OVERRIDE_INPUTS = {
         'speed_slider': 1,
     },
 
+    # E2 TODO: call switch model
+    'mrfakename/E2-F5-TTS/E2': {
+        'ref_audio_input': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
+        'ref_text_input': 'Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we\'ll call Kruger Bern.',
+        'remove_silence': False,
+        'cross_fade_duration_slider': 0.15,
+        'nfe_slider': 32,
+        'speed_slider': 1,
+    },
+
     # IMS-Toucan
     'Flux9665/MassivelyMultilingualTTS': {
 		1: "English (eng)", #language
@@ -431,14 +470,22 @@ OVERRIDE_INPUTS = {
         'lngsteps': 8,
     },
 
-    # StyleTTS 2 kokoro
+    # StyleTTS 2 Kokoro v0.19
     'hexgrad/kokoro': {
-		1: "af", #voice
-		2: None, #ps
-		3: 1, #speed
-		4: 3000, #trim
-		5: False, #use_gpu; fast enough with multithreaded with CPU
-        6: os.getenv('KOKORO'), #sk
+		'voice': "af",
+		'ps': None,
+		'speed': 1,
+		'trim': 0.5,
+		'use_gpu': False, # fast enough with multithreaded CPU
+        'sk': os.getenv('KOKORO'),
+    },
+
+    # StyleTTS 2 Kokoro v0.23
+    'hexgrad/Kokoro-TTS/0.23': {
+		'voice': "af",
+		'speed': 1,
+		'trim': 0.5,
+        'sk': os.getenv('KOKORO'),
     },
 
     # maskGCT (by amphion)

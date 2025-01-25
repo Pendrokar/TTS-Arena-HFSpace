@@ -4,6 +4,7 @@ from gradio_client import Client, file
 client = Client("hexgrad/kokoro", hf_token=os.getenv('HF_TOKEN'))
 # endpoints = client.view_api(all_endpoints=True, print_info=False, return_format='dict')
 # print(endpoints)
+key = os.getenv('KOKORO')
 result = client.predict(
 		text='"I hate it when people lie to me."',
 		voice="af",
@@ -19,6 +20,7 @@ result = client.predict(
 		# 	3000, #trim
 		# 	False, #use_gpu; fast enough with multithreaded with CPU
 		# ],
+        sk=key,
 		api_name="/generate"
 )
 
