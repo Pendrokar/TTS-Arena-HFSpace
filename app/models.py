@@ -63,7 +63,7 @@ AVAILABLE_MODELS = {
 
     # OuteTTS 500M
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
-    'ameerazam08/OuteTTS-0.2-500M-Demo': 'ameerazam08/OuteTTS-0.2-500M-Demo', # ZeroGPU Space
+    # 'ameerazam08/OuteTTS-0.2-500M-Demo': 'ameerazam08/OuteTTS-0.2-500M-Demo', # ZeroGPU Space
     # OuteTTS 1B
     # 'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
 

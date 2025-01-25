@@ -90,5 +90,5 @@ def get_leaderboard(reveal_prelim = False):
             top_five.append(orig_name)
 
     df['elo'] = df['elo_diff']
-    df = df[['order', 'name', 'elo', 'votes', 'win_rate']]
+    df = df[['order', 'name', 'win_rate', 'elo', 'votes']]
     return df
