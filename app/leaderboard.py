@@ -21,27 +21,30 @@ def get_leaderboard(reveal_prelim = False):
     df['name'] = df['name'].replace(model_names)
     for i in range(len(df)):
         df.loc[i, "name"] = make_link_to_space(df['name'][i], True)
+
+    # Calculate total votes and win rate
     df['votes'] = df['upvote'] + df['downvote']
+    df['win_rate'] = (df['upvote'] / df['votes'] * 100).round(1)
     # df['score'] = round((df['upvote'] / df['votes']) * 100, 2) # Percentage score
 
     ## ELO SCORE
-    df['score'] = 1200
-    df['score_diff'] = ""
+    df['elo'] = 1200
+    df['elo_diff'] = ""
     for i in range(len(df)):
         for j in range(len(df)):
             if i != j:
                 try:
-                    expected_a = 1 / (1 + 10 ** ((df['score'].iloc[j] - df['score'].iloc[i]) / 400))
-                    expected_b = 1 / (1 + 10 ** ((df['score'].iloc[i] - df['score'].iloc[j]) / 400))
+                    expected_a = 1 / (1 + 10 ** ((df['elo'].iloc[j] - df['elo'].iloc[i]) / 400))
+                    expected_b = 1 / (1 + 10 ** ((df['elo'].iloc[i] - df['elo'].iloc[j]) / 400))
                     actual_a = df['upvote'].iloc[i] / df['votes'].iloc[i] if df['votes'].iloc[i] > 0 else 0.5
                     actual_b = df['upvote'].iloc[j] / df['votes'].iloc[j] if df['votes'].iloc[j] > 0 else 0.5
-                    df.at[i, 'score'] += round(32 * (actual_a - expected_a))
-                    df.at[j, 'score'] += round(32 * (actual_b - expected_b))
+                    df.at[i, 'elo'] += round(32 * (actual_a - expected_a))
+                    df.at[j, 'elo'] += round(32 * (actual_b - expected_b))
                 except Exception as e:
                     print(f"Error in ELO calculation for rows {i} and {j}: {str(e)}")
                     continue
-    df['score'] = round(df['score'])
-    df['score_diff'] = df['score']
+    df['elo'] = round(df['elo'])
+    df['elo_diff'] = df['elo']
 
     if (
         reveal_prelim == False
@@ -51,18 +54,18 @@ def get_leaderboard(reveal_prelim = False):
 
     if (reveal_prelim == False):
         for i in range(len(df)):
-            score_diff = (df['score'].iloc[i] - leaderboard_df['score'].iloc[i])
-            if (score_diff == 0):
+            elo_diff = (df['elo'].iloc[i] - leaderboard_df['elo'].iloc[i])
+            if (elo_diff == 0):
                 continue
-            if (score_diff > 0):
+            if (elo_diff > 0):
                 plus = '<em style="color: green; font-family: monospace">+'
             else:
                 plus = '<em style="color: red; font-family: monospace">'
 
-            df.at[i, 'score_diff'] = str(df['score'].iloc[i]) + plus + str(score_diff) +'</em>'
+            df.at[i, 'elo_diff'] = str(df['elo'].iloc[i]) + plus + str(elo_diff) +'</em>'
 
-    ## ELO SCORE
-    df = df.sort_values(by='score', ascending=False)
+    ## ELO score
+    df = df.sort_values(by='elo', ascending=False)
     # medals
     def assign_medal(rank, assign):
         rank = str(rank + 1)
@@ -86,6 +89,6 @@ def get_leaderboard(reveal_prelim = False):
         ):
             top_five.append(orig_name)
 
-    df['score'] = df['score_diff']
-    df = df[['order', 'name', 'score', 'votes']]
+    df['elo'] = df['elo_diff']
+    df = df[['order', 'name', 'elo', 'votes', 'win_rate']]
     return df

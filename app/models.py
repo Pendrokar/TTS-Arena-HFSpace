@@ -513,6 +513,37 @@ model_names = {
     'metavoice': 'MetaVoice-1B',
 }
 
+model_links = {
+    'ElevenLabs': 'https://elevenlabs.io/',
+    'Play.HT 2.0': 'https://play.ht/',
+    'Play.HT 3.0 Mini': 'https://play.ht/',
+    'XTTSv2': 'https://huggingface.co/coqui/XTTS-v2',
+    'MeloTTS': 'https://github.com/myshell-ai/MeloTTS',
+    'StyleTTS 2': 'https://github.com/yl4579/StyleTTS2',
+    'Parler TTS Large': 'https://github.com/huggingface/parler-tts',
+    'Parler TTS': 'https://github.com/huggingface/parler-tts',
+    'Fish Speech v1.5': 'https://github.com/fishaudio/fish-speech',
+    'Fish Speech v1.4': 'https://github.com/fishaudio/fish-speech',
+    'GPT-SoVITS': 'https://github.com/RVC-Boss/GPT-SoVITS',
+    'WhisperSpeech': 'https://github.com/WhisperSpeech/WhisperSpeech',
+    'VoiceCraft 2.0': 'https://github.com/jasonppy/VoiceCraft',
+    'PlayDialog': 'https://play.ht/',
+    'Kokoro v0.19': 'https://huggingface.co/hexgrad/Kokoro-82M',
+    'CosyVoice 2.0': 'https://github.com/FunAudioLLM/CosyVoice',
+    'MetaVoice': 'https://github.com/metavoiceio/metavoice-src',
+    'OpenVoice': 'https://github.com/myshell-ai/OpenVoice',
+    'OpenVoice V2': 'https://github.com/myshell-ai/OpenVoice',
+    'Pheme': 'https://github.com/PolyAI-LDN/pheme',
+    'Vokan TTS': 'https://huggingface.co/ShoukanLabs/Vokan',
+}
+
+closed_source = [
+    'ElevenLabs',
+    'Play.HT 2.0',
+    'Play.HT 3.0 Mini',
+    'PlayDialog',
+]
+
 def make_link_to_space(model_name, for_leaderboard=False):
     # create a anchor link if a HF space
     style = 'text-decoration: underline;text-decoration-style: dotted;'

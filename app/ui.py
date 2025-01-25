@@ -37,6 +37,9 @@ head_js += open("app/cookie.js").read()
 head_js += '</script>'
 
 with gr.Blocks() as about:
+    with gr.Row():
+        with gr.Accordion("News", open=False):
+            gr.Markdown(NEWS)
     gr.Markdown(ABOUT)
 
 with gr.Blocks(
