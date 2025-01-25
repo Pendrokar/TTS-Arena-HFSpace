@@ -19,6 +19,7 @@ models:
 - lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
+- myshell-ai/MeloTTS-English-v3
 - myshell-ai/OpenVoice
 - myshell-ai/OpenVoiceV2
 - OuteAI/OuteTTS-0.2-500M
@@ -28,7 +29,7 @@ models:
 - Pendrokar/xvapitch_expresso
 - SWivid/F5-TTS
 - WhisperSpeech/WhisperSpeech
-sdk_version: 5.4.0
+sdk_version: 5.13.0
 ---
 
 [Saved votes dataset](https://huggingface.co/datasets/Pendrokar/TTS_Arena)

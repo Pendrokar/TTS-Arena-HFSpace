@@ -61,11 +61,14 @@ AVAILABLE_MODELS = {
     # GPT-SoVITS
     'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
 
-    # OuteTTS
+    # OuteTTS 500M
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
     'ameerazam08/OuteTTS-0.2-500M-Demo': 'ameerazam08/OuteTTS-0.2-500M-Demo', # ZeroGPU Space
     # OuteTTS 1B
-    'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
+    # 'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
+
+    # llasa 3b TTS
+    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -114,7 +117,7 @@ HF_SPACES = {
     },
     # MetaVoice
     'mrfakename/MetaVoice-1B-v0.1': {
-        'name':'MetaVoice-1B',
+        'name':'MetaVoice',
         'function': '/tts',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -186,7 +189,7 @@ HF_SPACES = {
 
     # Microsoft Edge TTS
     'innoai/Edge-TTS-Text-to-Speech': {
-        'name': 'Edge TTS',
+        'name': 'Microsoft™ Edge TTS',
         'function': '/predict',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -296,6 +299,14 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
+    },
+    'OuteAI/OuteTTS-0.3-1B-Demo': {
+        'name': 'llasa 3b',
+        'function': '/infer',
+        'text_param_index': 'target_text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'llasa 3b',
     },
 }
 
@@ -469,6 +480,9 @@ OVERRIDE_INPUTS = {
 		'repetition_penalty': 1.1,
 		'speaker_selection': "en_female_1",
 		'reference_audio': None,
+    },
+    'srinivasbilla/llasa-3b-tts': {
+		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
     },
 }
 

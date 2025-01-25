@@ -266,36 +266,6 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
         return inputs
 
-    def _cache_sample(text, model):
-        # skip caching if not hardcoded sentence
-        if (text not in sents):
-            return False
-
-        already_cached = False
-        # check if already cached
-        for cached_sample in cached_samples:
-            # TODO:replace cached with newer version
-            if (cached_sample.transcript == text and cached_sample.modelName == model):
-                already_cached = True
-                return True
-
-        if (already_cached):
-            return False
-
-        try:
-            cached_samples.append(Sample(results[model], text, model))
-        except:
-            print('Error when trying to cache sample')
-            return False
-
-        # save list to JSON file
-        cached_sample_dict = [cached_sample.to_dict() for cached_sample in cached_samples]
-        try:
-            with open("_cached_samples.json", "w") as write:
-                json.dump( cached_sample_dict , write )
-        except:
-            pass
-
     mdl1k = mdl1
     mdl2k = mdl2
     print(mdl1k, mdl2k)
@@ -306,19 +276,18 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
     # do not use multithreading when both spaces are ZeroGPU type
     if (
-        # exists
         'is_zero_gpu_space' in HF_SPACES[mdl1]
-        # is True
         and HF_SPACES[mdl1]['is_zero_gpu_space']
+
         and 'is_zero_gpu_space' in HF_SPACES[mdl2]
         and HF_SPACES[mdl2]['is_zero_gpu_space']
     ):
         # run Zero-GPU spaces one at a time
         predict_and_update_result(text, mdl1k, results, request)
-        _cache_sample(text, mdl1k)
+        cache_sample(results[mdl1k], text, mdl1k)
 
         predict_and_update_result(text, mdl2k, results, request)
-        _cache_sample(text, mdl2k)
+        cache_sample(results[mdl2k], text, mdl2k)
     else:
         # use multithreading
         thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
@@ -332,9 +301,9 @@ def synthandreturn(text, autoplay, request: gr.Request):
         thread1.join(120)
         thread2.join(120)
 
-        # cache the result
+        # cache each result
         for model in [mdl1k, mdl2k]:
-            _cache_sample(text, model)
+            cache_sample(results[model], text, model)
 
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (

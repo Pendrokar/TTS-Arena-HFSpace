@@ -2,6 +2,7 @@ import gradio as gr
 import itertools
 import random
 import json
+from .config import sents
 from typing import List, Tuple, Set, Dict
 from hashlib import md5, sha1
 import spaces
@@ -71,6 +72,37 @@ def get_userid(session_hash: str, request):
         # return sha1(bytes(request.headers.encode('ascii'))).hexdigest()
         # by browser session hash - Not a cookie, session hash changes on page reload
         return sha1(bytes(request.session_hash.encode('ascii')), usedforsecurity=False).hexdigest()
+
+
+def cache_sample(path, text, model):
+    # skip caching if not a hardcoded sentence
+    if (text not in sents):
+        return False
+
+    already_cached = False
+    # check if already cached
+    for cached_sample in cached_samples:
+        # TODO: replace cached sample with a newer version?
+        if (cached_sample.transcript == text and cached_sample.modelName == model):
+            already_cached = True
+            return True
+
+    if (already_cached):
+        return False
+
+    try:
+        cached_samples.append(Sample(path, text, model))
+    except:
+        print('Error when trying to cache sample')
+        return False
+
+    # save list to JSON file
+    cached_sample_dict = [cached_sample.to_dict() for cached_sample in cached_samples]
+    try:
+        with open("_cached_samples.json", "w") as write:
+            json.dump( cached_sample_dict , write )
+    except:
+        pass
 
 # Give user a cached audio sample pair they have yet to vote on
 def give_cached_sample(session_hash: str, autoplay: bool, request: gr.Request):
