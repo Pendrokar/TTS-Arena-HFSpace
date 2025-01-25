@@ -323,7 +323,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
     },
-    'OuteAI/OuteTTS-0.3-1B-Demo': {
+    'srinivasbilla/llasa-3b-tts': {
         'name': 'llasa 3b',
         'function': '/infer',
         'text_param_index': 'target_text',
