@@ -21,10 +21,9 @@ AVAILABLE_MODELS = {
     # 'Fish Speech v1.4': 'fish',
 
     # HF Gradio Spaces: # <works with gradio version #>
-    # gravio version that works with most spaces: 4.29
-     'coqui/xtts': 'coqui/xtts', # 4.29 4.32
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
+    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
@@ -221,7 +220,7 @@ HF_SPACES = {
     },
 
     # E2 TTS TODO: call switch model function
-    'mrfakename/E2-F5-TTS': {
+    'mrfakename/E2-F5-TTS/E2': {
         'name': 'E2 TTS',
         'function': '/basic_tts',
         'text_param_index': 'gen_text_input',
