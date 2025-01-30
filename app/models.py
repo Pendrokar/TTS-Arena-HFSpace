@@ -23,29 +23,29 @@ AVAILABLE_MODELS = {
     # HF Gradio Spaces: # <works with gradio version #>
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
-    'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13
+    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
-    # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-     # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
-     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
+     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+     'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
 
     # E2 & F5 TTS
     # F5 model
-    # 'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
+    'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
     # E2 model
     # 'mrfakename/E2-F5-TTS/E2': 'mrfakename/E2-F5-TTS', # seems to require multiple requests for setup
 
     # # Parler
     # Parler Large model
-    # 'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
     # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
-    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
@@ -53,16 +53,16 @@ AVAILABLE_MODELS = {
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
     # StyleTTS v2
-    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
+    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
     # StyleTTS kokoro
-    'hexgrad/kokoro': 'hexgrad/Kokoro-TTS',
+    # 'hexgrad/kokoro': 'hexgrad/Kokoro-TTS',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
-    # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
+    'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
 
     # GPT-SoVITS
-    # 'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
+    'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
 
     # OuteTTS 500M
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
@@ -71,7 +71,7 @@ AVAILABLE_MODELS = {
     # 'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
 
     # llasa 3b TTS
-    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
+    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
