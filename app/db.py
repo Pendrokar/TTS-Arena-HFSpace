@@ -48,7 +48,13 @@ def create_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS spokentext (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            votelog_id INTEGER UNIQUE,
             spokentext TEXT,
+            lang TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+    ''')
+    # foreign keys
+    cursor.execute('''
+        CREATE UNIQUE INDEX IF NOT EXISTS st_to_vl ON spokentext(votelog_id);
     ''')
