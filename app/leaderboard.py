@@ -14,7 +14,7 @@ def get_leaderboard(reveal_prelim = False):
     cursor = conn.cursor()
     sql = 'SELECT name, upvote, downvote, name AS orig_name FROM model'
     prelim_votes = 300
-    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > '+ prelim_votes
+    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > '+ str(prelim_votes)
     cursor.execute(sql)
     data = cursor.fetchall()
     df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote', 'orig_name'])
