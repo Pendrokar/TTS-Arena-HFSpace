@@ -724,16 +724,24 @@ def make_link_to_space(model_name, for_leaderboard=False):
     except:
         pass
 
+
     if '/' in model_name:
+        space_link = 'https://huggingface.co/spaces/'
+        try:
+            space_link += AVAILABLE_MODELS[model_name]
+        except:
+            space_link += model_name
+            pass
+
         emoji = '🤗' # HF
         try:
             emoji = HF_SPACES[model_name]['emoji']
         except:
             pass
-        return emoji +' <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ AVAILABLE_MODELS[model_name] +'">'+ model_basename +'</a>'
+        return emoji +' <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ space_link +'">'+ model_basename +'</a>'
 
     # otherwise just return without emoji
-    return '<span style="'+ style +'" title="'+ title +'" href="'+ 'https://huggingface.co/spaces/'+ AVAILABLE_MODELS[model_name] +'">'+ model_name +'</span>'
+    return '<span style="'+ style +'" title="'+ title +'" href="'+ space_link +'">'+ model_name +'</span>'
 
 def markdown_link_to_space(model_name):
     # create a anchor link if a HF space using markdown syntax
