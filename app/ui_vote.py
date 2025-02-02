@@ -101,6 +101,15 @@ with gr.Blocks() as vote:
         label="Autoplay audio",
         value=True
     )
+    # hardcoded voice instruct prompt (ParlerTTS, CosyVoice)
+    gr.Textbox(
+        interactive=False,
+        lines=1,
+        max_lines=1,
+        visible=True,
+        show_label=False,
+        placeholder="Hardcoded voice instruction prompt (ParlerTTS): "+ DEFAULT_VOICE_PROMPT,
+    )
 
     outputs = [
         text,
