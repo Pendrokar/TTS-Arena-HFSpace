@@ -326,7 +326,7 @@ def synthandreturn(text, autoplay, request: gr.Request):
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
-        gr.update(visible=False), #nxt round btn
+        gr.update(visible=True), #nxt round btn
         # reset gr.State aplayed & bplayed
         False, #aplayed
         False, #bplayed
