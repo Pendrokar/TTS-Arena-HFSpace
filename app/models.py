@@ -29,6 +29,7 @@ AVAILABLE_MODELS = {
     # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
      'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
      'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
@@ -79,10 +80,10 @@ AVAILABLE_MODELS = {
     'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
 
     # Mars5
-    # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+    # 'CAMB-AI/mars5_space': 'CAMB-AI/mars5_space', # slow inference; Unstable
 
     # Mars6
-    # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+    'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -143,6 +144,13 @@ HF_SPACES = {
 
     # xVASynth (CPU)
     'Pendrokar/xVASynth-TTS': {
+        'name': 'xVASynth v3 DeepMoji',
+        'function': '/predict',
+        'text_param_index': 0,
+        'return_audio_index': 0,
+        'series': 'xVASynth',
+    },
+    'Pendrokar/xVASynth-TTS/NoDeepMoji': {
         'name': 'xVASynth v3',
         'function': '/predict',
         'text_param_index': 0,
@@ -370,6 +378,16 @@ HF_SPACES = {
         # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
 
+    # Mars5
+    'CAMB-AI/mars5_space': {
+        'name': 'MARS 5',
+        'function': '/on_click',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': False,
+        'series': 'MARS',
+    },
+
     # Mars6
     'CAMB-AI/mars6-turbo-demo': {
         'name': 'MARS 6',
@@ -378,7 +396,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': False,
         'is_closed_source': True,
-        'series': 'llasa 3b',
+        'series': 'MARS',
     },
 }
 
@@ -388,6 +406,7 @@ DEFAULT_VOICE_SAMPLE = handle_file(DEFAULT_VOICE_SAMPLE_STR)
 DEFAULT_VOICE_TRANSCRIPT = "The Hispaniola was rolling scuppers under in the ocean swell. The booms were tearing at the blocks, the rudder was banging to and fro, and the whole ship creaking, groaning, and jumping like a manufactory."
 DEFAULT_VOICE_PROMPT = "female voice; very clear audio"
 
+# Older gradio spaces use unnamed parameters, both types are valid
 OVERRIDE_INPUTS = {
     'coqui/xtts': {
         1: 'en',
@@ -418,6 +437,11 @@ OVERRIDE_INPUTS = {
     'Pendrokar/xVASynth-TTS': {
         1: 'x_ex04', #fine-tuned voice model name
         3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
+    },
+    'Pendrokar/xVASynth-TTS/NoDeepMoji': {
+        1: 'x_ex02', #fine-tuned voice model name
+        3: 1.0, #pacing/duration - Gradio Slider issue: takes min. rather than value
+        10: False, #Use DeepMoji
     },
     'suno/bark': {
         1: 'Speaker 3 (en)', # voice
@@ -585,6 +609,21 @@ OVERRIDE_INPUTS = {
     },
     'srinivasbilla/llasa-3b-tts': {
 		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
+    },
+
+    # MARS 5
+    'CAMB-AI/mars5_space': {
+        'audio_file': DEFAULT_VOICE_SAMPLE,
+		'prompt_text': DEFAULT_VOICE_TRANSCRIPT,
+		'temperature': 0.8,
+		'top_k': -1,
+		'top_p': 0.2,
+		'typical_p': 1,
+		'freq_penalty': 2.6,
+		'presence_penalty': 0.4,
+		'rep_penalty_window': 100,
+		'nar_guidance_w': 3,
+		'deep_clone': True, # too slow for deep clone
     },
 
     # MARS 6
