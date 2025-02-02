@@ -78,6 +78,12 @@ AVAILABLE_MODELS = {
     # llasa 3b TTS
     'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
 
+    # Mars5
+    # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+
+    # Mars6
+    # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
@@ -363,6 +369,17 @@ HF_SPACES = {
         'series': 'llasa 3b',
         # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
+
+    # Mars6
+    'CAMB-AI/mars6-turbo-demo': {
+        'name': 'MARS 6',
+        'function': '/inference',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': False,
+        'is_closed_source': True,
+        'series': 'llasa 3b',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
@@ -568,6 +585,17 @@ OVERRIDE_INPUTS = {
     },
     'srinivasbilla/llasa-3b-tts': {
 		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
+    },
+
+    # MARS 6
+    'CAMB-AI/mars6-turbo-demo': {
+        'reference_audio': DEFAULT_VOICE_SAMPLE,
+		'reference_text': DEFAULT_VOICE_TRANSCRIPT,
+		'ras_K': 10,
+		'ras_t_r': 0.09,
+		'top_p': 0.2,
+		'quality_prefix': "48000",
+		'clone_method': "deep-clone",
     },
 }
 
