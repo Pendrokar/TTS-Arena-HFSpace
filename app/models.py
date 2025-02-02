@@ -1,7 +1,7 @@
 import os
 from gradio_client import handle_file
 
-# Models to include in the leaderboard, only include models that users can vote on
+# Models to enable, only include models that users can vote on
 AVAILABLE_MODELS = {
     # 'XTTSv2': 'xtts',
     # 'WhisperSpeech': 'whisperspeech',
@@ -52,10 +52,15 @@ AVAILABLE_MODELS = {
 
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
+
     # StyleTTS v2
-    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
-    # StyleTTS kokoro
-    'hexgrad/kokoro': 'hexgrad/kokoro',
+    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
+    # StyleTTS Kokoro v0.19
+    # 'hexgrad/kokoro': 'hexgrad/Kokoro-TTS',
+    # StyleTTS Kokoro v0.23
+    # 'hexgrad/Kokoro-TTS/0.23': 'hexgrad/Kokoro-TTS',
+    # StyleTTS Kokoro v1.0
+    'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
@@ -92,6 +97,7 @@ HF_SPACES = {
         'return_audio_index': 1,
         'series': 'XTTS',
     },
+
     # WhisperSpeech
     'collabora/WhisperSpeech': {
         'name': 'WhisperSpeech',
@@ -101,6 +107,7 @@ HF_SPACES = {
         'series': 'WhisperSpeech',
         'emoji': '😷', # broken space
     },
+
     # OpenVoice (MyShell.ai)
     'myshell-ai/OpenVoice': {
         'name':'OpenVoice',
@@ -117,6 +124,7 @@ HF_SPACES = {
         'return_audio_index': 1,
         'series': 'OpenVoice',
     },
+
     # MetaVoice
     'mrfakename/MetaVoice-1B-v0.1': {
         'name':'MetaVoice',
@@ -126,6 +134,7 @@ HF_SPACES = {
         'series': 'MetaVoice-1B',
         'emoji': '😷', # broken space
     },
+
     # xVASynth (CPU)
     'Pendrokar/xVASynth-TTS': {
         'name': 'xVASynth v3',
@@ -134,6 +143,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'xVASynth',
     },
+
     # CoquiTTS (CPU)
     'coqui/CoquiTTS': {
         'name': 'CoquiTTS',
@@ -142,6 +152,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'CoquiTTS',
     },
+
     # HierSpeech_TTS
     'LeeSangHoon/HierSpeech_TTS': {
         'name': 'HierSpeech++',
@@ -151,6 +162,7 @@ HF_SPACES = {
         'series': 'HierSpeech++',
         'emoji': '😒', # unemotional
     },
+
     # MeloTTS (MyShell.ai)
     'mrfakename/MeloTTS': {
         'name': 'MeloTTS',
@@ -279,6 +291,17 @@ HF_SPACES = {
         'series': 'Kokoro',
     },
 
+    # StyleTTS Kokoro v1.0
+    'hexgrad/Kokoro-API': {
+        'name': 'Kokoro v1.0',
+        'function': '/predict',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': False,
+        'series': 'Kokoro',
+        'hf_token': os.getenv('KOKORO'), #special
+    },
+
     # MaskGCT (by Amphion)
     'amphion/maskgct': {
         'name': 'MaskGCT',
@@ -287,7 +310,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
-        # 'emoji': '🥵', # 300s minimum ZeroGPU!
+        # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
     'Svngoku/maskgct-audio-lab': {
         'name': 'MaskGCT',
@@ -296,8 +319,10 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
-        # 'emoji': '🥵', # 300s minimum ZeroGPU!
+        # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
+
+    # GPT-SoVITS v2
     'lj1995/GPT-SoVITS-v2': {
         'name': 'GPT-SoVITS v2',
         'function': '/get_tts_wav',
@@ -306,6 +331,8 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'GPT-SoVITS',
     },
+
+    # OuteTTS v0.2 500M
     'ameerazam08/OuteTTS-0.2-500M-Demo': {
         'name': 'OuteTTS v2 500M',
         'function': '/generate_tts',
@@ -313,7 +340,9 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
+        'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
+    # OuteTTS v0.3 1B
     'OuteAI/OuteTTS-0.3-1B-Demo': {
         'name': 'OuteTTS v3 1B',
         'function': '/generate_tts',
@@ -321,14 +350,18 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
+        'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
+
+    # LlaSa 3B
     'srinivasbilla/llasa-3b-tts': {
-        'name': 'llasa 3b',
+        'name': 'LLaSA 3B',
         'function': '/infer',
         'text_param_index': 'target_text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'llasa 3b',
+        # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
 }
 
@@ -485,6 +518,12 @@ OVERRIDE_INPUTS = {
 		'speed': 1,
 		'trim': 0.5,
         'sk': os.getenv('KOKORO'),
+    },
+
+    # StyleTTS 2 Kokoro v1.0
+    'hexgrad/Kokoro-API': {
+		'voice': "af_heart",
+		'speed': 1,
     },
 
     # maskGCT (by amphion)

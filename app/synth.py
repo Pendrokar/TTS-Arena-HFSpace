@@ -100,8 +100,16 @@ def synthandreturn(text, autoplay, request: gr.Request):
                     if '/' in model:
                         # Use public HF Space
                         # if (model not in hf_clients):
+                        #     #save client to local variable; can timeout
                         #     hf_clients[model] = Client(model, hf_token=hf_token, headers=hf_headers)
-                        mdl_space = Client(AVAILABLE_MODELS[model], hf_token=hf_token, headers=hf_headers)
+                        try:
+                            # use TTS host's token
+                            client_token = HF_SPACES[model]['hf_token']
+                        except:
+                            # use arena host's token
+                            client_token = hf_token
+                        # even this may cause 429 Too Many Request
+                        mdl_space = Client(AVAILABLE_MODELS[model], hf_token=client_token, headers=hf_headers)
 
                         # print(f"{model}: Fetching endpoints of HF Space")
                         # assume the index is one of the first 9 return params

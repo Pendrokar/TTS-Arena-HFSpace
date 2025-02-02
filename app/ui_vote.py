@@ -120,7 +120,7 @@ with gr.Blocks() as vote:
     ]
     """
     text,
-        "Synthesize",
+        "Synthesize 🐢",
         gr.update(visible=True), # r2
         mdl1, # model1
         mdl2, # model2
