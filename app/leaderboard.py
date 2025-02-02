@@ -13,7 +13,8 @@ def get_leaderboard(reveal_prelim = False):
     conn = get_db()
     cursor = conn.cursor()
     sql = 'SELECT name, upvote, downvote, name AS orig_name FROM model'
-    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > 300'
+    prelim_votes = 300
+    if not reveal_prelim: sql += ' WHERE (upvote + downvote) > '+ prelim_votes
     cursor.execute(sql)
     data = cursor.fetchall()
     df = pd.DataFrame(data, columns=['name', 'upvote', 'downvote', 'orig_name'])
@@ -52,17 +53,22 @@ def get_leaderboard(reveal_prelim = False):
     ):
         leaderboard_df = df
 
-    if (reveal_prelim == False):
-        for i in range(len(df)):
-            elo_diff = (df['elo'].iloc[i] - leaderboard_df['elo'].iloc[i])
-            if (elo_diff == 0):
-                continue
-            if (elo_diff > 0):
-                plus = '<em style="color: green; font-family: monospace">+'
-            else:
-                plus = '<em style="color: red; font-family: monospace">'
+    # Add ELO diff from startup
+    try:
+        if (reveal_prelim == False):
+            for i in range(len(df)):
+                elo_diff = (df['elo'].iloc[i] - leaderboard_df['elo'].iloc[i])
+                if (elo_diff == 0):
+                    continue
+                if (elo_diff > 0):
+                    plus = '<em style="color: green; font-family: monospace">+'
+                else:
+                    plus = '<em style="color: red; font-family: monospace">'
 
-            df.at[i, 'elo_diff'] = str(df['elo'].iloc[i]) + plus + str(elo_diff) +'</em>'
+                df.at[i, 'elo_diff'] = str(df['elo'].iloc[i]) + plus + str(elo_diff) +'</em>'
+    except:
+        # FIXME: crashes when a TTS from premilinary results passes the vote threshold
+        pass
 
     ## ELO score
     df = df.sort_values(by='elo', ascending=False)
