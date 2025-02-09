@@ -31,7 +31,7 @@ models:
 - Pendrokar/xvapitch_expresso
 - SWivid/F5-TTS
 - WhisperSpeech/WhisperSpeech
-sdk_version: 5.13.0
+sdk_version: 5.15.0
 ---
 
 [Saved votes dataset](https://huggingface.co/datasets/Pendrokar/TTS_Arena)

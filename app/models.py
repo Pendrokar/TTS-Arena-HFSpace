@@ -23,10 +23,10 @@ AVAILABLE_MODELS = {
     # HF Gradio Spaces: # <works with gradio version #>
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
-    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13
+    # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13+
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
-    'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
-    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
+    'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
+    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
@@ -106,6 +106,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 1,
         'series': 'XTTS',
+        'emoji': '😩', # old gradio
     },
 
     # WhisperSpeech
@@ -125,6 +126,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 1,
         'series': 'OpenVoice',
+        'emoji': '😩', # old gradio
     },
     # OpenVoice v2 (MyShell.ai)
     'myshell-ai/OpenVoiceV2': {
@@ -133,6 +135,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 1,
         'series': 'OpenVoice',
+        'emoji': '😩', # old gradio
     },
 
     # MetaVoice
@@ -236,6 +239,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'Fish Speech',
+        'emoji': '😷', # broken space
     },
 
     # F5 TTS
