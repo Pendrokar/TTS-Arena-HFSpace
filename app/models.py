@@ -25,14 +25,14 @@ AVAILABLE_MODELS = {
     # gradio version that works with most spaces: 4.29
     # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
-    # 'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
-    # 'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
+    'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # 4.29
+    'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # 4.29
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
-     'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # 4.29 4.32 4.36.1
+    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Queue ERROR
 
     # E2 & F5 TTS
     # F5 model
@@ -46,7 +46,7 @@ AVAILABLE_MODELS = {
     # Parler Mini model
     # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
-    'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
@@ -55,7 +55,7 @@ AVAILABLE_MODELS = {
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
 
     # StyleTTS v2
-    'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
+    # 'Pendrokar/style-tts-2': 'Pendrokar/style-tts-2', #  more votes in OG arena; emotionless
 
     # StyleTTS Kokoro v0.19
     # 'hexgrad/kokoro': 'hexgrad/Kokoro-TTS',
@@ -79,6 +79,8 @@ AVAILABLE_MODELS = {
 
     # llasa 3b TTS
     'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
+    # llasa 8b TTS
+    'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts',
 
     # Mars5
     # 'CAMB-AI/mars5_space': 'CAMB-AI/mars5_space', # slow inference; Unstable
@@ -288,7 +290,7 @@ HF_SPACES = {
 
     # StyleTTS Kokoro v0.19
     'hexgrad/kokoro': {
-        'name': 'StyleTTS Kokoro v19',
+        'name': 'Kokoro v0.19',
         'function': '/generate',
         'text_param_index': 'text',
         'return_audio_index': 0,
@@ -375,8 +377,17 @@ HF_SPACES = {
         'text_param_index': 'target_text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'llasa 3b',
-        # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'series': 'llasa',
+    },
+
+    # LlaSa 8B
+    'srinivasbilla/llasa-8b-tts': {
+        'name': 'LLaSA 8B',
+        'function': '/infer',
+        'text_param_index': 'target_text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'llasa',
     },
 
     # Mars5
@@ -609,6 +620,9 @@ OVERRIDE_INPUTS = {
 		'reference_audio': None,
     },
     'srinivasbilla/llasa-3b-tts': {
+		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
+    },
+    'srinivasbilla/llasa-8b-tts': {
 		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
     },
 
