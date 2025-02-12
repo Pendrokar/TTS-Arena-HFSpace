@@ -127,6 +127,7 @@ def get_leaderboard(reveal_prelim = False):
         if (
             reveal_prelim
             and len(top_five) < 5
+            and orig_name not in top_five
             and orig_name in AVAILABLE_MODELS.keys()
         ):
             top_five.append(orig_name)

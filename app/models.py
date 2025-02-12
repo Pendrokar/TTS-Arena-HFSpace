@@ -749,9 +749,7 @@ def make_link_to_space(model_name, for_leaderboard=False):
         title += model_name +'; Disabled (See AVAILABLE_MODELS within code for why)'
 
     # bolden top five models which get more scrutinized
-    print(top_five)
     if model_name in top_five:
-        print('Warning: top_five is not set')
         style += 'font-weight: bold;'
         title += '; scrutinized'
 
