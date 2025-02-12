@@ -1,4 +1,5 @@
 import time
+from gradio_client import Client
 from .models import *
 from .utils import *
 from .config import *
