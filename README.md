@@ -17,6 +17,7 @@ models:
 - fishaudio/fish-speech-1.5
 - hexgrad/Kokoro-82M
 - HKUSTAudio/Llasa-3B
+- HKUSTAudio/Llasa-8B
 - lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2

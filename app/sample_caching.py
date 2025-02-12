@@ -154,7 +154,7 @@ def give_cached_sample(session_hash: str, autoplay: bool, request: gr.Request):
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
         gr.update(visible=False), #prevmodel2
-        gr.update(visible=True), #nxt round btn
+        gr.update(visible=True, value="⚡ Skip Round"), #nxt round btn
         # reset aplayed, bplayed audio playback events
         False, #aplayed
         False, #bplayed

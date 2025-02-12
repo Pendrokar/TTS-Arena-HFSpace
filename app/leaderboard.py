@@ -49,11 +49,14 @@ def get_leaderboard(reveal_prelim = False):
 
         # add link to vote dataset
         orig_name = df['OrigName'].iloc[i]
-        if ('/' in orig_name):
+        if (
+            DB_DATASET_ID != ''
+            and '/' in orig_name
+        ):
+            style = 'text-decoration: underline;text-decoration-style: dotted; color: var(--link-text-color);'
+            title = 'Rejections'
             # win rate dataset
-            df.at[i, 'Win Rate'] = f'<a target="_blank" href="https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/rejections?f[rejected][value]=%27{orig_name}%27">' + df['Win Rate'].iloc[i] + '</a>'
-            # df['Win Rate'].iloc[i] = f'<a target="_blank" href="https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/rejections?f[rejected][value]=%27{orig_name}%27">' + df['Win Rate'].iloc[i] + '</a>'
-            # df.loc[i,"Win Rate"] = f'<a target="_blank" href="https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/rejections?f[rejected][value]=%27{orig_name}%27">' + df['Win Rate'].iloc[i] + '</a>'
+            df.at[i, 'Win Rate'] = f'<a target="_blank" style="{style}" title="{title}" href="https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/rejections?f[rejected][value]=%27{orig_name}%27">' + df['Win Rate'].iloc[i] + '</a>'
     df['Elo'] = round(df['Elo'])
     df['Elo Diff'] = df['Elo']
 
