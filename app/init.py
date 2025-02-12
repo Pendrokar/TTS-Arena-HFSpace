@@ -2,8 +2,6 @@ from .config import *
 from .db import *
 from huggingface_hub import CommitScheduler
 from pathlib import Path
-from gradio_client import Client
-import os
 
 
 scheduler = None

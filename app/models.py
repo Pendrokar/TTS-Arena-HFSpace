@@ -1,5 +1,6 @@
 import os
 from gradio_client import handle_file
+from .init import *
 from .db import *
 
 # Models to enable, only include models that users can vote on
