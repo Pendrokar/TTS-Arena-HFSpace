@@ -1,5 +1,6 @@
 import os
 from gradio_client import handle_file
+from .db import *
 
 # Models to enable, only include models that users can vote on
 AVAILABLE_MODELS = {
@@ -715,6 +716,25 @@ closed_source = [
     'PlayDialog',
 ]
 
+# top five models in order to always have one of them picked and scrutinized
+top_five = []
+
+# prioritize low vote models
+sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
+conn = get_db()
+cursor = conn.cursor()
+cursor.execute(sql)
+data = cursor.fetchall()
+for model in data:
+    if (
+        len(top_five) >= 5
+    ):
+        break
+
+    if model[0] in AVAILABLE_MODELS.keys():
+        top_five.append(model[0])
+print(f"low vote top_five: {top_five}")
+
 def make_link_to_space(model_name, for_leaderboard=False):
     # create a anchor link if a HF space
     style = 'text-decoration: underline;text-decoration-style: dotted;'
@@ -727,6 +747,13 @@ def make_link_to_space(model_name, for_leaderboard=False):
     else:
         style += 'font-style: italic;'
         title += model_name +'; Disabled (See AVAILABLE_MODELS within code for why)'
+
+    # bolden top five models which get more scrutinized
+    print(top_five)
+    if model_name in top_five:
+        print('Warning: top_five is not set')
+        style += 'font-weight: bold;'
+        title += '; scrutinized'
 
     model_basename = model_name
     if model_name in HF_SPACES:

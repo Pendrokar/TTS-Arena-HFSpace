@@ -1,7 +1,6 @@
 from .config import *
 from .db import *
 from .models import *
-from .synth import top_five
 
 import pandas as pd
 

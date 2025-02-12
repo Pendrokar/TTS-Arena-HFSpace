@@ -11,25 +11,7 @@ import random, os, threading, tempfile
 from langdetect import detect
 from .vote import log_text
 
-# top five models in order to always have one of them picked and scrutinized
-top_five = []
 hf_token=os.getenv('HF_TOKEN')
-
-# prioritize low vote models
-sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
-conn = get_db()
-cursor = conn.cursor()
-cursor.execute(sql)
-data = cursor.fetchall()
-for model in data:
-    if (
-        len(top_five) >= 5
-    ):
-        break
-
-    if model[0] in AVAILABLE_MODELS.keys():
-        top_five.append(model[0])
-print(f"low vote top_five: {top_five}")
 
 def random_m():
     return random.sample(list(set(AVAILABLE_MODELS.keys())), 2)
