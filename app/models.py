@@ -31,7 +31,7 @@ AVAILABLE_MODELS = {
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
-    'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    # 'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Queue ERROR
@@ -89,6 +89,10 @@ AVAILABLE_MODELS = {
 
     # Mars6
     'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+
+    # Zonos
+    'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
+    'Steveeeeeeen/Zonos/hybrid': 'Steveeeeeeen/Zonos',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -417,6 +421,24 @@ HF_SPACES = {
         'is_closed_source': True,
         'series': 'MARS',
     },
+
+    # Zonos
+    'Steveeeeeeen/Zonos': {
+        'name': 'Zonos T',
+        'function': '/generate_audio',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Zonos',
+    },
+    'Steveeeeeeen/Zonos/hybrid': {
+        'name': 'Zonos H',
+        'function': '/generate_audio',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Zonos',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
@@ -658,8 +680,41 @@ OVERRIDE_INPUTS = {
 		'quality_prefix': "48000",
 		'clone_method': "deep-clone",
     },
+
+    # Zonos
+    'Steveeeeeeen/Zonos': {
+        'model_choice':"Zyphra/Zonos-v0.1-transformer",
+        'language': "en-us",
+        'speaker_audio': None, # optional
+        'prefix_audio': handle_file('https://huggingface.co/spaces/Steveeeeeeen/Zonos/resolve/main/assets/silence_100ms.wav'),
+        # 'e1': 1,
+        # 'e2': 0.05,
+        # 'e3': 0.05,
+        # 'e4': 0.05,
+        # 'e5': 0.05,
+        # 'e6': 0.05,
+        # 'e7': 0.1,
+        # 'e8': 0.2,
+        'vq_single': 0.78,
+        'fmax': 24000,
+        'pitch_std': 45,
+        'speaking_rate': 15,
+        'dnsmos_ovrl': 4,
+        'speaker_noised': False,
+        'cfg_scale': 2,
+        'min_p': 0.15,
+        'seed': 420,
+        'randomize_seed': False, # Set to False to easily recreate the state
+        'unconditional_keys': ["emotion"], # makes it ignore e1-e8
+    },
+    # 'Steveeeeeeen/Zonos/hybrid': {
+	# 	'model_choice': 'Zyphra/Zonos-v0.1-hybrid',
+    # },
 }
 
+# minor mods to model from the same space
+OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid'] = OVERRIDE_INPUTS['Steveeeeeeen/Zonos']
+OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid']['model_choice'] = 'Zyphra/Zonos-v0.1-hybrid'
 
 # Model name mapping, can include models that users cannot vote on
 model_names = {
@@ -719,7 +774,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = []
+top_five = ['Steveeeeeeen/Zonos', 'Steveeeeeeen/Zonos/hybrid']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
