@@ -32,6 +32,8 @@ models:
 - Pendrokar/xvapitch_expresso
 - SWivid/F5-TTS
 - WhisperSpeech/WhisperSpeech
+- Zyphra/Zonos-v0.1-hybrid
+- Zyphra/Zonos-v0.1-transformer
 sdk_version: 5.15.0
 ---
 
