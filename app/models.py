@@ -322,7 +322,8 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': False,
         'series': 'Kokoro',
-        'hf_token': os.getenv('KOKORO'), #special
+        'hf_token': os.getenv('KOKORO'), # router
+        'space_link': 'hexgrad/kokoro', # router
     },
 
     # MaskGCT (by Amphion)
@@ -771,10 +772,16 @@ def make_link_to_space(model_name, for_leaderboard=False):
 
     if '/' in model_name:
         space_link = 'https://huggingface.co/spaces/'
+
         try:
-            space_link += AVAILABLE_MODELS[model_name]
+            # Official Kokoro Space uses a router
+            space_link += HF_SPACES[model_name]['space_link']
         except:
-            space_link += model_name
+            try:
+                space_link += AVAILABLE_MODELS[model_name]
+            except:
+                space_link += model_name
+                pass
             pass
 
         emoji = '🤗' # HF
