@@ -68,7 +68,7 @@ AVAILABLE_MODELS = {
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
-    'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
+    # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
 
     # GPT-SoVITS
     'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
@@ -79,10 +79,12 @@ AVAILABLE_MODELS = {
     # OuteTTS 1B
     # 'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
 
+    # llasa 1b TTS
+    'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
+    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
     # llasa 8b TTS
-    'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts',
+    # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
     # Mars5
     # 'CAMB-AI/mars5_space': 'CAMB-AI/mars5_space', # slow inference; Unstable
@@ -255,7 +257,8 @@ HF_SPACES = {
         'text_param_index': 'gen_text_input',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'F5 TTS',
+        # 'series': 'E2 TTS',
+        'series': 'E2/F5 TTS',
     },
 
     # E2 TTS TODO: call switch model function
@@ -265,7 +268,8 @@ HF_SPACES = {
         'text_param_index': 'gen_text_input',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'E2 TTS',
+        # 'series': 'F5 TTS',
+        'series': 'E2/F5 TTS',
     },
 
     # IMS-Toucan
@@ -338,7 +342,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
-        # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
     'Svngoku/maskgct-audio-lab': {
         'name': 'MaskGCT',
@@ -347,7 +351,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
-        # 'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'emoji': '🥵', # requires 300s reserved ZeroGPU!
     },
 
     # GPT-SoVITS v2
@@ -362,7 +366,7 @@ HF_SPACES = {
 
     # OuteTTS v0.2 500M
     'ameerazam08/OuteTTS-0.2-500M-Demo': {
-        'name': 'OuteTTS v2 500M',
+        'name': 'OuteTTS v0.2 500M',
         'function': '/generate_tts',
         'text_param_index': 0,
         'return_audio_index': 0,
@@ -372,13 +376,24 @@ HF_SPACES = {
     },
     # OuteTTS v0.3 1B
     'OuteAI/OuteTTS-0.3-1B-Demo': {
-        'name': 'OuteTTS v3 1B',
+        'name': 'OuteTTS v0.3 1B',
         'function': '/generate_tts',
         'text_param_index': 'text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
         'emoji': '🥵', # requires 300s reserved ZeroGPU!
+    },
+
+    # LlaSa 1B
+    'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': {
+        'name': 'LLaSA 1B',
+        'function': '/predict',
+        'text_param_index': 'input_text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'LLaSA',
+        # 'emoji': '😷', # broken space
     },
 
     # LlaSa 3B
@@ -388,7 +403,8 @@ HF_SPACES = {
         'text_param_index': 'target_text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'llasa',
+        'series': 'LLaSA',
+        'emoji': '😷', # broken space
     },
 
     # LlaSa 8B
@@ -398,7 +414,8 @@ HF_SPACES = {
         'text_param_index': 'target_text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'llasa',
+        'series': 'LLaSA',
+        'emoji': '😷', # broken space
     },
 
     # Mars5
@@ -648,11 +665,14 @@ OVERRIDE_INPUTS = {
 		'speaker_selection': "en_female_1",
 		'reference_audio': None,
     },
+    'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': {
+		'speaker_choice': 'kore',
+    },
     'srinivasbilla/llasa-3b-tts': {
-		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
+		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
     },
     'srinivasbilla/llasa-8b-tts': {
-		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3')
+		'sample_audio_path': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
     },
 
     # MARS 5
@@ -774,7 +794,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['Steveeeeeeen/Zonos', 'Steveeeeeeen/Zonos/hybrid']
+top_five = ['HKUST-Audio/Llasa-1B-finetuned-for-two-speakers']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
