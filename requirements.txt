@@ -6,3 +6,4 @@ git+https://github.com/unitaryai/detoxify
 pyloudnorm
 langdetect
 pydub
+edge_tts==6.1.12

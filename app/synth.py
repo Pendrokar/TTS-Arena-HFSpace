@@ -80,7 +80,12 @@ def synthandreturn(text, autoplay, request: gr.Request):
         while attempt_count < max_attempts:
             try:
                 if model in AVAILABLE_MODELS:
-                    if '/' in model:
+                    if '/' == AVAILABLE_MODELS[model][0]:
+                        # local model
+                        # just Edge TTS API
+                        from .tts.edge import edge_text_to_speech
+                        result = edge_text_to_speech(text, 'en-US-EmmaMultilingualNeural - en-US (Female)')
+                    elif '/' in model:
                         # Use public HF Space
                         # if (model not in hf_clients):
                         #     #save client to local variable; can timeout
@@ -169,6 +174,7 @@ def synthandreturn(text, autoplay, request: gr.Request):
         else:
             print('Done with', model)
 
+        # Resample to 24kHz
         try:
             with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
                 audio = AudioSegment.from_file(result)

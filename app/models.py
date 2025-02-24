@@ -52,6 +52,7 @@ AVAILABLE_MODELS = {
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
+    'innoai/Edge-TTS-Text-to-Speech': '/Edge-TTS', # using Edge API
 
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
@@ -310,6 +311,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': False,
         'series': 'Kokoro',
+        'space_link': 'Remsky/Kokoro-TTS-Zero', # still supports v0.19
     },
 
     # StyleTTS Kokoro v0.23
