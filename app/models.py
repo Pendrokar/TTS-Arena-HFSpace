@@ -26,6 +26,7 @@ AVAILABLE_MODELS = {
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
     # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13+
+    'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
@@ -109,13 +110,21 @@ AVAILABLE_MODELS = {
 
 HF_SPACES = {
     # XTTS v2
+    # 'coqui/xtts': {
+    #     'name': 'XTTS v2',
+    #     'function': '1',
+    #     'text_param_index': 0,
+    #     'return_audio_index': 1,
+    #     'series': 'XTTS',
+    #     'emoji': '😩', # old gradio
+    # },
+    # tonyassi ZeroGPU XTTS v2
     'coqui/xtts': {
         'name': 'XTTS v2',
-        'function': '1',
-        'text_param_index': 0,
-        'return_audio_index': 1,
+        'function': '/predict',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
         'series': 'XTTS',
-        'emoji': '😩', # old gradio
     },
 
     # WhisperSpeech
@@ -238,7 +247,8 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_closed_source': True,
         'series': 'Edge TTS',
-        'emoji': '😑', # api disabled
+        'emoji': '', # api disabled
+        'space_link': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
     },
 
     # Fish Speech
@@ -468,13 +478,17 @@ DEFAULT_VOICE_PROMPT = "female voice; very clear audio"
 
 # Older gradio spaces use unnamed parameters, both types are valid
 OVERRIDE_INPUTS = {
+#     'coqui/xtts': {
+#         1: 'en',
+#         2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
+#         3: None, # mic voice sample
+#         4: False, #use_mic
+#         5: False, #cleanup_reference
+#         6: False, #auto_detect
+#     },
+    # tonyassi ZeroGPU space of XTTS:
     'coqui/xtts': {
-        1: 'en',
-        2: DEFAULT_VOICE_SAMPLE_STR, # voice sample
-        3: None, # mic voice sample
-        4: False, #use_mic
-        5: False, #cleanup_reference
-        6: False, #auto_detect
+        'audio': DEFAULT_VOICE_SAMPLE, # voice sample
     },
     'collabora/WhisperSpeech': {
         1: DEFAULT_VOICE_SAMPLE, # voice sample
@@ -866,7 +880,7 @@ def make_link_to_space(model_name, for_leaderboard=False):
             emoji = HF_SPACES[model_name]['emoji']
         except:
             pass
-        return emoji +' <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ space_link +'">'+ model_basename +'</a>'
+        return (emoji +' <a target="_blank" style="'+ style +'" title="'+ title +'" href="'+ space_link +'">'+ model_basename +'</a>').strip()
 
     # otherwise just return without emoji
     return '<span style="'+ style +'" title="'+ title +'" href="'+ space_link +'">'+ model_name +'</span>'
