@@ -80,10 +80,11 @@ except:
     pass
 
 TTS_INFO = f"""
-### 🔐 Closed Source TTS
+### 🔐 Closed Source/Weights TTS
 * Microsoft _Edge TTS_
+* MARS 6
 
-### 🔓 Open Source TTS capabilities table
+### 🔓 Open Source/Weights TTS - capabilities table
 
 See [the full dataset itself](https://huggingface.co/datasets/Pendrokar/open_tts_tracker) for the legend and more in depth information of each model.
 """.strip()
