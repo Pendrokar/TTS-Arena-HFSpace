@@ -31,11 +31,11 @@ AVAILABLE_MODELS = {
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
-    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
-    'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
-    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Queue ERROR
+    # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
+    'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Queue ERROR
 
     # E2 & F5 TTS
     # F5 model
@@ -45,9 +45,9 @@ AVAILABLE_MODELS = {
 
     # # Parler
     # Parler Large model
-    'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
-    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
@@ -95,8 +95,11 @@ AVAILABLE_MODELS = {
     'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
 
     # Zonos
-    'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
+    # 'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
     'Steveeeeeeen/Zonos/hybrid': 'Steveeeeeeen/Zonos',
+
+    # Spark
+    'thunnai/SparkTTS': 'thunnai/SparkTTS',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -255,7 +258,7 @@ HF_SPACES = {
     'fishaudio/fish-speech-1': {
         'name': 'Fish Speech',
         'function': '/inference_wrapper',
-        'text_param_index': 0,
+        'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'Fish Speech',
         'emoji': '😷', # broken space
@@ -468,6 +471,16 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Zonos',
     },
+
+    # Spark-TTS
+    'thunnai/SparkTTS': {
+        'name': 'Spark-TTS',
+        'function': '/voice_clone',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Spark-TTS',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
@@ -568,16 +581,16 @@ OVERRIDE_INPUTS = {
     },
 
     'fishaudio/fish-speech-1': {
-        1: False, # normalize
-		2: handle_file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'), # reference_audio
-		3: 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
-		4: 0, # max_new_tokens
-		5: 200, # chunk_length
-		6: 0.7, # top_p
-		7: 1.2, # repetition_penalty
-		8: 0.7, # temperature
-		9: 0, #seed
-		10: "never", #use_memory_cache
+		'normalize': False,
+        'reference_audio': handle_file('https://huggingface.co/spaces/fishaudio/fish-speech-1/resolve/main/examples/English.wav'),
+		'reference_text': 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
+		'max_new_tokens': 1024,
+		'chunk_length': 200,
+		'top_p': 0.7,
+		'repetition_penalty': 1.2,
+		'temperature': 0.7,
+		'seed': 0,
+		'use_memory_cache': "never",
     },
 
     # F5
@@ -746,6 +759,13 @@ OVERRIDE_INPUTS = {
     # 'Steveeeeeeen/Zonos/hybrid': {
 	# 	'model_choice': 'Zyphra/Zonos-v0.1-hybrid',
     # },
+
+    # Spark-TTS
+    'thunnai/SparkTTS' : {
+		'prompt_text': DEFAULT_VOICE_TRANSCRIPT,
+		'prompt_wav_upload': DEFAULT_VOICE_SAMPLE,
+		'prompt_wav_record': None,
+    }
 }
 
 # minor mods to model from the same space
@@ -810,7 +830,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['HKUST-Audio/Llasa-1B-finetuned-for-two-speakers']
+top_five = ['Spark-TTS']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
