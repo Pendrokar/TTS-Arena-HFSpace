@@ -830,10 +830,10 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['Spark-TTS']
+top_five = ['thunnai/SparkTTS']
 
 # prioritize low vote models
-sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
+sql = 'SELECT name FROM model WHERE (upvote + downvote) < 700 ORDER BY (upvote + downvote) ASC'
 conn = get_db()
 cursor = conn.cursor()
 cursor.execute(sql)
@@ -841,11 +841,12 @@ data = cursor.fetchall()
 for model in data:
     if (
         len(top_five) >= 5
+        or model[0] in top_five
+        or model[0] not in AVAILABLE_MODELS.keys()
     ):
         break
 
-    if model[0] in AVAILABLE_MODELS.keys():
-        top_five.append(model[0])
+    top_five.append(model[0])
 print(f"low vote top_five: {top_five}")
 
 def make_link_to_space(model_name, for_leaderboard=False):
