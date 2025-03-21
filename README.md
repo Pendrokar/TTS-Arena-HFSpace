@@ -16,6 +16,7 @@ models:
 - fishaudio/fish-speech-1.4
 - fishaudio/fish-speech-1.5
 - hexgrad/Kokoro-82M
+- HKUSTAudio/Llasa-1B-two-speakers-kore-puck
 - HKUSTAudio/Llasa-3B
 - HKUSTAudio/Llasa-8B
 - lj1995/GPT-SoVITS
@@ -30,6 +31,7 @@ models:
 - parler-tts/parler-tts-mini-v1
 - parler-tts/parler-tts-mini-expresso
 - Pendrokar/xvapitch_expresso
+- SparkAudio/Spark-TTS-0.5B
 - SWivid/F5-TTS
 - WhisperSpeech/WhisperSpeech
 - Zyphra/Zonos-v0.1-hybrid
