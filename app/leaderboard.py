@@ -54,7 +54,7 @@ def get_leaderboard(reveal_prelim = False):
             and '/' in orig_name
         ):
             style = 'text-decoration: underline;text-decoration-style: dotted; color: var(--link-text-color);'
-            title = 'Rejections'
+            title = 'See rejections'
             # win rate dataset
             df.at[i, 'Win Rate'] = f'<a target="_blank" style="{style}" title="{title}" href="https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/rejections?f[rejected][value]=%27{orig_name}%27">' + df['Win Rate'].iloc[i] + '</a>'
     df['Elo'] = round(df['Elo'])

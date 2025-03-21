@@ -101,6 +101,9 @@ AVAILABLE_MODELS = {
     # Spark
     'thunnai/SparkTTS': 'thunnai/SparkTTS',
 
+    # Sesame
+    'sesame/csm-1b' : 'sesame/csm-1b',
+
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
@@ -261,7 +264,7 @@ HF_SPACES = {
         'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'Fish Speech',
-        'emoji': '😷', # broken space
+        # 'emoji': '😷',
     },
 
     # F5 TTS
@@ -477,6 +480,15 @@ HF_SPACES = {
         'name': 'Spark-TTS',
         'function': '/voice_clone',
         'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Spark-TTS',
+    },
+
+    'sesame/csm-1b' : {
+        'name': 'sesame/csm-1b',
+        'function': '/infer',
+        'text_param_index': 'gen_conversation_input',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Spark-TTS',
@@ -765,7 +777,15 @@ OVERRIDE_INPUTS = {
 		'prompt_text': DEFAULT_VOICE_TRANSCRIPT,
 		'prompt_wav_upload': DEFAULT_VOICE_SAMPLE,
 		'prompt_wav_record': None,
-    }
+    },
+
+    # sesame/csm-1b
+    'sesame/csm-1b' : {
+		"text_prompt_speaker_a": "And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.",
+		"text_prompt_speaker_b": "And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.", #second speaker unused
+		"audio_prompt_speaker_a": handle_file('voice_samples/read_speech_a.wav'),
+		"audio_prompt_speaker_b": handle_file('voice_samples/read_speech_a.wav'), #second speaker unused
+    },
 }
 
 # minor mods to model from the same space
