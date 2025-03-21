@@ -82,7 +82,7 @@ AVAILABLE_MODELS = {
     # 'OuteAI/OuteTTS-0.3-1B-Demo': 'OuteAI/OuteTTS-0.3-1B-Demo',
 
     # llasa 1b TTS
-    'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
+    # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
     # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
     # llasa 8b TTS
