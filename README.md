@@ -12,6 +12,7 @@ pinned: true
 short_description: Blind vote on HF TTS models!
 models:
 - amphion/MaskGCT
+- canopylabs/orpheus-3b-0.1-ft
 - coqui/XTTS-v2
 - fishaudio/fish-speech-1.4
 - fishaudio/fish-speech-1.5
@@ -31,6 +32,7 @@ models:
 - parler-tts/parler-tts-mini-v1
 - parler-tts/parler-tts-mini-expresso
 - Pendrokar/xvapitch_expresso
+- sesame/csm-1b
 - SparkAudio/Spark-TTS-0.5B
 - SWivid/F5-TTS
 - WhisperSpeech/WhisperSpeech

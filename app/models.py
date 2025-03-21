@@ -104,6 +104,9 @@ AVAILABLE_MODELS = {
     # Sesame
     'sesame/csm-1b' : 'sesame/csm-1b',
 
+    # Orpheus
+    'MohamedRashad/Orpheus-TTS' : 'MohamedRashad/Orpheus-TTS',
+
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
@@ -486,12 +489,21 @@ HF_SPACES = {
     },
 
     'sesame/csm-1b' : {
-        'name': 'sesame/csm-1b',
+        'name': 'CSM 1B',
         'function': '/infer',
         'text_param_index': 'gen_conversation_input',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
-        'series': 'Spark-TTS',
+        'series': 'CSM-1B',
+    },
+
+    'MohamedRashad/Orpheus-TTS' : {
+        'name': 'Orpheus 3B 0.1',
+        'function': '/generate_speech',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Orpheus',
     },
 }
 
@@ -779,13 +791,22 @@ OVERRIDE_INPUTS = {
 		'prompt_wav_record': None,
     },
 
-    # sesame/csm-1b
+    # csm-1b
     'sesame/csm-1b' : {
-		"text_prompt_speaker_a": "And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.",
-		"text_prompt_speaker_b": "And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.", #second speaker unused
-		"audio_prompt_speaker_a": handle_file('voice_samples/read_speech_a.wav'),
-		"audio_prompt_speaker_b": handle_file('voice_samples/read_speech_a.wav'), #second speaker unused
+		'text_prompt_speaker_a': 'And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.',
+		'text_prompt_speaker_b': 'And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.', #second speaker unused
+		'audio_prompt_speaker_a': handle_file('voice_samples/read_speech_a.wav'),
+		'audio_prompt_speaker_b': handle_file('voice_samples/read_speech_a.wav'), #second speaker unused
     },
+
+    # Orpheus 3B 0.1
+    'MohamedRashad/Orpheus-TTS' : {
+		'voice': 'tara',
+		'temperature': 0.6,
+		'top_p': 0.95,
+		'repetition_penalty': 1.1,
+		'max_new_tokens': 1200,
+    }
 }
 
 # minor mods to model from the same space
