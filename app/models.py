@@ -84,7 +84,7 @@ AVAILABLE_MODELS = {
     # llasa 1b TTS
     # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
+    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
     # llasa 8b TTS
     # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
@@ -501,7 +501,7 @@ HF_SPACES = {
     },
 
     'MohamedRashad/Orpheus-TTS' : {
-        'name': 'Orpheus 3B 0.1',
+        'name': 'Orpheus 3B v0.1',
         'function': '/generate_speech',
         'text_param_index': 'text',
         'return_audio_index': 0,
@@ -888,7 +888,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = []
+top_five = ['IndexTeam/IndexTTS']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 700 ORDER BY (upvote + downvote) ASC'
