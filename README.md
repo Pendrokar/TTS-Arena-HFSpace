@@ -20,6 +20,7 @@ models:
 - HKUSTAudio/Llasa-1B-two-speakers-kore-puck
 - HKUSTAudio/Llasa-3B
 - HKUSTAudio/Llasa-8B
+- IndexTeam/Index-TTS
 - lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
@@ -28,6 +29,7 @@ models:
 - myshell-ai/OpenVoiceV2
 - OuteAI/OuteTTS-0.2-500M
 - OuteAI/OuteTTS-0.3-1B
+- canopylabs/orpheus-3b-0.1-ft
 - parler-tts/parler-tts-large-v1
 - parler-tts/parler-tts-mini-v1
 - parler-tts/parler-tts-mini-expresso
