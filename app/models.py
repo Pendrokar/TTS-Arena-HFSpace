@@ -32,7 +32,7 @@ AVAILABLE_MODELS = {
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
     # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
-    'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    # 'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
     'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Queue ERROR
