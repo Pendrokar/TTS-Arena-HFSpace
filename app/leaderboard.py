@@ -55,8 +55,18 @@ def get_leaderboard(reveal_prelim = False):
         ):
             style = 'text-decoration: underline;text-decoration-style: dotted; color: var(--link-text-color);'
             title = 'See rejections'
+
+            if (orig_name in AVAILABLE_MODELS.keys()):
+                # show rejections for the past month
+                dataset_name = 'rejections'
+                title += ' (past month)'
+            else:
+                # show all rejections when model is unavailable
+                dataset_name = 'rejections_all'
+                title += ' (all)'
+            href = 'https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/{dataset_name}}?f[rejected][value]=%27{orig_name}%27'
             # win rate dataset
-            df.at[i, 'Win Rate'] = f'<a target="_blank" style="{style}" title="{title}" href="https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/rejections?f[rejected][value]=%27{orig_name}%27">' + df['Win Rate'].iloc[i] + '</a>'
+            df.at[i, 'Win Rate'] = f'<a target="_blank" style="{style}" title="{title}" href="{href}">' + df['Win Rate'].iloc[i] + '</a>'
     df['Elo'] = round(df['Elo'])
     df['Elo Diff'] = df['Elo']
 
