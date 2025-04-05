@@ -73,7 +73,7 @@ AVAILABLE_MODELS = {
     # 'Svngoku/maskgct-audio-lab': 'Svngoku/maskgct-audio-lab', # DEMANDS 300 seconds of ZeroGPU!
 
     # GPT-SoVITS
-    'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
+    # 'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
 
     # OuteTTS 500M
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
@@ -106,6 +106,9 @@ AVAILABLE_MODELS = {
 
     # Orpheus
     'MohamedRashad/Orpheus-TTS' : 'MohamedRashad/Orpheus-TTS',
+
+    # Index TTS
+    'IndexTeam/IndexTTS': 'IndexTeam/IndexTTS',
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -505,6 +508,15 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Orpheus',
     },
+
+    'IndexTeam/IndexTTS' : {
+        'name': 'Index TTS',
+        'function': '/gen_single',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Index',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
@@ -806,7 +818,12 @@ OVERRIDE_INPUTS = {
 		'top_p': 0.95,
 		'repetition_penalty': 1.1,
 		'max_new_tokens': 1200,
-    }
+    },
+
+    # Index TTS
+    'IndexTeam/IndexTTS' : {
+		'prompt': DEFAULT_VOICE_SAMPLE, # voice
+    },
 }
 
 # minor mods to model from the same space
@@ -871,7 +888,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['thunnai/SparkTTS']
+top_five = []
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 700 ORDER BY (upvote + downvote) ASC'
