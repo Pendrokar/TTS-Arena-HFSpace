@@ -64,7 +64,7 @@ def get_leaderboard(reveal_prelim = False):
                 # show all rejections when model is unavailable
                 dataset_name = 'rejections_all'
                 title += ' (all)'
-            href = 'https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/{dataset_name}}?f[rejected][value]=%27{orig_name}%27'
+            href = f'https://huggingface.co/datasets/{DB_DATASET_ID}/viewer/summary/{dataset_name}?f[rejected][value]=%27{orig_name}%27'
             # win rate dataset
             df.at[i, 'Win Rate'] = f'<a target="_blank" style="{style}" title="{title}" href="{href}">' + df['Win Rate'].iloc[i] + '</a>'
     df['Elo'] = round(df['Elo'])
