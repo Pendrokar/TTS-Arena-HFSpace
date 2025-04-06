@@ -147,12 +147,12 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
                         # return path to audio
                         result = results
-                        if (not isinstance(results, str)):
-                            # return_audio_index may be a filepath string
-                            result = results[return_audio_index]
                         if (isinstance(result, dict)):
                             # return_audio_index is a dictionary
-                            result = results[return_audio_index]['value']
+                            result = results['value']
+                        elif (not isinstance(result, str)):
+                            # return_audio_index may be a filepath string
+                            result = results[return_audio_index]
                     else:
                         # Use the private HF Space
                         result = router.predict(text, AVAILABLE_MODELS[model].lower(), api_name="/synthesize")
