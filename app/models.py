@@ -428,7 +428,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'LLaSA',
-        'emoji': '😷', # broken space
+        # 'emoji': '😷', # broken space
     },
 
     # LlaSa 8B
