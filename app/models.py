@@ -26,7 +26,7 @@ AVAILABLE_MODELS = {
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
     # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13+
-    # 'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
+    'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
@@ -39,7 +39,7 @@ AVAILABLE_MODELS = {
 
     # E2 & F5 TTS
     # F5 model
-    # 'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
+    'mrfakename/E2-F5-TTS': 'mrfakename/E2-F5-TTS', # 5.0
     # E2 model
     # 'mrfakename/E2-F5-TTS/E2': 'mrfakename/E2-F5-TTS', # seems to require multiple requests for setup
 
@@ -47,13 +47,13 @@ AVAILABLE_MODELS = {
     # Parler Large model
     # 'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
-    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
-    # 'innoai/Edge-TTS-Text-to-Speech': '/Edge-TTS', # using Edge API
+    'innoai/Edge-TTS-Text-to-Speech': '/Edge-TTS', # using Edge API
 
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
@@ -66,7 +66,7 @@ AVAILABLE_MODELS = {
     # StyleTTS Kokoro v0.23
     # 'hexgrad/Kokoro-TTS/0.23': 'hexgrad/Kokoro-TTS',
     # StyleTTS Kokoro v1.0
-    # 'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
+    'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
@@ -92,14 +92,14 @@ AVAILABLE_MODELS = {
     # 'CAMB-AI/mars5_space': 'CAMB-AI/mars5_space', # slow inference; Unstable
 
     # Mars6
-    # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+    'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
 
     # Zonos
     # 'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
     # 'Steveeeeeeen/Zonos/hybrid': 'Steveeeeeeen/Zonos',
 
     # Spark
-    # 'thunnai/SparkTTS': 'thunnai/SparkTTS',
+    'thunnai/SparkTTS': 'thunnai/SparkTTS',
 
     # Sesame
     'sesame/csm-1b' : 'sesame/csm-1b',
