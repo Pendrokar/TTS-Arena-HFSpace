@@ -47,9 +47,11 @@ AVAILABLE_MODELS = {
     # Parler Large model
     # 'parler-tts/parler_tts/large': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini model
-    'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
+    # 'parler-tts/parler_tts': 'parler-tts/parler_tts', # 4.29 4.32 4.36.1 4.42.0
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
+    # Parler Mini Multi v1.1
+    'PHBJT/multi_parler_tts': 'PHBJT/multi_parler_tts',
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
@@ -109,6 +111,9 @@ AVAILABLE_MODELS = {
 
     # Index TTS
     'IndexTeam/IndexTTS': 'IndexTeam/IndexTTS',
+
+    # Dia
+    # 'nari-labs/Dia-1.6B': 'nari-labs/Dia-1.6B', # single speaker hallucinates
 
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
@@ -192,6 +197,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'xVASynth',
+        'space_link': 'Pendrokar/xVASynth-TTS',
     },
 
     # CoquiTTS (CPU)
@@ -230,6 +236,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Parler',
+        'emoji': '😷', # broken space
     },
     # Parler Large
     'parler-tts/parler_tts/large': {
@@ -249,6 +256,16 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Parler',
         # 'emoji': '😃', # overlly jolly voice
+    },
+
+    # Parler Mini trained on Expresso dataset
+    'PHBJT/multi_parler_tts': {
+        'name': 'Parler Mini Multi v1.1',
+        'function': '/gen_tts',
+        'text_param_index': 'text',
+        'return_audio_index': 1,
+        'is_zero_gpu_space': True,
+        'series': 'Parler',
     },
 
     # Microsoft Edge TTS
@@ -346,7 +363,7 @@ HF_SPACES = {
         'series': 'Kokoro',
     },
 
-    # StyleTTS Kokoro v1.0
+    # StyleTTS Kokoro v1.0 (CPU)
     'hexgrad/Kokoro-API': {
         'name': 'Kokoro v1.0',
         'function': '/predict',
@@ -517,6 +534,15 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Index',
     },
+
+    'nari-labs/Dia-1.6B' : {
+        'name': 'Dia',
+        'function': '/generate_audio',
+        'text_param_index': 'text_input',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Dia',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
@@ -606,6 +632,11 @@ OVERRIDE_INPUTS = {
     'parler-tts/parler_tts/large': {
         1: 'Laura; Laura\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
         2: True, #use_large
+    },
+    # multi-lang parler mini 1.1
+    'PHBJT/multi_parler_tts': {
+        1: 'a ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
+        2: False, #do_format
     },
     'parler-tts/parler-tts-expresso': {
         1: 'Elisabeth; Elisabeth\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
@@ -823,6 +854,17 @@ OVERRIDE_INPUTS = {
     # Index TTS
     'IndexTeam/IndexTTS' : {
 		'prompt': DEFAULT_VOICE_SAMPLE, # voice
+    },
+
+    # Dia
+    'nari-labs/Dia-1.6B': {
+		'audio_prompt_input': None,
+		'max_new_tokens': 860, # min tokens as we use only a single speaker
+		'cfg_scale': 3, # 1-5 # Higher values increase adherence to the text prompt.
+		'temperature': 1.3, # Lower values make the output more deterministic, higher values increase randomness.
+		'top_p': 0.95, # Filters vocabulary to the most likely tokens cumulatively reaching probability P.
+		'cfg_filter_top_k': 35, # Top k filter for CFG guidance.
+		'speed_factor': 0.94, # Adjusts the speed of the generated audio (1.0 = original speed).
     },
 }
 
