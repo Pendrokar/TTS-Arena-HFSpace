@@ -52,6 +52,7 @@ AVAILABLE_MODELS = {
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini Multi v1.1
     'PHBJT/multi_parler_tts': 'PHBJT/multi_parler_tts',
+    'PHBJT/multi_parler_tts/reformatted': 'PHBJT/multi_parler_tts', # reformatted description using Gemma 2b
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
@@ -266,7 +267,17 @@ HF_SPACES = {
         'name': 'Parler Mini Multi v1.1',
         'function': '/gen_tts',
         'text_param_index': 'text',
-        'return_audio_index': 1,
+        'return_audio_index': 1, # 0 is the reformatted text
+        'is_zero_gpu_space': True,
+        'series': 'Parler',
+    },
+
+    # Parler Mini trained on Expresso dataset, reformats description using Gemma 2b
+    'PHBJT/multi_parler_tts/reformatted': {
+        'name': 'Parler Mini Multi v1.1r',
+        'function': '/gen_tts',
+        'text_param_index': 'text',
+        'return_audio_index': 1, # 0 is the reformatted text
         'is_zero_gpu_space': True,
         'series': 'Parler',
     },
@@ -647,8 +658,12 @@ OVERRIDE_INPUTS = {
     },
     # multi-lang parler mini 1.1
     'PHBJT/multi_parler_tts': {
-        1: 'a ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
-        2: False, #do_format
+        'description': 'a ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
+        'do_format': False, # Reformat description using Gemma 2b
+    },
+    'PHBJT/multi_parler_tts/reformatted': {
+        'description': 'a ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
+        'do_format': True, # Reformat description using Gemma 2b
     },
     'parler-tts/parler-tts-expresso': {
         1: 'Elisabeth; Elisabeth\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
@@ -951,7 +966,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['IndexTeam/IndexTTS']
+top_five = ['PHBJT/multi_parler_tts', 'PHBJT/multi_parler_tts/reformatted', 'ResembleAI/Chatterbox']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
