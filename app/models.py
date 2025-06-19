@@ -51,7 +51,7 @@ AVAILABLE_MODELS = {
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini Multi v1.1
     'PHBJT/multi_parler_tts': 'PHBJT/multi_parler_tts',
-    'PHBJT/multi_parler_tts/reformatted': 'PHBJT/multi_parler_tts', # reformatted description using Gemma 2b
+    # 'PHBJT/multi_parler_tts/reformatted': 'PHBJT/multi_parler_tts', # reformatted description using Gemma 2b
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
@@ -86,7 +86,7 @@ AVAILABLE_MODELS = {
     # llasa 1b TTS
     # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
+    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
     # llasa 8b TTS
     # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
@@ -94,7 +94,7 @@ AVAILABLE_MODELS = {
     # 'CAMB-AI/mars5_space': 'CAMB-AI/mars5_space', # slow inference; Unstable
 
     # Mars6
-    'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
+    # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
 
     # Zonos
     # 'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
@@ -674,10 +674,6 @@ OVERRIDE_INPUTS = {
         'description': 'a ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
         'do_format': False, # Reformat description using Gemma 2b
     },
-    'PHBJT/multi_parler_tts/reformatted': {
-        'description': 'a ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
-        'do_format': True, # Reformat description using Gemma 2b
-    },
     'parler-tts/parler-tts-expresso': {
         1: 'Elisabeth; Elisabeth\'s ' + DEFAULT_VOICE_PROMPT, #description / voice prompt
     },
@@ -937,8 +933,11 @@ OVERRIDE_INPUTS = {
 # minor mods to model from the same space
 OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid'] = OVERRIDE_INPUTS['Steveeeeeeen/Zonos']
 OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid']['model_choice'] = 'Zyphra/Zonos-v0.1-hybrid'
+OVERRIDE_INPUTS['PHBJT/multi_parler_tts/reformatted'] = OVERRIDE_INPUTS['PHBJT/multi_parler_tts']
+OVERRIDE_INPUTS['PHBJT/multi_parler_tts/reformatted']['do_format'] = True
 
 # Model name mapping, can include models that users cannot vote on
+#not updated
 model_names = {
     'styletts2': 'StyleTTS 2',
     'tacotron': 'Tacotron',
@@ -964,6 +963,7 @@ model_names = {
     'metavoice': 'MetaVoice-1B',
 }
 
+#not updated
 model_links = {
     'ElevenLabs': 'https://elevenlabs.io/',
     'Play.HT 2.0': 'https://play.ht/',
@@ -988,6 +988,7 @@ model_links = {
     'Vokan TTS': 'https://huggingface.co/ShoukanLabs/Vokan',
 }
 
+#not updated
 closed_source = [
     'ElevenLabs',
     'Play.HT 2.0',
