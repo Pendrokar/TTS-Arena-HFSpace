@@ -115,6 +115,9 @@ AVAILABLE_MODELS = {
     # Dia
     # 'nari-labs/Dia-1.6B': 'nari-labs/Dia-1.6B', # single speaker hallucinates
 
+    # Chatterbox
+    'ResembleAI/Chatterbox': 'ResembleAI/Chatterbox',
+
     # HF TTS w issues
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
@@ -543,6 +546,15 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Dia',
     },
+
+    'ResembleAI/Chatterbox' : {
+        'name': 'Chatterbox',
+        'function': '/generate_tts_audio',
+        'text_param_index': 'text_input',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'Chatterbox',
+    },
 }
 
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
@@ -866,6 +878,15 @@ OVERRIDE_INPUTS = {
 		'cfg_filter_top_k': 35, # Top k filter for CFG guidance.
 		'speed_factor': 0.94, # Adjusts the speed of the generated audio (1.0 = original speed).
     },
+
+    # Chatterbox
+    'ResembleAI/Chatterbox': {
+		'audio_prompt_path_input': DEFAULT_VOICE_SAMPLE, # voice
+		'exaggeration_input': 0.5, # 1-2
+		'temperature_input': 0.8, # Lower values make the output more deterministic, higher values increase randomness.
+		'seed_num_input': 1, # Seed for random number generation, can be any integer.
+		'cfgw_input': 0.5, # CFG/Pace weight, can be any float value.
+    }
 }
 
 # minor mods to model from the same space
