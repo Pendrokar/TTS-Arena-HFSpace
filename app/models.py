@@ -35,7 +35,6 @@ AVAILABLE_MODELS = {
     # 'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
-    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Queue ERROR
 
     # E2 & F5 TTS
     # F5 model
@@ -119,7 +118,11 @@ AVAILABLE_MODELS = {
     # Chatterbox
     'ResembleAI/Chatterbox': 'ResembleAI/Chatterbox',
 
+    # OpenAudio S1 (Fish Audio)
+    'fishaudio/openaudio-s1-mini': 'fishaudio/openaudio-s1-mini',
+
     # HF TTS w issues
+    # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Discontinued for OpenAudio S1
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
     # 'PolyAI/pheme': '/predict#0', # sleepy HF Space
     # 'amphion/Text-to-Speech': '/predict#0', # disabled also on original HF space due to poor ratings
@@ -298,6 +301,16 @@ HF_SPACES = {
     'fishaudio/fish-speech-1': {
         'name': 'Fish Speech',
         'function': '/inference_wrapper',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'series': 'Fish Speech',
+        # 'emoji': '😷',
+    },
+
+    # OpenAudio S1 (Fish Audio)
+    'fishaudio/openaudio-s1-mini': {
+        'name': 'OpenAudio S1 Mini',
+        'function': '/partial',
         'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'Fish Speech',
@@ -687,6 +700,23 @@ OVERRIDE_INPUTS = {
 		'use_memory_cache': "never",
     },
 
+    # OpenAudio S1 (Fish Audio)
+    'fishaudio/openaudio-s1-mini': {
+		# 'reference_id': "Hello!!", # voice id string - https://fish.audio/discovery/
+		# 'reference_audio': None,
+		# 'reference_text': None,
+		'reference_audio': DEFAULT_VOICE_SAMPLE,
+		'reference_text': DEFAULT_VOICE_TRANSCRIPT,
+		'max_new_tokens': 0,
+		'chunk_length': 0,
+		'top_p': 0.9,
+		'repetition_penalty': 1.1,
+		'temperature': 0.9,
+		'seed': 0,
+		'use_memory_cache': "on",
+        # 'emoji': '😷',
+    },
+
     # F5
     'mrfakename/E2-F5-TTS': {
         'ref_audio_input': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
@@ -966,7 +996,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['PHBJT/multi_parler_tts', 'PHBJT/multi_parler_tts/reformatted', 'ResembleAI/Chatterbox']
+top_five = ['PHBJT/multi_parler_tts', 'fishaudio/openaudio-s1-mini', 'ResembleAI/Chatterbox']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
