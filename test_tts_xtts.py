@@ -18,7 +18,9 @@ endpoints = client.view_api(all_endpoints=True, print_info=False, return_format=
 # )
 # tony's space
 result = client.predict(
-        text="Quick test.",	# str  in 'What should I say!? (max 512 characters).' Textbox component
-        audio=handle_file('https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav'), # voice sample
-		api_name="/predict"
+        "Quick test.",	# str  in 'What should I say!? (max 512 characters).' Textbox component
+        'https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav', # voice sample
+		# fn_index=1
+        # handle_file('https://cdn-uploads.huggingface.co/production/uploads/63d52e0c4e5642795617f668/V6-rMmI-P59DA4leWDIcK.wav'), # voice sample
+		# api_name="/predict"
 )

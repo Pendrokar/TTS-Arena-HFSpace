@@ -26,7 +26,7 @@ AVAILABLE_MODELS = {
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
     # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13+
-    'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
+    # 'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
@@ -146,7 +146,7 @@ HF_SPACES = {
     'coqui/xtts': {
         'name': 'XTTS v2',
         'function': '/predict',
-        'text_param_index': 'text',
+        'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'XTTS',
     },
@@ -186,7 +186,7 @@ HF_SPACES = {
         'function': '/tts',
         'text_param_index': 0,
         'return_audio_index': 0,
-        'series': 'MetaVoice-1B',
+        'series': 'MetaVoice',
         'emoji': '😷', # broken space
     },
 
@@ -304,7 +304,7 @@ HF_SPACES = {
         'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'Fish Speech',
-        # 'emoji': '😷',
+        'emoji': '😵', # redirects to OpenAudio
     },
 
     # OpenAudio S1 (Fish Audio)
@@ -599,7 +599,8 @@ OVERRIDE_INPUTS = {
 #     },
     # tonyassi ZeroGPU space of XTTS:
     'coqui/xtts': {
-        'audio': DEFAULT_VOICE_SAMPLE, # voice sample
+        1: DEFAULT_VOICE_SAMPLE, # voice sample
+        # 'audio': DEFAULT_VOICE_SAMPLE, # voice sample
     },
     'collabora/WhisperSpeech': {
         1: DEFAULT_VOICE_SAMPLE, # voice sample
@@ -698,19 +699,16 @@ OVERRIDE_INPUTS = {
 
     # OpenAudio S1 (Fish Audio)
     'fishaudio/openaudio-s1-mini': {
-		# 'reference_id': "Hello!!", # voice id string - https://fish.audio/discovery/
-		# 'reference_audio': None,
-		# 'reference_text': None,
-		'reference_audio': DEFAULT_VOICE_SAMPLE,
-		'reference_text': DEFAULT_VOICE_TRANSCRIPT,
+		'reference_id': None,
+        'reference_audio': handle_file('voice_samples/English.wav'),
+		'reference_text': 'In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.', # reference_text
 		'max_new_tokens': 0,
 		'chunk_length': 0,
 		'top_p': 0.9,
 		'repetition_penalty': 1.1,
 		'temperature': 0.9,
-		'seed': 0,
+		'seed': 1,
 		'use_memory_cache': "on",
-        # 'emoji': '😷',
     },
 
     # F5
