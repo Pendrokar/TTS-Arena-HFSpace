@@ -16,6 +16,7 @@ models:
 - coqui/XTTS-v2
 - fishaudio/fish-speech-1.4
 - fishaudio/fish-speech-1.5
+- fishaudio/openaudio-s1-mini
 - hexgrad/Kokoro-82M
 - HKUSTAudio/Llasa-1B-two-speakers-kore-puck
 - HKUSTAudio/Llasa-3B
@@ -29,11 +30,12 @@ models:
 - myshell-ai/OpenVoiceV2
 - OuteAI/OuteTTS-0.2-500M
 - OuteAI/OuteTTS-0.3-1B
-- canopylabs/orpheus-3b-0.1-ft
 - parler-tts/parler-tts-large-v1
-- parler-tts/parler-tts-mini-v1
 - parler-tts/parler-tts-mini-expresso
+- parler-tts/parler-tts-mini-multilingual
+- parler-tts/parler-tts-mini-v1
 - Pendrokar/xvapitch_expresso
+- ResembleAI/chatterbox
 - sesame/csm-1b
 - SparkAudio/Spark-TTS-0.5B
 - SWivid/F5-TTS
