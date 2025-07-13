@@ -149,6 +149,8 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'XTTS',
+        'emoji': '😩', # old gradio
+        'title': 'Gradio version too old', # old gradio
     },
 
     # WhisperSpeech
@@ -159,6 +161,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'WhisperSpeech',
         'emoji': '😷', # broken space
+        'title': 'Broken space - runtime error',
     },
 
     # OpenVoice (MyShell.ai)
@@ -169,6 +172,7 @@ HF_SPACES = {
         'return_audio_index': 1,
         'series': 'OpenVoice',
         'emoji': '😩', # old gradio
+        'title': 'Gradio version too old', # old gradio
     },
     # OpenVoice v2 (MyShell.ai)
     'myshell-ai/OpenVoiceV2': {
@@ -178,6 +182,7 @@ HF_SPACES = {
         'return_audio_index': 1,
         'series': 'OpenVoice',
         'emoji': '😩', # old gradio
+        'title': 'Gradio version too old', # old gradio
     },
 
     # MetaVoice
@@ -188,6 +193,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'MetaVoice',
         'emoji': '😷', # broken space
+        'title': 'Broken space - runtime error',
     },
 
     # xVASynth (CPU)
@@ -197,6 +203,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'xVASynth',
+        'title': 'Outclassed',
     },
     'Pendrokar/xVASynth-TTS/NoDeepMoji': {
         'name': 'xVASynth v3',
@@ -205,6 +212,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'xVASynth',
         'space_link': 'Pendrokar/xVASynth-TTS',
+        'title': 'Outclassed',
     },
 
     # CoquiTTS (CPU)
@@ -214,6 +222,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'CoquiTTS',
+        'title': 'Outclassed',
     },
 
     # HierSpeech_TTS
@@ -223,7 +232,8 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'HierSpeech++',
-        'emoji': '😒', # unemotional
+        'emoji': '😒', # Narration voice
+        'title': 'Narration voice',
     },
 
     # MeloTTS (MyShell.ai)
@@ -233,6 +243,8 @@ HF_SPACES = {
         'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'MeloTTS',
+        'emoji': '😒', # Narration voice
+        'title': 'Narration voice',
     },
 
     # Parler Mini
@@ -244,6 +256,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Parler',
         'emoji': '😷', # broken space
+        'title': 'Broken space - runtime error',
     },
     # Parler Large
     'parler-tts/parler_tts/large': {
@@ -253,6 +266,9 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Parler',
+        'emoji': '😷', # broken space
+        'title': 'Broken space - runtime error',
+        'space_link': 'parler-tts/parler_tts',
     },
     # Parler Mini trained on Expresso dataset
     'parler-tts/parler-tts-expresso': {
@@ -263,6 +279,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Parler',
         # 'emoji': '😃', # overlly jolly voice
+        'title': 'Overlly jolly voice', # overlly jolly voice
     },
 
     # Parler Mini trained on Expresso dataset
@@ -273,6 +290,7 @@ HF_SPACES = {
         'return_audio_index': 1, # 0 is the reformatted text
         'is_zero_gpu_space': True,
         'series': 'Parler',
+        'title': 'Unstable',
     },
 
     # Parler Mini trained on Expresso dataset, reformats description using Gemma 2b
@@ -283,6 +301,7 @@ HF_SPACES = {
         'return_audio_index': 1, # 0 is the reformatted text
         'is_zero_gpu_space': True,
         'series': 'Parler',
+        'title': 'Unstable',
     },
 
     # Microsoft Edge TTS
@@ -293,7 +312,8 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_closed_source': True,
         'series': 'Edge TTS',
-        'emoji': '', # api disabled
+        'emoji': '', # Gradio API disabled
+        # 'title': 'API Disabled',
         'space_link': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
     },
 
@@ -305,6 +325,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'Fish Speech',
         'emoji': '😵', # redirects to OpenAudio
+        'title': 'Deprecated: Redirects to OpenAudio', # redirects to OpenAudio
     },
 
     # OpenAudio S1 (Fish Audio)
@@ -315,6 +336,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'series': 'Fish Speech',
         # 'emoji': '😷',
+        # 'title': '😷',
     },
 
     # F5 TTS
@@ -326,6 +348,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         # 'series': 'E2 TTS',
         'series': 'E2/F5 TTS',
+        'title': 'Uses a voice sample from trained dataset',
     },
 
     # E2 TTS TODO: call switch model function
@@ -346,6 +369,7 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'IMS-Toucan',
+        'title': 'Changes voice pitch on each request',
     },
 
     # IMS-Toucan English non-artificial
@@ -355,7 +379,8 @@ HF_SPACES = {
         'text_param_index': 0,
         'return_audio_index': 0,
         'series': 'IMS-Toucan',
-        'emoji': '😒', # unemotional
+        'emoji': '😒', # Narration voice
+        'title': 'Narration voice',
     },
 
     # StyleTTS v2
@@ -366,7 +391,8 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'StyleTTS',
-        # 'emoji': '😪',
+        'emoji': '😷', # broken space
+        'title': 'Outclassed by Kokoro',
     },
 
     # StyleTTS Kokoro v0.19
@@ -378,6 +404,7 @@ HF_SPACES = {
         'is_zero_gpu_space': False,
         'series': 'Kokoro',
         'space_link': 'Remsky/Kokoro-TTS-Zero', # still supports v0.19
+        'title': 'Deprecated: Kokoro v1.0+ improves pronunciation',
     },
 
     # StyleTTS Kokoro v0.23
@@ -388,6 +415,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Kokoro',
+        'title': 'Deprecated: Kokoro v1.0+ improves pronunciation',
     },
 
     # StyleTTS Kokoro v1.0 (CPU)
@@ -411,6 +439,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
         'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'title': 'Requires 300s reserved ZeroGPU time! Cannot afford!',
     },
     'Svngoku/maskgct-audio-lab': {
         'name': 'MaskGCT',
@@ -420,6 +449,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'MaskGCT',
         'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'title': 'Requires 300s reserved ZeroGPU time! Cannot afford!',
     },
 
     # GPT-SoVITS v2
@@ -430,6 +460,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'GPT-SoVITS',
+        'title': 'Outclassed',
     },
 
     # OuteTTS v0.2 500M
@@ -441,6 +472,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
         'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'title': 'Requires 300s reserved ZeroGPU time! Cannot afford!',
     },
     # OuteTTS v0.3 1B
     'OuteAI/OuteTTS-0.3-1B-Demo': {
@@ -451,6 +483,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'OuteTTS',
         'emoji': '🥵', # requires 300s reserved ZeroGPU!
+        'title': 'Requires 300s reserved ZeroGPU time! Cannot afford!',
     },
 
     # LlaSa 1B
@@ -462,6 +495,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'LLaSA',
         # 'emoji': '😷', # broken space
+        'title': 'Broken space - Runtime error',
     },
 
     # LlaSa 3B
@@ -473,6 +507,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'LLaSA',
         # 'emoji': '😷', # broken space
+        # 'title': 'Broken space - ZeroGPU Pro account expired',
     },
 
     # LlaSa 8B
@@ -483,7 +518,8 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'LLaSA',
-        'emoji': '😷', # broken space
+        # 'emoji': '😷', # broken space
+        # 'title': 'Broken space - ZeroGPU Pro account expired',
     },
 
     # Mars5
@@ -505,6 +541,7 @@ HF_SPACES = {
         'is_zero_gpu_space': False,
         'is_closed_source': True,
         'series': 'MARS',
+        'title': 'Unstable',
     },
 
     # Zonos
@@ -515,6 +552,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Zonos',
+        'title': 'Outclassed',
     },
     'Steveeeeeeen/Zonos/hybrid': {
         'name': 'Zonos H',
@@ -523,6 +561,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Zonos',
+        'title': 'Outclassed',
     },
 
     # Spark-TTS
@@ -533,6 +572,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Spark-TTS',
+        'title': 'Outclassed',
     },
 
     'sesame/csm-1b' : {
@@ -542,6 +582,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'CSM-1B',
+        'title': 'Outclassed',
     },
 
     'MohamedRashad/Orpheus-TTS' : {
@@ -560,6 +601,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Index',
+        'title': 'Outclassed',
     },
 
     'nari-labs/Dia-1.6B' : {
@@ -569,6 +611,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Dia',
+        'title': 'Outclassed',
     },
 
     'ResembleAI/Chatterbox' : {
@@ -1028,7 +1071,14 @@ def make_link_to_space(model_name, for_leaderboard=False):
             title += model_name
     else:
         style += 'font-style: italic;'
-        title += model_name +'; Disabled (See AVAILABLE_MODELS within code for why)'
+        title += model_name
+
+    # add HTML title with comment on model
+    try:
+        if HF_SPACES[model_name]['title']:
+            title += '; '+ HF_SPACES[model_name]['title']
+    except:
+        pass
 
     # bolden top five models which get more scrutinized
     if model_name in top_five:
