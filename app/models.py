@@ -86,7 +86,7 @@ AVAILABLE_MODELS = {
     # llasa 1b TTS
     # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
+    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
     # llasa 8b TTS
     # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
