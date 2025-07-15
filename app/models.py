@@ -243,8 +243,8 @@ HF_SPACES = {
         'text_param_index': 'text',
         'return_audio_index': 0,
         'series': 'MeloTTS',
-        'emoji': '😒', # Narration voice
-        'title': 'Narration voice',
+        'emoji': '😷', # broken space / Narration voice
+        'title': 'Broken space / Outclassed narration voice',
     },
 
     # Parler Mini
@@ -552,7 +552,7 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Zonos',
-        'title': 'Outclassed',
+        # 'title': 'Outclassed',
     },
     'Steveeeeeeen/Zonos/hybrid': {
         'name': 'Zonos H',
@@ -562,6 +562,7 @@ HF_SPACES = {
         'is_zero_gpu_space': True,
         'series': 'Zonos',
         'title': 'Outclassed',
+        'space_link': 'Steveeeeeeen/Zonos',
     },
 
     # Spark-TTS
@@ -621,6 +622,15 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Chatterbox',
+    },
+
+    'ByteDance/MegaTTS3': {
+        'name': 'MegaTTS',
+        'function': '/predict',
+        'text_param_index': 'inp_text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'MegaTTS',
     },
 }
 
@@ -968,12 +978,22 @@ OVERRIDE_INPUTS = {
 		'temperature_input': 0.8, # Lower values make the output more deterministic, higher values increase randomness.
 		'seed_num_input': 1, # Seed for random number generation, can be any integer.
 		'cfgw_input': 0.5, # CFG/Pace weight, can be any float value.
-    }
+    },
+
+    # MegaTTS
+    'ByteDance/MegaTTS3': {
+		'inp_audio': handle_file('voice_samples/xtts_sample_megatts.wav'),
+		'inp_npy': handle_file('voice_samples/xtts_sample_megatts.npy'),
+		'infer_timestep': 32,
+		'p_w': 1.4,
+		't_w': 3,
+    },
 }
 
 # minor mods to model from the same space
 OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid'] = OVERRIDE_INPUTS['Steveeeeeeen/Zonos']
 OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid']['model_choice'] = 'Zyphra/Zonos-v0.1-hybrid'
+
 OVERRIDE_INPUTS['PHBJT/multi_parler_tts/reformatted'] = OVERRIDE_INPUTS['PHBJT/multi_parler_tts']
 OVERRIDE_INPUTS['PHBJT/multi_parler_tts/reformatted']['do_format'] = True
 
@@ -1038,7 +1058,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['PHBJT/multi_parler_tts', 'fishaudio/openaudio-s1-mini', 'ResembleAI/Chatterbox']
+top_five = ['ByteDance/MegaTTS3']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
