@@ -97,7 +97,7 @@ AVAILABLE_MODELS = {
     # 'CAMB-AI/mars6-turbo-demo': 'CAMB-AI/mars6-turbo-demo',
 
     # Zonos
-    # 'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
+    'Steveeeeeeen/Zonos': 'Steveeeeeeen/Zonos',
     # 'Steveeeeeeen/Zonos/hybrid': 'Steveeeeeeen/Zonos',
 
     # Spark
@@ -281,8 +281,8 @@ HF_SPACES = {
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         'series': 'Parler',
-        # 'emoji': '😃', # overlly jolly voice
-        'title': 'Overlly jolly voice', # overlly jolly voice
+        'emoji': '😷', # broken space
+        'title': 'Broken space - runtime error', # overlly jolly voice
     },
 
     # Parler Mini trained on Expresso dataset
