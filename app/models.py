@@ -86,7 +86,7 @@ AVAILABLE_MODELS = {
     # llasa 1b TTS
     # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts', # ZeroGPU Pro account expired
+    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
     # llasa 8b TTS
     # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
@@ -101,16 +101,16 @@ AVAILABLE_MODELS = {
     # 'Steveeeeeeen/Zonos/hybrid': 'Steveeeeeeen/Zonos',
 
     # Spark
-    'thunnai/SparkTTS': 'thunnai/SparkTTS',
+    # 'thunnai/SparkTTS': 'thunnai/SparkTTS',
 
     # Sesame
-    'sesame/csm-1b' : 'sesame/csm-1b',
+    # 'sesame/csm-1b' : 'sesame/csm-1b',
 
     # Orpheus
     'MohamedRashad/Orpheus-TTS' : 'MohamedRashad/Orpheus-TTS',
 
     # Index TTS
-    'IndexTeam/IndexTTS': 'IndexTeam/IndexTTS',
+    # 'IndexTeam/IndexTTS': 'IndexTeam/IndexTTS', # hallucinations on the endquotes
 
     # Dia
     # 'nari-labs/Dia-1.6B': 'nari-labs/Dia-1.6B', # single speaker hallucinates
@@ -120,6 +120,9 @@ AVAILABLE_MODELS = {
 
     # OpenAudio S1 (Fish Audio)
     'fishaudio/openaudio-s1-mini': 'fishaudio/openaudio-s1-mini',
+
+    # MegaTTS
+    'ByteDance/MegaTTS3': 'ByteDance/MegaTTS3',
 
     # HF TTS w issues
     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Discontinued for OpenAudio S1
@@ -973,7 +976,7 @@ OVERRIDE_INPUTS = {
 
     # Chatterbox
     'ResembleAI/Chatterbox': {
-		'audio_prompt_path_input': DEFAULT_VOICE_SAMPLE, # voice
+		'audio_prompt_path_input': handle_file('https://cdn-uploads.huggingface.co/production/uploads/642c0b71eb6e214d4f8897a3/bJvzvKbiIAZ3lX0MJDU0r.wav'), # voice; chosen by Manmay of Resemble AI org - https://huggingface.co/spaces/ResembleAI/Chatterbox/discussions/14#686cd36e9479e00d8d3fc079
 		'exaggeration_input': 0.5, # 1-2
 		'temperature_input': 0.8, # Lower values make the output more deterministic, higher values increase randomness.
 		'seed_num_input': 1, # Seed for random number generation, can be any integer.
