@@ -12,6 +12,7 @@ pinned: true
 short_description: Blind vote on HF TTS models!
 models:
 - amphion/MaskGCT
+- ByteDance/MegaTTS3
 - canopylabs/orpheus-3b-0.1-ft
 - coqui/XTTS-v2
 - fishaudio/fish-speech-1.4
