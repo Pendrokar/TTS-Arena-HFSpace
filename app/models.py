@@ -50,7 +50,7 @@ AVAILABLE_MODELS = {
     # 'parler-tts/parler_tts_mini': 'parler-tts/parler_tts_mini', # Mini is the default model of parler_tts
     # 'parler-tts/parler-tts-expresso': 'parler-tts/parler-tts-expresso', # 4.29 4.32 4.36.1 4.42.0
     # Parler Mini Multi v1.1
-    'PHBJT/multi_parler_tts': 'PHBJT/multi_parler_tts',
+    # 'PHBJT/multi_parler_tts': 'PHBJT/multi_parler_tts',
     # 'PHBJT/multi_parler_tts/reformatted': 'PHBJT/multi_parler_tts', # reformatted description using Gemma 2b
 
     # # Microsoft Edge TTS
