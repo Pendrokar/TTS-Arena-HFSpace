@@ -2,8 +2,9 @@ import os
 from test_overrides import _get_param_examples, _override_params
 from gradio_client import Client, handle_file
 
-model = "Pendrokar/GPT-SoVITS-v2"
-# lj1995/GPT-SoVITS-v2
+# model = "Pendrokar/GPT-SoVITS-v2"
+# model = "lj1995/GPT-SoVITS-v2"
+model = "lj1995/GPT-SoVITS-ProPlus"
 client = Client(model, hf_token=os.getenv('HF_TOKEN'))
 endpoints = client.view_api(all_endpoints=True, print_info=False, return_format='dict')
 # print(endpoints)

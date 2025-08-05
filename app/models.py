@@ -76,6 +76,7 @@ AVAILABLE_MODELS = {
 
     # GPT-SoVITS
     # 'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
+    'lj1995/GPT-SoVITS-ProPlus': 'lj1995/GPT-SoVITS-ProPlus',
 
     # OuteTTS 500M
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
@@ -466,6 +467,17 @@ HF_SPACES = {
         'title': 'Outclassed',
     },
 
+    # GPT-SoVITS ProPlus
+    'lj1995/GPT-SoVITS-ProPlus': {
+        'name': 'GPT-SoVITS ProPlus',
+        'function': '/get_tts_wav',
+        'text_param_index': 'text',
+        'return_audio_index': 0,
+        'is_zero_gpu_space': True,
+        'series': 'GPT-SoVITS',
+        'title': 'Outclassed',
+    },
+
     # OuteTTS v0.2 500M
     'ameerazam08/OuteTTS-0.2-500M-Demo': {
         'name': 'OuteTTS v0.2 500M',
@@ -846,6 +858,21 @@ OVERRIDE_INPUTS = {
         # text: "Please surprise me and speak in whatever voice you enjoy.",
         'text_language': "English",
         'how_to_cut': "No slice",
+        'top_k': 15,
+        'top_p': 1,
+        'temperature': 1,
+        'ref_free': False,
+        'speed': 1,
+        'if_freeze': False,
+        'inp_refs': None,
+    },
+    'lj1995/GPT-SoVITS-ProPlus': {
+        'ref_wav_path': handle_file('voice_samples/EN_B00004_S00051_W000213.wav'),
+        'prompt_text': "Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we'll call",
+        'prompt_language': "英文", # "English" in Japanese
+        # text: "Please surprise me and speak in whatever voice you enjoy.",
+        'text_language': "英文", # "English" in Japanese
+        'how_to_cut': "不切", # "No slice" in Japanese
         'top_k': 15,
         'top_p': 1,
         'temperature': 1,
