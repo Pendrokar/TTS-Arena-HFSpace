@@ -1003,7 +1003,7 @@ OVERRIDE_INPUTS = {
 
     # Chatterbox
     'ResembleAI/Chatterbox': {
-		'audio_prompt_path_input': handle_file('https://cdn-uploads.huggingface.co/production/uploads/642c0b71eb6e214d4f8897a3/bJvzvKbiIAZ3lX0MJDU0r.wav'), # voice; chosen by Manmay of Resemble AI org - https://huggingface.co/spaces/ResembleAI/Chatterbox/discussions/14#686cd36e9479e00d8d3fc079
+		'audio_prompt_path_input': handle_file('https://cdn-uploads.huggingface.co/production/uploads/642c0b71eb6e214d4f8897a3/H8qgQbv6e8bgGVCM-w4mq.wav'), # voice; chosen by Manmay of Resemble AI org - https://huggingface.co/spaces/ResembleAI/Chatterbox/discussions/14#686cd36e9479e00d8d3fc079
 		'exaggeration_input': 0.5, # 1-2
 		'temperature_input': 0.8, # Lower values make the output more deterministic, higher values increase randomness.
 		'seed_num_input': 1, # Seed for random number generation, can be any integer.
