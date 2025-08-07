@@ -346,8 +346,8 @@ HF_SPACES = {
     # F5 TTS
     'mrfakename/E2-F5-TTS': {
         'name': 'F5 TTS',
-        'function': '/basic_tts',
-        'text_param_index': 'gen_text_input',
+        'function': '/predict',
+        'text_param_index': 'gen_text',
         'return_audio_index': 0,
         'is_zero_gpu_space': True,
         # 'series': 'E2 TTS',
@@ -781,12 +781,9 @@ OVERRIDE_INPUTS = {
 
     # F5
     'mrfakename/E2-F5-TTS': {
-        'ref_audio_input': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
-        'ref_text_input': 'Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we\'ll call Kruger Bern.',
+        'ref_audio': handle_file('voice_samples/EN_B00004_S00051_W000213.mp3'),
+        'ref_text': 'Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we\'ll call Kruger Bern.',
         'remove_silence': False,
-        'cross_fade_duration_slider': 0.15,
-        'nfe_slider': 32,
-        'speed_slider': 1,
     },
 
     # E2 TODO: call switch model
