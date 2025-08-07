@@ -175,25 +175,24 @@ def synthandreturn(text, autoplay, request: gr.Request):
             print('Done with', model)
 
         # Resample to 24kHz
-        try:
-            with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
-                audio = AudioSegment.from_file(result)
-                current_sr = audio.frame_rate
-                if current_sr > 24000:
-                    print(f"{model}: Resampling")
-                    audio = audio.set_frame_rate(24000)
-                try:
-                    print(f"{model}: Trying to normalize audio")
-                    audio = match_target_amplitude(audio, -20)
-                except:
-                    print(f"{model}: [WARN] Unable to normalize audio")
-                audio.export(f.name, format="wav")
-                os.unlink(result)
-                result = f.name
-                gr.Info('Audio from a TTS model received')
-        except:
-            print(f"{model}: [WARN] Unable to resample audio")
-            pass
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
+            audio = AudioSegment.from_file(result)
+            current_sr = audio.frame_rate
+            if current_sr > 24000:
+                print(f"{model}: Resampling")
+                audio = audio.set_frame_rate(24000)
+            try:
+                print(f"{model}: Trying to normalize audio")
+                audio = match_target_amplitude(audio, -20)
+            except:
+                print(f"{model}: [WARN] Unable to normalize audio")
+                raise gr.Error('Unable to normalize audio for output of space')
+
+            audio.export(f.name, format="wav")
+            os.unlink(result)
+            result = f.name
+            gr.Info('Audio from a TTS model received')
+
         # if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
         result_storage[model] = result
 
@@ -281,10 +280,12 @@ def synthandreturn(text, autoplay, request: gr.Request):
     ):
         # run Zero-GPU spaces one at a time
         predict_and_update_result(text, mdl1k, results, request)
-        cache_sample(results[mdl1k], text, mdl1k)
+        if results[mdl1k] != None:
+            cache_sample(results[mdl1k], text, mdl1k)
 
         predict_and_update_result(text, mdl2k, results, request)
-        cache_sample(results[mdl2k], text, mdl2k)
+        if results[mdl2k] != None:
+            cache_sample(results[mdl2k], text, mdl2k)
     else:
         # use multithreading
         thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results, request))
@@ -323,104 +324,8 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
 # Battle Mode
 
-def synthandreturn_battle(text, mdl1, mdl2, autoplay):
-    if mdl1 == mdl2:
-        raise gr.Error('You can\'t pick two of the same models.')
-    text = text.strip()
-    if len(text) > MAX_SAMPLE_TXT_LENGTH:
-        raise gr.Error(f'You exceeded the limit of {MAX_SAMPLE_TXT_LENGTH} characters')
-    if len(text) < MIN_SAMPLE_TXT_LENGTH:
-        raise gr.Error(f'Please input a text longer than {MIN_SAMPLE_TXT_LENGTH} characters')
-    if (
-        # test toxicity if not prepared text
-        text not in sents
-        and check_toxicity(text)
-    ):
-        print(f'Detected toxic content! "{text}"')
-        raise gr.Error('Your text failed the toxicity test')
-    if not text:
-        raise gr.Error(f'You did not enter any text')
-    # Check language
-    try:
-        if not detect(text) == "en":
-            gr.Warning('Warning: The input text may not be in English')
-    except:
-        pass
-    # Get two random models
-    log_text(text)
-    print("[debug] Using", mdl1, mdl2)
-    def predict_and_update_result(text, model, result_storage):
-        try:
-            if model in AVAILABLE_MODELS:
-                result = router.predict(text, AVAILABLE_MODELS[model].lower(), api_name="/synthesize")
-            else:
-                result = router.predict(text, model.lower(), api_name="/synthesize")
-        except:
-            raise gr.Error('Unable to call API, please try again :)')
-        print('Done with', model)
-        # try:
-        #     doresample(result)
-        # except:
-        #     pass
-        try:
-            with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
-                audio = AudioSegment.from_file(result)
-                current_sr = audio.frame_rate
-                if current_sr > 24000:
-                    audio = audio.set_frame_rate(24000)
-                try:
-                    print('Trying to normalize audio')
-                    audio = match_target_amplitude(audio, -20)
-                except:
-                    print('[WARN] Unable to normalize audio')
-                audio.export(f.name, format="wav")
-                os.unlink(result)
-                result = f.name
-        except:
-            pass
-        # if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
-        print(model)
-        print(f"Running model {model}")
-        result_storage[model] = result
-        # try:
-        #     doloudnorm(result)
-        # except:
-        #     pass
-    mdl1k = mdl1
-    mdl2k = mdl2
-    print(mdl1k, mdl2k)
-    # if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
-    # if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
-    results = {}
-    print(f"Sending models {mdl1k} and {mdl2k} to API")
-    thread1 = threading.Thread(target=predict_and_update_result, args=(text, mdl1k, results))
-    thread2 = threading.Thread(target=predict_and_update_result, args=(text, mdl2k, results))
-
-    thread1.start()
-    thread2.start()
-    thread1.join()
-    thread2.join()
-
-    print(f"Retrieving models {mdl1k} and {mdl2k} from API")
-    return (
-        text,
-        "Synthesize 🐢",
-        gr.update(visible=True), # r2
-        mdl1, # model1
-        mdl2, # model2
-        gr.update(visible=True, value=results[mdl1k], autoplay=autoplay), # aud1
-        gr.update(visible=True, value=results[mdl2k], autoplay=False), # aud2
-        gr.update(visible=True, interactive=False), #abetter
-        gr.update(visible=True, interactive=False), #bbetter
-        gr.update(visible=False), #prevmodel1
-        gr.update(visible=False), #prevmodel2
-        gr.update(visible=False), #nxt round btn
-    )
-
 def randomsent():
     return '⚡', random.choice(sents), '🎲'
-def randomsent_battle():
-    return tuple(randomsent()) + tuple(random_m())
 def clear_stuff():
     return [
         gr.update(visible=True, value="", elem_classes=[]),
