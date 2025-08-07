@@ -1085,7 +1085,7 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['ByteDance/MegaTTS3']
+top_five = ['lj1995/GPT-SoVITS-ProPlus']
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
