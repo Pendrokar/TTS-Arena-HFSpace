@@ -11,8 +11,42 @@ This test:
 
 import os
 import sys
+import signal
 from gradio_client import Client
 from app.models import AVAILABLE_MODELS, HF_SPACES
+
+
+class TimeoutError(Exception):
+    pass
+
+
+def timeout_handler(signum, frame):
+    raise TimeoutError("Client initialization timed out")
+
+
+def create_client_with_timeout(space_url: str, hf_token: str, timeout_secs: int = 15):
+    """Create a Gradio Client with a timeout for initialization."""
+    # Use signal-based timeout (Unix/Linux/Mac)
+    if hasattr(signal, 'SIGALRM'):
+        old_handler = signal.signal(signal.SIGALRM, timeout_handler)
+        signal.alarm(timeout_secs)
+        try:
+            client = Client(
+                space_url,
+                token=hf_token,
+                headers={}
+            )
+            return client
+        finally:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, old_handler)
+    else:
+        # Windows fallback - no timeout support
+        return Client(
+            space_url,
+            token=hf_token,
+            headers={}
+        )
 
 
 def get_space_url(model_name: str) -> str:
@@ -156,12 +190,8 @@ def main():
         config['space_url'] = space_url
         
         try:
-            # Create Gradio client
-            client = Client(
-                space_url,
-                token=hf_token,
-                headers={}
-            )
+            # Create Gradio client with 15 second timeout
+            client = create_client_with_timeout(space_url, hf_token, timeout_secs=15)
             
             # Validate the endpoint
             result = validate_endpoint(model_name, client, config)

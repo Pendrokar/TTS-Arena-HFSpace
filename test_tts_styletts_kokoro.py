@@ -1,7 +1,7 @@
 import os
 from gradio_client import Client, file
 
-client = Client("hexgrad/kokoro", hf_token=os.getenv('HF_TOKEN'))
+client = Client("hexgrad/kokoro", token=os.getenv('HF_TOKEN'))
 # endpoints = client.view_api(all_endpoints=True, print_info=False, return_format='dict')
 # print(endpoints)
 key = os.getenv('KOKORO')

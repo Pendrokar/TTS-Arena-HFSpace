@@ -1,7 +1,7 @@
 import os
 from gradio_client import Client, file
 
-client = Client("hexgrad/Kokoro-API", hf_token=os.getenv('KOKORO'))
+client = Client("hexgrad/Kokoro-API", token=os.getenv('KOKORO'))
 # endpoints = client.view_api(all_endpoints=True, print_info=False, return_format='dict')
 # print(endpoints)
 result = client.predict(
