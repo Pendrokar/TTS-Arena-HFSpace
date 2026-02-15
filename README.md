@@ -43,7 +43,7 @@ models:
 - WhisperSpeech/WhisperSpeech
 - Zyphra/Zonos-v0.1-hybrid
 - Zyphra/Zonos-v0.1-transformer
-sdk_version: 5.39.0
+sdk_version: 6.5.1
 ---
 
 [Saved votes dataset](https://huggingface.co/datasets/Pendrokar/TTS_Arena)
