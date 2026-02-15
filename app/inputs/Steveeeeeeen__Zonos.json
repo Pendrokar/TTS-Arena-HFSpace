@@ -1,0 +1,26 @@
+{
+  "model_choice": "Zyphra/Zonos-v0.1-transformer",
+  "language": "en-us",
+  "speaker_audio": null,
+  "prefix_audio": {
+    "path": "https://huggingface.co/spaces/Steveeeeeeen/Zonos/resolve/main/assets/silence_100ms.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "silence_100ms.wav",
+    "url": "https://huggingface.co/spaces/Steveeeeeeen/Zonos/resolve/main/assets/silence_100ms.wav"
+  },
+  "vq_single": 0.78,
+  "fmax": 24000,
+  "pitch_std": 45,
+  "speaking_rate": 15,
+  "dnsmos_ovrl": 4,
+  "speaker_noised": false,
+  "cfg_scale": 2,
+  "min_p": 0.15,
+  "seed": 420,
+  "randomize_seed": false,
+  "unconditional_keys": [
+    "emotion"
+  ]
+}

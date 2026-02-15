@@ -1,0 +1,9 @@
+{
+  "sample_audio_path": {
+    "path": "voice_samples/EN_B00004_S00051_W000213.mp3",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "EN_B00004_S00051_W000213.mp3"
+  }
+}

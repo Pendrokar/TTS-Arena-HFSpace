@@ -1,0 +1,18 @@
+{
+  "text_prompt_speaker_a": "And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.",
+  "text_prompt_speaker_b": "And Lake turned round upon me, a little abruptly, his odd yellowish eyes, a little like those of the sea eagle, and the ghost of his smile that flickered on his singularly pale face, with a stern and insidious look, confronted me.",
+  "audio_prompt_speaker_a": {
+    "path": "voice_samples/read_speech_a.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "read_speech_a.wav"
+  },
+  "audio_prompt_speaker_b": {
+    "path": "voice_samples/read_speech_a.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "read_speech_a.wav"
+  }
+}

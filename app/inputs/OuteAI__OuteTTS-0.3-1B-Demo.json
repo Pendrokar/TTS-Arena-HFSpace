@@ -1,0 +1,6 @@
+{
+  "temperature": 0.1,
+  "repetition_penalty": 1.1,
+  "speaker_selection": "en_female_1",
+  "reference_audio": null
+}

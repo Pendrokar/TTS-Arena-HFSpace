@@ -1,0 +1,14 @@
+{
+  "audio_prompt_path_input": {
+    "path": "https://cdn-uploads.huggingface.co/production/uploads/642c0b71eb6e214d4f8897a3/H8qgQbv6e8bgGVCM-w4mq.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "H8qgQbv6e8bgGVCM-w4mq.wav",
+    "url": "https://cdn-uploads.huggingface.co/production/uploads/642c0b71eb6e214d4f8897a3/H8qgQbv6e8bgGVCM-w4mq.wav"
+  },
+  "exaggeration_input": 0.5,
+  "temperature_input": 0.8,
+  "seed_num_input": 1,
+  "cfgw_input": 0.5
+}

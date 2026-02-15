@@ -1,0 +1,19 @@
+{
+  "inp_audio": {
+    "path": "voice_samples/xtts_sample_megatts.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "xtts_sample_megatts.wav"
+  },
+  "inp_npy": {
+    "path": "voice_samples/xtts_sample_megatts.npy",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "xtts_sample_megatts.npy"
+  },
+  "infer_timestep": 32,
+  "p_w": 1.4,
+  "t_w": 3
+}

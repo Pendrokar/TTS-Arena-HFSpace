@@ -1,0 +1,16 @@
+{
+  "1": {
+    "path": "https://huggingface.co/spaces/LeeSangHoon/HierSpeech_TTS/resolve/main/example/female.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "female.wav",
+    "url": "https://huggingface.co/spaces/LeeSangHoon/HierSpeech_TTS/resolve/main/example/female.wav"
+  },
+  "2": 0.333,
+  "3": 0.333,
+  "4": 1,
+  "5": 1,
+  "6": 0,
+  "7": 1111
+}

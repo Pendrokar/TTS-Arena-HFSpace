@@ -1,0 +1,19 @@
+{
+  "audio_file": {
+    "path": "voice_samples/xtts_sample.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "xtts_sample.wav"
+  },
+  "prompt_text": "The Hispaniola was rolling scuppers under in the ocean swell. The booms were tearing at the blocks, the rudder was banging to and fro, and the whole ship creaking, groaning, and jumping like a manufactory.",
+  "temperature": 0.8,
+  "top_k": -1,
+  "top_p": 0.2,
+  "typical_p": 1,
+  "freq_penalty": 2.6,
+  "presence_penalty": 0.4,
+  "rep_penalty_window": 100,
+  "nar_guidance_w": 3,
+  "deep_clone": true
+}

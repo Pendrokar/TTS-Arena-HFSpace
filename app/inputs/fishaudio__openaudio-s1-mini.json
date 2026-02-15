@@ -1,0 +1,18 @@
+{
+  "reference_id": null,
+  "reference_audio": {
+    "path": "voice_samples/English.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "English.wav"
+  },
+  "reference_text": "In the ancient land of Eldoria, where the skies were painted with shades of mystic hues and the forests whispered secrets of old, there existed a dragon named Zephyros. Unlike the fearsome tales of dragons that plagued human hearts with terror, Zephyros was a creature of wonder and wisdom, revered by all who knew of his existence.",
+  "max_new_tokens": 0,
+  "chunk_length": 0,
+  "top_p": 0.9,
+  "repetition_penalty": 1.1,
+  "temperature": 0.9,
+  "seed": 1,
+  "use_memory_cache": "on"
+}

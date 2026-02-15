@@ -1,0 +1,14 @@
+{
+  "ref_audio_input": {
+    "path": "voice_samples/EN_B00004_S00051_W000213.mp3",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "EN_B00004_S00051_W000213.mp3"
+  },
+  "ref_text_input": "Our model manager is Graham, whom we observed leading a small team of chemical engineers within a multinational European firm we'll call Kruger Bern.",
+  "remove_silence": false,
+  "cross_fade_duration_slider": 0.15,
+  "nfe_slider": 32,
+  "speed_slider": 1
+}

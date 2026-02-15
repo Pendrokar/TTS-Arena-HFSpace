@@ -21,7 +21,7 @@ from pathlib import Path
 
 from gradio_client import Client, file
 
-from test_overrides import _get_param_examples, _override_params
+from test_overrides import _get_param_examples, _override_params, HF_SPACES
 
 
 def play_audio(audio_path: str):
@@ -128,7 +128,7 @@ def synthesize_and_play(space_url: str, text: str = "Hello world!"):
     else:
         # List input - set first element (usually text)
         if space_inputs:
-            space_inputs[0] = text
+            space_inputs[HF_SPACES[space_url]['text_param_index']] = text
             text_set = True
     
     if not text_set:

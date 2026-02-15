@@ -1,0 +1,9 @@
+{
+  "prompt": {
+    "path": "voice_samples/xtts_sample.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "xtts_sample.wav"
+  }
+}
