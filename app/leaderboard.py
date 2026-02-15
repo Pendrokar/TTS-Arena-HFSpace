@@ -17,6 +17,9 @@ def get_leaderboard(reveal_prelim = False):
     cursor.execute(sql)
     data = cursor.fetchall()
     df = pd.DataFrame(data, columns=['Name', 'Upvote', 'Downvote', 'OrigName'])
+    # Convert to numeric to avoid string type issues
+    df['Upvote'] = pd.to_numeric(df['Upvote'])
+    df['Downvote'] = pd.to_numeric(df['Downvote'])
     # df['License'] = df['Name'].map(model_license)
     df['Name'] = df['Name'].replace(model_names)
     for i in range(len(df)):
