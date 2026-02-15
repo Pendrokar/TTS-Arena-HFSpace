@@ -1,8 +1,8 @@
 {
-  "name": "MARS 5",
-  "function": "/on_click",
+  "name": "Qwen3 TTS Voice Design",
+  "function": "/tts_interface",
   "text_param_index": "text",
   "return_audio_index": 0,
   "is_zero_gpu_space": false,
-  "series": "MARS"
+  "series": "Qwen"
 }

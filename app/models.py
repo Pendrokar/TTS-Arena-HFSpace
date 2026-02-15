@@ -168,6 +168,9 @@ AVAILABLE_MODELS = {
     # smallest.ai Lightning v3.1
     'smallestai/smallest-ai-tts-lightningv3.1-demo': 'smallestai/smallest-ai-tts-lightningv3.1-demo',
 
+    # Qwen3 TTS Voice Design
+    'Qwen/Qwen3-TTS-Voice-Design': 'Qwen/Qwen3-TTS-Voice-Design',
+
     # HF TTS w issues
     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Discontinued for OpenAudio S1
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
