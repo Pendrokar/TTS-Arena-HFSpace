@@ -1,0 +1,8 @@
+{
+  "name": "Pocket TTS",
+  "function": "/generate_speech",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": false,
+  "series": "Pocket TTS"
+}
