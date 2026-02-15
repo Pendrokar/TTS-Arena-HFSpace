@@ -52,8 +52,6 @@ with gr.Blocks() as vote:
                 aud1 = gr.Audio(
                     interactive=False,
                     show_label=False,
-                    show_download_button=False,
-                    show_share_button=False,
                     elem_id="vote-a-audio",
                     # waveform_options={'waveform_progress_color': '#EF4444'},
                     # var(--color-red-500)'}); gradio only accepts HEX and CSS color
@@ -74,8 +72,6 @@ with gr.Blocks() as vote:
                 aud2 = gr.Audio(
                     interactive=False,
                     show_label=False,
-                    show_download_button=False,
-                    show_share_button=False,
                     waveform_options={'waveform_progress_color': '#3C82F6'},
                     elem_id="vote-b-audio",
                     # var(--secondary-500)'}); gradio only accepts HEX and CSS color

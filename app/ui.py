@@ -43,8 +43,6 @@ with gr.Blocks() as about:
     gr.Markdown(ABOUT)
 
 with gr.Blocks(
-    css="footer {visibility: hidden}textbox{resize:none} .blurred-text {filter: blur(0.15em);}",
-    head=head_js,
     title="TTS Arena"
 ) as app:
     gr.Markdown(DESCR)

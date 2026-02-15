@@ -267,7 +267,12 @@ closed_source = [
 ]
 
 # top five models in order to always have one of them picked and scrutinized
-top_five = ['lj1995/GPT-SoVITS-ProPlus']
+top_five = [
+    'NeuralFalcon/Pocket-TTS',
+    'smallestai/smallest-ai-tts-lightningv3.1-demo',
+    'Qwen/Qwen3-TTS-Voice-Design',
+    'OpenMOSS-Team/MOSS-TTS',
+]
 
 # prioritize low vote models
 sql = 'SELECT name FROM model WHERE (upvote + downvote) < 750 ORDER BY (upvote + downvote) ASC'
