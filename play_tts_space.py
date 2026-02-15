@@ -82,16 +82,17 @@ def synthesize_and_play(space_url: str, text: str = "Hello world!"):
     # Try to find a suitable endpoint
     if endpoints.get('named_endpoints'):
         # Use the first named endpoint that looks like an inference endpoint
-        for endpoint_name, endpoint_info in endpoints['named_endpoints'].items():
-            if 'infer' in endpoint_name.lower() or 'predict' in endpoint_name.lower():
-                api_name = endpoint_name
-                break
-        # Fallback to first available endpoint
-        if api_name is None:
-            api_name = list(endpoints['named_endpoints'].keys())[0]
+        # for endpoint_name, endpoint_info in endpoints['named_endpoints'].items():
+        #     if 'infer' in endpoint_name.lower() or 'predict' in endpoint_name.lower():
+        #         api_name = endpoint_name
+        #         break
+        # # Fallback to first available endpoint
+        # if api_name is None:
+        #     api_name = list(endpoints['named_endpoints'].keys())[0]
+        api_name = HF_SPACES[space_url]['function']
     elif endpoints.get('unnamed_endpoints'):
         # Use the first unnamed endpoint
-        fn_index = int(list(endpoints['unnamed_endpoints'].keys())[0])
+        fn_index = HF_SPACES[space_url]['function']
     
     # Get endpoint parameters
     if api_name:
@@ -112,23 +113,26 @@ def synthesize_and_play(space_url: str, text: str = "Hello world!"):
     # Set the text input - try common parameter names
     text_set = False
     if isinstance(space_inputs, dict):
+        if space_inputs:
+            space_inputs[HF_SPACES[space_url]['text_param_index']] = text
+            text_set = True
         # Try common text parameter names
-        for key in ['text', 'target_text', 'input_text', 'prompt', 'sentence', 'input']:
-            if key in space_inputs:
-                space_inputs[key] = text
-                text_set = True
-                break
-        # If no known key found, set the first string parameter
-        if not text_set:
-            for key, value in space_inputs.items():
-                if isinstance(value, str) and key not in ['language', 'voice', 'model']:
-                    space_inputs[key] = text
-                    text_set = True
-                    break
+        # for key in ['text', 'target_text', 'input_text', 'prompt', 'sentence', 'input']:
+        #     if key in space_inputs:
+        #         space_inputs[key] = text
+        #         text_set = True
+        #         break
+        # # If no known key found, set the first string parameter
+        # if not text_set:
+        #     for key, value in space_inputs.items():
+        #         if isinstance(value, str) and key not in ['language', 'voice', 'model']:
+        #             space_inputs[key] = text
+        #             text_set = True
+        #             break
     else:
         # List input - set first element (usually text)
         if space_inputs:
-            space_inputs[HF_SPACES[space_url]['text_param_index']] = text
+            space_inputs[0] = text
             text_set = True
     
     if not text_set:
