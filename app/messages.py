@@ -18,12 +18,21 @@ Choose 2 candidates and vote on which one is better! Currently in beta.
 """
 
 INSTR = """
+<details>
+<summary>Tips (click to expand)</summary>
+
 * Press ⚡ to quickly get cached sample pairs you've yet to vote on. (Fast 🐇)
+
 * Or press 🎲 pick a random sentence from a prepared list. (Slow 🐢)
+
 * Or input text (🇺🇸 English only) to synthesize audio. (Slowest 🐌)
+
 * _Listen to the two audio clips, one after the other and then vote on which audio sounds more natural to you._
+
 * Model names are revealed after the vote is cast.
-* You can use a [hotkey] for quicker voting.
+
+* You can use a _[hotkey]_ for quicker voting.
+</details>
 """.strip()
 
 request = ""
