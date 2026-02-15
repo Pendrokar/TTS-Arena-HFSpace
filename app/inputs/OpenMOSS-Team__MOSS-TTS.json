@@ -1,0 +1,17 @@
+{
+  "reference_audio": {
+    "path": "voice_samples/xtts_sample.wav",
+    "meta": {
+      "_type": "gradio.FileData"
+    },
+    "orig_name": "xtts_sample.wav"
+  },
+  "mode_with_reference": "Clone",
+  "duration_control_enabled": false,
+  "duration_tokens": 1,
+  "temperature": 1.7,
+  "top_p": 0.8,
+  "top_k": 25,
+  "repetition_penalty": 1,
+  "max_new_tokens": 4096
+}

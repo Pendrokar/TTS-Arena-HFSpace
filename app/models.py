@@ -171,6 +171,9 @@ AVAILABLE_MODELS = {
     # Qwen3 TTS Voice Design
     'Qwen/Qwen3-TTS-Voice-Design': 'Qwen/Qwen3-TTS-Voice-Design',
 
+    # MOSS TTS
+    'OpenMOSS-Team/MOSS-TTS': 'OpenMOSS-Team/MOSS-TTS',
+
     # HF TTS w issues
     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Discontinued for OpenAudio S1
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
