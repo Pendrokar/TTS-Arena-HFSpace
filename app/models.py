@@ -71,7 +71,7 @@ AVAILABLE_MODELS = {
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
-    # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
@@ -95,7 +95,7 @@ AVAILABLE_MODELS = {
 
     # # Microsoft Edge TTS
     # 'innoai/Edge-TTS-Text-to-Speech': 'innoai/Edge-TTS-Text-to-Speech', # API disabled
-    'innoai/Edge-TTS-Text-to-Speech': '/Edge-TTS', # using Edge API
+    # 'innoai/Edge-TTS-Text-to-Speech': '/Edge-TTS', # using Edge API
 
     # IMS-Toucan
     # 'Flux9665/MassivelyMultilingualTTS': 'Flux9665/MassivelyMultilingualTTS', # 5.1
@@ -108,7 +108,7 @@ AVAILABLE_MODELS = {
     # StyleTTS Kokoro v0.23
     # 'hexgrad/Kokoro-TTS/0.23': 'hexgrad/Kokoro-TTS',
     # StyleTTS Kokoro v1.0
-    'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
+    # 'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!

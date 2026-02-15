@@ -3,7 +3,5 @@
   "function": "/predict",
   "text_param_index": 0,
   "return_audio_index": 0,
-  "series": "XTTS",
-  "emoji": "😩",
-  "title": "Gradio version too old"
+  "series": "XTTS"
 }
