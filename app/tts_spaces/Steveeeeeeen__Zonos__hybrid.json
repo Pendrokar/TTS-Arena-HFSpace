@@ -1,0 +1,10 @@
+{
+  "name": "Zonos H",
+  "function": "/generate_audio",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "Zonos",
+  "title": "Outclassed",
+  "space_link": "Steveeeeeeen/Zonos"
+}

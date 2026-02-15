@@ -1,0 +1,9 @@
+{
+  "name": "Kokoro v1.0",
+  "function": "/predict",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": false,
+  "series": "Kokoro",
+  "space_link": "hexgrad/kokoro"
+}

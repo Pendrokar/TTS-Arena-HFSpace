@@ -1,0 +1,9 @@
+{
+  "name": "CSM 1B",
+  "function": "/infer",
+  "text_param_index": "gen_conversation_input",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "CSM-1B",
+  "title": "Outclassed"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "GPT-SoVITS ProPlus",
+  "function": "/get_tts_wav",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "GPT-SoVITS",
+  "title": "Outclassed"
+}

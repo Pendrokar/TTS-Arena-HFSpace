@@ -1,0 +1,10 @@
+{
+  "name": "StyleTTS v2",
+  "function": "/synthesize",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "StyleTTS",
+  "emoji": "😷",
+  "title": "Outclassed by Kokoro"
+}

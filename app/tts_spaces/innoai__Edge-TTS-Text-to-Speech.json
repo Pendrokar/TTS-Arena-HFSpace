@@ -1,0 +1,10 @@
+{
+  "name": "Microsoft® Edge TTS",
+  "function": "/predict",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "is_closed_source": true,
+  "series": "Edge TTS",
+  "emoji": "",
+  "space_link": "innoai/Edge-TTS-Text-to-Speech"
+}

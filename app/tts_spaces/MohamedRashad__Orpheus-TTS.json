@@ -1,0 +1,8 @@
+{
+  "name": "Orpheus 3B v0.1",
+  "function": "/generate_speech",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "Orpheus"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "F5 TTS",
+  "function": "/predict",
+  "text_param_index": "gen_text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "E2/F5 TTS",
+  "title": "Uses a voice sample from trained dataset"
+}

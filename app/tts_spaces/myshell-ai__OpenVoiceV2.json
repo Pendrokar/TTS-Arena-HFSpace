@@ -1,0 +1,9 @@
+{
+  "name": "OpenVoice v2",
+  "function": "1",
+  "text_param_index": 0,
+  "return_audio_index": 1,
+  "series": "OpenVoice",
+  "emoji": "😩",
+  "title": "Gradio version too old"
+}

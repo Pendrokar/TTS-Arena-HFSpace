@@ -1,0 +1,9 @@
+{
+  "name": "IMS-Toucan EN",
+  "function": "/predict",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "series": "IMS-Toucan",
+  "emoji": "😒",
+  "title": "Narration voice"
+}

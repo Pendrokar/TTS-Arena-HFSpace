@@ -1,0 +1,9 @@
+{
+  "name": "xVASynth v3",
+  "function": "/predict",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "series": "xVASynth",
+  "space_link": "Pendrokar/xVASynth-TTS",
+  "title": "Outclassed"
+}

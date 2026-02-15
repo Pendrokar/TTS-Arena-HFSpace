@@ -1,0 +1,8 @@
+{
+  "name": "Chatterbox",
+  "function": "/generate_tts_audio",
+  "text_param_index": "text_input",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "Chatterbox"
+}

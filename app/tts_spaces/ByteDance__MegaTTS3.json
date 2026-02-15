@@ -1,0 +1,8 @@
+{
+  "name": "MegaTTS",
+  "function": "/predict",
+  "text_param_index": "inp_text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "MegaTTS"
+}

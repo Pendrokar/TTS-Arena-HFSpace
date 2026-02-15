@@ -1,0 +1,9 @@
+{
+  "name": "WhisperSpeech",
+  "function": "/whisper_speech_demo",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "series": "WhisperSpeech",
+  "emoji": "😷",
+  "title": "Broken space - runtime error"
+}

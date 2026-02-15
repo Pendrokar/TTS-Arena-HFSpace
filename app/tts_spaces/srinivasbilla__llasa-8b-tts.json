@@ -1,0 +1,8 @@
+{
+  "name": "LLaSA 8B",
+  "function": "/infer",
+  "text_param_index": "target_text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "LLaSA"
+}

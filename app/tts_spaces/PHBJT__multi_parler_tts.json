@@ -1,0 +1,9 @@
+{
+  "name": "Parler Mini Multi v1.1",
+  "function": "/gen_tts",
+  "text_param_index": "text",
+  "return_audio_index": 1,
+  "is_zero_gpu_space": true,
+  "series": "Parler",
+  "title": "Unstable"
+}

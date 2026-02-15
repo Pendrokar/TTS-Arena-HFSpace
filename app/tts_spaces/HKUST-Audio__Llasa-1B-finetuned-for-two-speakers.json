@@ -1,0 +1,9 @@
+{
+  "name": "LLaSA 1B",
+  "function": "/predict",
+  "text_param_index": "input_text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "LLaSA",
+  "title": "Broken space - Runtime error"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Fish Speech",
+  "function": "/inference_wrapper",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "series": "Fish Speech",
+  "emoji": "😵",
+  "title": "Deprecated: Redirects to OpenAudio"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "HierSpeech++",
+  "function": "/predict",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "series": "HierSpeech++",
+  "emoji": "😒",
+  "title": "Narration voice"
+}

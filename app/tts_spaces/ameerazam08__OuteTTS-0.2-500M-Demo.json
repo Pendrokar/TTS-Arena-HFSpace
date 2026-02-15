@@ -1,0 +1,10 @@
+{
+  "name": "OuteTTS v0.2 500M",
+  "function": "/generate_tts",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "OuteTTS",
+  "emoji": "🥵",
+  "title": "Requires 300s reserved ZeroGPU time! Cannot afford!"
+}

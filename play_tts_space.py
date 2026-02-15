@@ -141,7 +141,10 @@ def synthesize_and_play(space_url: str, text: str = "Hello world!"):
         if isinstance(space_inputs, dict):
             result = client.predict(**space_inputs, api_name=api_name)
         else:
-            result = client.predict(*space_inputs, fn_index=fn_index)
+            if api_name:
+                result = client.predict(*space_inputs, api_name=api_name)
+            else:
+                result = client.predict(*space_inputs, fn_index=fn_index)
     except Exception as e:
         print(f"Error during prediction: {e}")
         return False

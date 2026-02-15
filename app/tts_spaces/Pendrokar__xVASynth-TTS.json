@@ -1,0 +1,8 @@
+{
+  "name": "xVASynth v3 DeepMoji",
+  "function": "/predict",
+  "text_param_index": 0,
+  "return_audio_index": 0,
+  "series": "xVASynth",
+  "title": "Outclassed"
+}

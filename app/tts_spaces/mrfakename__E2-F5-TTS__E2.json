@@ -1,0 +1,8 @@
+{
+  "name": "E2 TTS",
+  "function": "/basic_tts",
+  "text_param_index": "gen_text_input",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "E2/F5 TTS"
+}

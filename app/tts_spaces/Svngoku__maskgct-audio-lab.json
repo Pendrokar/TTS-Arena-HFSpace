@@ -1,0 +1,10 @@
+{
+  "name": "MaskGCT",
+  "function": "/predict",
+  "text_param_index": 1,
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "MaskGCT",
+  "emoji": "🥵",
+  "title": "Requires 300s reserved ZeroGPU time! Cannot afford!"
+}
