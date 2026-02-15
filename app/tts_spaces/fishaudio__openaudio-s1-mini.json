@@ -3,5 +3,7 @@
   "function": "/partial",
   "text_param_index": "text",
   "return_audio_index": 0,
-  "series": "Fish Speech"
+  "series": "Fish Speech",
+  "emoji": "😷",
+  "title": "Broken space"
 }

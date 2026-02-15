@@ -116,7 +116,7 @@ AVAILABLE_MODELS = {
 
     # GPT-SoVITS
     # 'lj1995/GPT-SoVITS-v2': 'lj1995/GPT-SoVITS-v2',
-    'lj1995/GPT-SoVITS-ProPlus': 'lj1995/GPT-SoVITS-ProPlus',
+    # 'lj1995/GPT-SoVITS-ProPlus': 'lj1995/GPT-SoVITS-ProPlus',
 
     # OuteTTS 500M
     # 'OuteAI/OuteTTS-0.2-500M-Demo': 'OuteAI/OuteTTS-0.2-500M-Demo',
@@ -160,10 +160,10 @@ AVAILABLE_MODELS = {
     'ResembleAI/Chatterbox': 'ResembleAI/Chatterbox',
 
     # OpenAudio S1 (Fish Audio)
-    'fishaudio/openaudio-s1-mini': 'fishaudio/openaudio-s1-mini',
+    # 'fishaudio/openaudio-s1-mini': 'fishaudio/openaudio-s1-mini',
 
     # MegaTTS
-    'ByteDance/MegaTTS3': 'ByteDance/MegaTTS3',
+    # 'ByteDance/MegaTTS3': 'ByteDance/MegaTTS3',
 
     # smallest.ai Lightning v3.1
     'smallestai/smallest-ai-tts-lightningv3.1-demo': 'smallestai/smallest-ai-tts-lightningv3.1-demo',

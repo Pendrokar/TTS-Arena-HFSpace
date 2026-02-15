@@ -4,5 +4,7 @@
   "text_param_index": "inp_text",
   "return_audio_index": 0,
   "is_zero_gpu_space": true,
-  "series": "MegaTTS"
+  "series": "MegaTTS",
+  "emoji": "😷",
+  "title": "Broken space"
 }
