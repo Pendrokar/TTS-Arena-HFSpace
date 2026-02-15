@@ -3,6 +3,7 @@
   "function": "/synthesize_speech",
   "text_param_index": "text",
   "return_audio_index": 0,
+  "is_closed_source": true,
   "is_zero_gpu_space": false,
   "series": "Lightning"
 }

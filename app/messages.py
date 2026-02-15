@@ -92,6 +92,7 @@ TTS_INFO = f"""
 ### 🔐 Closed Source/Weights TTS
 * Microsoft _Edge TTS_
 * MARS 6
+* Smallest.ai Lightning
 
 ### 🔓 Open Source/Weights TTS - capabilities table
 
