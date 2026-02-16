@@ -264,13 +264,10 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
     mdl1k = mdl1
     mdl2k = mdl2
-    print(mdl1k, mdl2k)
-    # if mdl1 in AVAILABLE_MODELS.keys(): mdl1k=AVAILABLE_MODELS[mdl1]
-    # if mdl2 in AVAILABLE_MODELS.keys(): mdl2k=AVAILABLE_MODELS[mdl2]
     results = {}
     print(f"Sending models {mdl1k} and {mdl2k} to API")
 
-    # do not use multithreading when both spaces are ZeroGPU type
+    # do not use multithreading when both spaces are ZeroGPU type (for caution sake)
     if (
         'is_zero_gpu_space' in HF_SPACES[mdl1]
         and HF_SPACES[mdl1]['is_zero_gpu_space']
@@ -301,7 +298,8 @@ def synthandreturn(text, autoplay, request: gr.Request):
 
         # cache each result
         for model in [mdl1k, mdl2k]:
-            cache_sample(results[model], text, model)
+            if results[model] != None:
+                cache_sample(results[model], text, model)
 
     print(f"Retrieving models {mdl1k} and {mdl2k} from API")
     return (

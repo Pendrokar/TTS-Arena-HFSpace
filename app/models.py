@@ -71,7 +71,7 @@ AVAILABLE_MODELS = {
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     # 'mrfakename/MetaVoice-1B-v0.1': 'mrfakename/MetaVoice-1B-v0.1', # 4.29 4.32
-    'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
+    # 'Pendrokar/xVASynth-TTS': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'Pendrokar/xVASynth-TTS/NoDeepMoji': 'Pendrokar/xVASynth-TTS', # 4.29 4.32 4.42.0
     # 'coqui/CoquiTTS': 'coqui/CoquiTTS',
     # 'mrfakename/MeloTTS': 'mrfakename/MeloTTS', # 4.29 4.32
@@ -108,7 +108,7 @@ AVAILABLE_MODELS = {
     # StyleTTS Kokoro v0.23
     # 'hexgrad/Kokoro-TTS/0.23': 'hexgrad/Kokoro-TTS',
     # StyleTTS Kokoro v1.0
-    # 'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
+    'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
@@ -127,7 +127,7 @@ AVAILABLE_MODELS = {
     # llasa 1b TTS
     # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
+    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
     # llasa 8b TTS
     # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
@@ -198,6 +198,9 @@ DEFAULT_VOICE_PROMPT = "female voice; very clear audio"
 
 # Older gradio spaces use unnamed parameters, both types are valid
 OVERRIDE_INPUTS = _load_hf_space_inputs()
+
+# special token
+OVERRIDE_INPUTS['hexgrad/Kokoro-API']['hf_token'] = os.getenv('KOKORO')
 
 # minor mods to model from the same space
 OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid'] = OVERRIDE_INPUTS['Steveeeeeeen/Zonos']
