@@ -66,7 +66,7 @@ AVAILABLE_MODELS = {
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
     # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13+
-    'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
+    # 'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
