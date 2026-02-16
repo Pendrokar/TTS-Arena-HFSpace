@@ -5,7 +5,5 @@
   "return_audio_index": 0,
   "is_zero_gpu_space": true,
   "series": "Parler",
-  "emoji": "😷",
-  "title": "Broken space - runtime error",
   "space_link": "parler-tts/parler_tts"
 }
