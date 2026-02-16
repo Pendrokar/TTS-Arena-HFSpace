@@ -3,5 +3,6 @@
   "function": "/predict",
   "text_param_index": 0,
   "return_audio_index": 0,
+  "is_zero_gpu_space": true,
   "series": "XTTS"
 }

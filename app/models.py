@@ -190,6 +190,9 @@ AVAILABLE_MODELS = {
 
 HF_SPACES = _load_hf_spaces()
 
+# special token
+HF_SPACES['hexgrad/Kokoro-API']['hf_token'] = os.getenv('KOKORO')
+
 # for zero-shot TTS - voice sample used by XTTS (11 seconds)
 DEFAULT_VOICE_SAMPLE_STR = 'voice_samples/xtts_sample.wav'
 DEFAULT_VOICE_SAMPLE = handle_file(DEFAULT_VOICE_SAMPLE_STR)
@@ -199,8 +202,6 @@ DEFAULT_VOICE_PROMPT = "female voice; very clear audio"
 # Older gradio spaces use unnamed parameters, both types are valid
 OVERRIDE_INPUTS = _load_hf_space_inputs()
 
-# special token
-OVERRIDE_INPUTS['hexgrad/Kokoro-API']['hf_token'] = os.getenv('KOKORO')
 
 # minor mods to model from the same space
 OVERRIDE_INPUTS['Steveeeeeeen/Zonos/hybrid'] = OVERRIDE_INPUTS['Steveeeeeeen/Zonos']

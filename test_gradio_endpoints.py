@@ -27,13 +27,19 @@ def timeout_handler(signum, frame):
 def create_client_with_timeout(space_url: str, hf_token: str, timeout_secs: int = 15):
     """Create a Gradio Client with a timeout for initialization."""
     # Use signal-based timeout (Unix/Linux/Mac)
+    try:
+        # use TTS host's token
+        client_token = HF_SPACES[space_url]['hf_token']
+    except:
+        # use arena host's token
+        client_token = hf_token
     if hasattr(signal, 'SIGALRM'):
         old_handler = signal.signal(signal.SIGALRM, timeout_handler)
         signal.alarm(timeout_secs)
         try:
             client = Client(
                 space_url,
-                token=hf_token,
+                token=client_token,
                 headers={}
             )
             return client
@@ -44,7 +50,7 @@ def create_client_with_timeout(space_url: str, hf_token: str, timeout_secs: int 
         # Windows fallback - no timeout support
         return Client(
             space_url,
-            token=hf_token,
+            token=client_token,
             headers={}
         )
 
