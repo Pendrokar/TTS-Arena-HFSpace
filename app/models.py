@@ -108,7 +108,7 @@ AVAILABLE_MODELS = {
     # StyleTTS Kokoro v0.23
     # 'hexgrad/Kokoro-TTS/0.23': 'hexgrad/Kokoro-TTS',
     # StyleTTS Kokoro v1.0
-    'hexgrad/Kokoro-API': 'hexgrad/kokoro-API',
+    'hexgrad/Kokoro-API': 'hexgrad/Kokoro-API',
 
     # MaskGCT (by Amphion)
     # 'amphion/maskgct': 'amphion/maskgct', # DEMANDS 300 seconds of ZeroGPU!
