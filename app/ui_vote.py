@@ -18,6 +18,9 @@ def blur_text():
     return gr.update(elem_classes=['blurred-text'])
 def unblur_text():
     return gr.update(elem_classes=[])
+def hidetips():
+    gr.Info('Tips hidden')
+    return gr.update(open=False)
 
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
@@ -27,7 +30,7 @@ with gr.Blocks() as vote:
     bplayed = gr.Checkbox(visible=False, value=False)
     # voter ID
     useridstate = gr.State()
-    with gr.Accordion("Tips", open=True):
+    with gr.Accordion("Tips", open=True) as tips:
         gr.Markdown(INSTR)
     with gr.Group():
         with gr.Row():
@@ -217,12 +220,14 @@ with gr.Blocks() as vote:
         .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
         .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
+    abetter.click(hidetips, outputs=[tips])
     abetter.click(None, inputs=[autonext], js=trigger_next_js)
     
     bbetter\
         .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
         .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
+    bbetter.click(hidetips, outputs=[tips])
     bbetter.click(None, inputs=[autonext], js=trigger_next_js)
 
     # get session cookie
