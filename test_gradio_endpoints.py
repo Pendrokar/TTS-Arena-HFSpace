@@ -7,13 +7,14 @@ This test:
 1. Iterates through all uncommented models in AVAILABLE_MODELS
 2. Retrieves the actual Gradio API endpoints from the remote space
 3. Validates that the configured endpoint in HF_SPACES exists and is accessible
+4. Validates that any overridden inputs in OVERRIDE_INPUTS are valid for that space
 """
 
 import os
 import sys
 import signal
 from gradio_client import Client
-from app.models import AVAILABLE_MODELS, HF_SPACES
+from app.models import AVAILABLE_MODELS, HF_SPACES, OVERRIDE_INPUTS
 
 
 class TimeoutError(Exception):
@@ -64,6 +65,70 @@ def get_space_url(model_name: str) -> str:
     return space_url
 
 
+def _get_param_names(endpoint_info: dict) -> list:
+    """Extract parameter names from endpoint info."""
+    param_names = []
+    params = endpoint_info.get('parameters', [])
+    for param in params:
+        # Try to get parameter_name first (named params), fallback to label or index
+        name = param.get('parameter_name')
+        if name is None:
+            name = param.get('label', f"param_{len(param_names)}")
+        param_names.append(name)
+    return param_names
+
+
+def validate_override_inputs(model_name: str, endpoint_info: dict) -> dict:
+    """
+    Validate that overridden inputs exist as valid parameters for the endpoint.
+    
+    Returns a dictionary with validation results.
+    """
+    result = {
+        'has_overrides': False,
+        'override_keys': [],
+        'invalid_keys': [],
+        'valid_keys': [],
+        'error': None,
+    }
+    
+    # Check if model has override inputs
+    override_inputs = OVERRIDE_INPUTS.get(model_name, {})
+    
+    if not override_inputs:
+        return result
+    
+    result['has_overrides'] = True
+    result['override_keys'] = list(override_inputs.keys())
+    
+    try:
+        # Get available parameter names from endpoint
+        param_names = _get_param_names(endpoint_info)
+        
+        # For named parameters, check if override keys exist in param_names
+        # For unnamed (list-based) parameters, check if indices are valid
+        for key in override_inputs.keys():
+            if isinstance(key, int):
+                # Unnamed parameter (index-based)
+                if key < len(param_names):
+                    result['valid_keys'].append(f"[{key}] (index, max: {len(param_names)-1})")
+                else:
+                    result['invalid_keys'].append(
+                        f"[{key}] - Index out of range (max valid index: {len(param_names)-1})"
+                    )
+            else:
+                # Named parameter
+                if key in param_names:
+                    result['valid_keys'].append(key)
+                else:
+                    result['invalid_keys'].append(key)
+                    
+    except Exception as e:
+        result['error'] = str(e)
+    
+    return result
+
+
 def validate_endpoint(model_name: str, client: Client, config: dict) -> dict:
     """
     Validate the configured endpoint against the actual Gradio API.
@@ -78,6 +143,7 @@ def validate_endpoint(model_name: str, client: Client, config: dict) -> dict:
         'endpoint_type': None,
         'available_endpoints': [],
         'error': None,
+        'override_validation': None,
     }
     
     try:
@@ -108,6 +174,13 @@ def validate_endpoint(model_name: str, client: Client, config: dict) -> dict:
                 result['endpoint_info'] = unnamed_endpoints[function]
             else:
                 result['available_endpoints'] = list(unnamed_endpoints.keys())
+        
+        # Validate override inputs if endpoint exists
+        if result['endpoint_exists']:
+            result['override_validation'] = validate_override_inputs(
+                model_name, 
+                result['endpoint_info']
+            )
                 
     except Exception as e:
         result['error'] = str(e)
@@ -126,9 +199,35 @@ def print_validation_result(result: dict, verbose: bool = False) -> None:
         print(f"   Space: {space_url}")
         print(f"   Error: {result['error']}")
     elif result['endpoint_exists']:
-        print(f"✅ {model}")
+        # Check override validation status
+        override_status = ""
+        override_details = []
+        has_invalid_overrides = False
+        
+        if result.get('override_validation'):
+            ov = result['override_validation']
+            if ov.get('has_overrides'):
+                if ov.get('invalid_keys'):
+                    override_status = " ⚠️(invalid overrides)"
+                    has_invalid_overrides = True
+                    override_details.append(f"   Override Validation: FAILED")
+                    override_details.append(f"   Invalid keys: {', '.join(ov['invalid_keys'])}")
+                    if ov.get('valid_keys'):
+                        override_details.append(f"   Valid keys: {', '.join(ov['valid_keys'])}")
+                else:
+                    override_status = " 📝(overrides valid)"
+                    if verbose:
+                        override_details.append(f"   Override Validation: PASSED")
+                        override_details.append(f"   Override keys: {', '.join(ov['valid_keys'])}")
+        
+        status_emoji = "⚠️ " if has_invalid_overrides else "✅"
+        print(f"{status_emoji} {model}{override_status}")
         print(f"   Space: {space_url}")
         print(f"   Function: {function} ({result['endpoint_type']})")
+        
+        for detail in override_details:
+            print(detail)
+        
         if verbose and result.get('endpoint_info'):
             params = result['endpoint_info'].get('parameters', [])
             print(f"   Parameters: {len(params)}")
@@ -204,7 +303,20 @@ def main():
             print_validation_result(result, verbose=verbose)
             
             if result['endpoint_exists']:
-                results['passed'].append(model_name)
+                # Check if overrides are valid
+                has_invalid_overrides = (
+                    result.get('override_validation') 
+                    and result['override_validation'].get('has_overrides')
+                    and result['override_validation'].get('invalid_keys')
+                )
+                
+                if has_invalid_overrides:
+                    results['failed'].append({
+                        'model': model_name,
+                        'reason': f"Invalid override keys: {result['override_validation']['invalid_keys']}"
+                    })
+                else:
+                    results['passed'].append(model_name)
             else:
                 results['failed'].append({
                     'model': model_name,
