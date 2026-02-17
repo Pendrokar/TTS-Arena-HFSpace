@@ -18,6 +18,8 @@ def blur_text():
     return gr.update(elem_classes=['blurred-text'])
 def unblur_text():
     return gr.update(elem_classes=[])
+def is_autonext_on(autonext):
+        return autonext
 
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
@@ -97,10 +99,20 @@ with gr.Blocks() as vote:
         visible=False,
         variant='primary',
     )
-    autoplay = gr.Checkbox(
-        label="Autoplay audio",
-        value=True
-    )
+
+    with gr.Row():
+        with gr.Column():
+            autoplay = gr.Checkbox(
+                label="Autoplay audio",
+                value=True
+            )
+
+        with gr.Column():
+            autonext = gr.Checkbox(
+                label="Auto continue",
+                value=True
+            )
+
     # hardcoded voice instruct prompt (ParlerTTS, CosyVoice)
     gr.Textbox(
         interactive=False,
@@ -186,16 +198,37 @@ with gr.Blocks() as vote:
         )
     # unblur text with JS; faster than sending output with elem_classes
     aud2.stop(None, inputs=[aplayed], js="(a) => a ? "+ unblur_text_js +" : 0")
+    
+    # Vote Section
+    trigger_next_js = """
+    (a) => {
+        setTimeout(
+            function(){
+                elem = document.getElementById('arena-next-round');
+                if (a && elem.classList.contains('next-round'))
+                {
+                    document.getElementById('arena-next-round').click();
+                }
+            },3000);
+    }
+    """
 
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
     abetter\
         .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
         .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
+    abetter.click(None, inputs=[autonext], js=trigger_next_js)
+    
     bbetter\
         .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
         .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
+    bbetter.click(None, inputs=[autonext], js=trigger_next_js)
+    
+    # bbetter\
+    #     .click(is_autonext_on, inputs=[autonext])\
+    #     .success(None, js=trigger_next_js)
 
     # get session cookie
     vote\
