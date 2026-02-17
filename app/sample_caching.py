@@ -148,8 +148,8 @@ def give_cached_sample(session_hash: str, autoplay: bool, request: gr.Request):
         gr.update(visible=True), # r2
         pair[0].modelName, # model1
         pair[1].modelName, # model2
-        gr.update(visible=True, value=pair[0].filename, interactive=False, autoplay=autoplay), # aud1
-        gr.update(visible=True, value=pair[1].filename, interactive=False, autoplay=False), # aud2
+        gr.update(visible=True, value=pair[0].filename, interactive=False, autoplay=autoplay, playback_position=0), # aud1
+        gr.update(visible=True, value=pair[1].filename, interactive=False, autoplay=False, playback_position=0), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
         gr.update(visible=False), #prevmodel1
