@@ -191,7 +191,7 @@ def synthandreturn(text, autoplay, request: gr.Request):
             audio.export(f.name, format="wav")
             os.unlink(result)
             result = f.name
-            gr.Info('Audio from a TTS model received')
+            gr.Info('🗣 Audio from a TTS model received')
 
         # if model in AVAILABLE_MODELS.keys(): model = AVAILABLE_MODELS[model]
         result_storage[model] = result
@@ -276,10 +276,12 @@ def synthandreturn(text, autoplay, request: gr.Request):
         and HF_SPACES[mdl2]['is_zero_gpu_space']
     ):
         # run Zero-GPU spaces one at a time
+        gr.Info('Connecting to a Zero-GPU 🤗 Space...', duration=3)
         predict_and_update_result(text, mdl1k, results, request)
         if results[mdl1k] != None:
             cache_sample(results[mdl1k], text, mdl1k)
 
+        gr.Info('Connecting to a Zero-GPU 🤗 Space...', duration=3)
         predict_and_update_result(text, mdl2k, results, request)
         if results[mdl2k] != None:
             cache_sample(results[mdl2k], text, mdl2k)
