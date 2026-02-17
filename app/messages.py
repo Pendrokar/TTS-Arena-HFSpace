@@ -7,7 +7,7 @@ from .models import *
 
 MUST_BE_LOGGEDIN = "Please login with Hugging Face to participate in the TTS Arena."
 DESCR = """
-# TTS Arena: Benchmarking TTS Models on HuggingFace
+# TTS Arena: HuggingFace models
 """.strip()
 
 INSTR = """

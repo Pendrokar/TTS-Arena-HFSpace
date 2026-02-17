@@ -23,12 +23,14 @@ models:
 - HKUSTAudio/Llasa-3B
 - HKUSTAudio/Llasa-8B
 - IndexTeam/Index-TTS
+- kyutai/pocket-tts
 - lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
 - myshell-ai/MeloTTS-English-v3
 - myshell-ai/OpenVoice
 - myshell-ai/OpenVoiceV2
+- OpenMOSS-Team/MOSS-TTS
 - OuteAI/OuteTTS-0.2-500M
 - OuteAI/OuteTTS-0.3-1B
 - parler-tts/parler-tts-large-v1
@@ -36,6 +38,8 @@ models:
 - parler-tts/parler-tts-mini-multilingual
 - parler-tts/parler-tts-mini-v1
 - Pendrokar/xvapitch_expresso
+- Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice
+- Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign
 - ResembleAI/chatterbox
 - sesame/csm-1b
 - SparkAudio/Spark-TTS-0.5B
