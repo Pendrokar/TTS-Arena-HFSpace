@@ -15,9 +15,7 @@ with gr.Blocks() as leaderboard:
     reloadbtn = gr.Button("Refresh")
     with gr.Row():
         reveal_prelim = gr.Checkbox(label="Reveal preliminary results", info="Show all models, including models with very few human ratings.", scale=1)
-        # hide_battle_votes = gr.Checkbox(label="Hide Battle Mode votes", info="Exclude votes obtained through Battle Mode.", scale=1)
     reveal_prelim.input(get_leaderboard, inputs=[reveal_prelim], outputs=[df])
-    # hide_battle_votes.input(get_leaderboard, inputs=[reveal_prelim, hide_battle_votes], outputs=[df])
     leaderboard.load(get_leaderboard, inputs=[reveal_prelim], outputs=[df])
     reloadbtn.click(get_leaderboard, inputs=[reveal_prelim], outputs=[df])
     # gr.Markdown("DISCLAIMER: The licenses listed may not be accurate or up to date, you are responsible for checking the licenses before using the models. Also note that some models may have additional usage restrictions.")

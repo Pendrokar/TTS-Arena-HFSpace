@@ -10,13 +10,6 @@ DESCR = """
 # TTS Arena: Benchmarking TTS Models on HuggingFace
 """.strip()
 
-BATTLE_INSTR = """
-Choose 2 candidates and vote on which one is better! Currently in beta.
-* Input text (English only) to synthesize audio (or press 🎲 for random text).
-* Listen to the two audio clips, one after the other.
-* Vote on which audio sounds more natural to you.
-"""
-
 INSTR = """
 <details>
 <summary>Tips (click to expand)</summary>

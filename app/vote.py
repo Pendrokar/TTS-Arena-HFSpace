@@ -54,13 +54,6 @@ def downvote_model(model, uname, battle=False):
         conn.commit()
     cursor.close()
 
-# Battle Mode
-
-def a_is_better_battle(model1, model2, userid):
-    return a_is_better(model1, model2, 'unknown_battle', True)
-def b_is_better_battle(model1, model2, userid):
-    return b_is_better(model1, model2, 'unknown_battle', True)
-
 # A/B better
 
 def a_is_better(model1, model2, userid, text):

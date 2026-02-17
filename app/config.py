@@ -58,4 +58,5 @@ CITATION_TEXT = """@misc{tts-arena,
 
 #- 2025/01/21: New leaderboard UI released with enhanced UI and improved performance.
 NEWS = """
+- 2026/02/15: TTS added - Pocket-TTS Smallest.ai Lightning v3.1 Qwen3-TTS-Voice-Design MOSS-TTS
 """

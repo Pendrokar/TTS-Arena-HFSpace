@@ -320,8 +320,6 @@ def synthandreturn(text, autoplay, request: gr.Request):
         False, #bplayed
     )
 
-# Battle Mode
-
 def randomsent():
     return '⚡', random.choice(sents), '🎲'
 def clear_stuff():
