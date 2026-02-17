@@ -27,7 +27,8 @@ with gr.Blocks() as vote:
     bplayed = gr.Checkbox(visible=False, value=False)
     # voter ID
     useridstate = gr.State()
-    gr.Markdown(INSTR)
+    with gr.Accordion("Tips", open=True):
+        gr.Markdown(INSTR)
     with gr.Group():
         with gr.Row():
             cachedt = gr.Button('⚡', scale=0, min_width=0, variant='tool', interactive=True)

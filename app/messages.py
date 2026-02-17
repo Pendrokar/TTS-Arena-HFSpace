@@ -11,9 +11,6 @@ DESCR = """
 """.strip()
 
 INSTR = """
-<details>
-<summary>Tips (click to expand)</summary>
-
 * Press ⚡ to quickly get cached sample pairs you've yet to vote on. (Fast 🐇)
 
 * Or press 🎲 pick a random sentence from a prepared list. (Slow 🐢)
@@ -25,7 +22,6 @@ INSTR = """
 * Model names are revealed after the vote is cast.
 
 * You can use a _[hotkey]_ for quicker voting.
-</details>
 """.strip()
 
 request = ""
