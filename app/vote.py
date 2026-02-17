@@ -114,17 +114,17 @@ def reload(chosenmodel1=None, chosenmodel2=None, userid=None, chose_a=False, cho
     chosenmodel1 = make_link_to_space(chosenmodel1)
     chosenmodel2 = make_link_to_space(chosenmodel2)
     out = [
-        gr.update(interactive=False, visible=False),
-        gr.update(interactive=False, visible=False)
+        gr.update(interactive=False, visible=True),
+        gr.update(interactive=False, visible=True)
     ]
     style = 'text-align: center; font-size: 1rem; margin-bottom: 0; padding: var(--input-padding)'
     if chose_a == True:
-        out.append(gr.HTML(value=f'<p style="{style}">Your vote: {chosenmodel1}</p>', visible=True))
-        out.append(gr.HTML(value=f'<p style="{style}">{chosenmodel2}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel1}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">{chosenmodel2}</p>', visible=True))
         gr.Info(f'{chosenmodel1}🔼🏆 > {chosenmodel2}🔽', duration=5)
     else:
-        out.append(gr.HTML(value=f'<p style="{style}">{chosenmodel1}</p>', visible=True))
-        out.append(gr.HTML(value=f'<p style="{style}">Your vote: {chosenmodel2}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">{chosenmodel1}</p>', visible=True))
+        out.append(gr.update(value=f'<p style="{style}">Your vote: {chosenmodel2}</p>', visible=True))
         gr.Info(f'{chosenmodel1}🔽 < {chosenmodel2}🔼🏆', duration=5)
     out.append(gr.update(visible=True, value="⚡ [N]ext Round", elem_classes=['next-round']))
     return out

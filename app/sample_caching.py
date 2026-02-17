@@ -131,10 +131,14 @@ def give_cached_sample(session_hash: str, autoplay: bool, request: gr.Request):
         return None
 
     pair = get_next_pair(voting_users[userid])
+    # no other cached pair, generate default outputs
     if pair is None:
         comp_defaults = []
         for i in range(0, 14):
-            comp_defaults.append(gr.update())
+            if (i >= 9 and i <= 10): # prevmodel1 || prevmodel2
+                comp_defaults.append(gr.update(visible=False))
+            else:
+                comp_defaults.append(gr.update())
         return [
             *comp_defaults,
             # *clear_stuff(),
@@ -152,8 +156,8 @@ def give_cached_sample(session_hash: str, autoplay: bool, request: gr.Request):
         gr.update(visible=True, value=pair[1].filename, interactive=False, autoplay=False, playback_position=0), # aud2
         gr.update(visible=True, interactive=False), #abetter
         gr.update(visible=True, interactive=False), #bbetter
-        gr.update(visible=False), #prevmodel1
-        gr.update(visible=False), #prevmodel2
+        gr.HTML(value='', visible=False), #prevmodel1 FIXME: Gradio ignores visible=False
+        gr.HTML(value='', visible=False), #prevmodel2 FIXME: Gradio ignores visible=False
         gr.update(visible=True, value="⚡ Skip Round", elem_classes=['skip-round']), #nxt round btn
         # reset aplayed, bplayed audio playback events
         False, #aplayed
