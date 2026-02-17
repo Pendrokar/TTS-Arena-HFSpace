@@ -170,7 +170,7 @@ AVAILABLE_MODELS = {
 
     # Qwen3 TTS
     'Qwen/Qwen3-TTS-Voice-Design': 'Qwen/Qwen3-TTS-Voice-Design',
-    # 'Qwen/Qwen3-TTS-CustomVoice': 'Qwen/Qwen3-TTS-Voice-Design',
+    'Qwen/Qwen3-TTS': 'Qwen/Qwen3-TTS',
 
     # MOSS TTS
     'OpenMOSS-Team/MOSS-TTS': 'OpenMOSS-Team/MOSS-TTS',
