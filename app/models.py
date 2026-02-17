@@ -168,8 +168,9 @@ AVAILABLE_MODELS = {
     # smallest.ai Lightning v3.1
     'smallestai/smallest-ai-tts-lightningv3.1-demo': 'smallestai/smallest-ai-tts-lightningv3.1-demo',
 
-    # Qwen3 TTS Voice Design
+    # Qwen3 TTS
     'Qwen/Qwen3-TTS-Voice-Design': 'Qwen/Qwen3-TTS-Voice-Design',
+    # 'Qwen/Qwen3-TTS-CustomVoice': 'Qwen/Qwen3-TTS-Voice-Design',
 
     # MOSS TTS
     'OpenMOSS-Team/MOSS-TTS': 'OpenMOSS-Team/MOSS-TTS',
