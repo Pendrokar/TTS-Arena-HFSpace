@@ -1,22 +1,5 @@
 from app.models import *
 
-# # has named endpoint
-# if '/' == HF_SPACES[model]['function'][0]:
-#     # audio sync function name
-#     api_name = HF_SPACES[model]['function']
-
-#     end_parameters = _get_param_examples(
-#         endpoints['named_endpoints'][api_name]['parameters']
-#     )
-# # has unnamed endpoint
-# else:
-#     # endpoint index is the first character
-#     fn_index = int(HF_SPACES[model]['function'])
-
-#     end_parameters = _get_param_examples(
-#         endpoints['unnamed_endpoints'][str(fn_index)]['parameters']
-#     )
-
 def _get_param_examples(parameters):
     # named or unnamed parameters
     try:

@@ -21,7 +21,7 @@ from pathlib import Path
 
 from gradio_client import Client, file
 
-from test_overrides import _get_param_examples, _override_params, HF_SPACES
+from test_overrides import _get_param_examples, _override_params, AVAILABLE_MODELS, HF_SPACES
 
 
 def play_audio(audio_path: str):
@@ -189,7 +189,7 @@ def main():
         print(__doc__)
         sys.exit(1)
     
-    space_url = sys.argv[1]
+    space_url = AVAILABLE_MODELS[sys.argv[1]]
     text = sys.argv[2] if len(sys.argv) > 2 else "Hello world!"
     
     success = synthesize_and_play(space_url, text)
