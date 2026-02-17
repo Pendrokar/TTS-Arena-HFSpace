@@ -18,8 +18,6 @@ def blur_text():
     return gr.update(elem_classes=['blurred-text'])
 def unblur_text():
     return gr.update(elem_classes=[])
-def is_autonext_on(autonext):
-        return autonext
 
 with gr.Blocks() as vote:
     session_hash = gr.Textbox(visible=False, value='')
@@ -225,10 +223,6 @@ with gr.Blocks() as vote:
         .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
     bbetter.click(None, inputs=[autonext], js=trigger_next_js)
-    
-    # bbetter\
-    #     .click(is_autonext_on, inputs=[autonext])\
-    #     .success(None, js=trigger_next_js)
 
     # get session cookie
     vote\

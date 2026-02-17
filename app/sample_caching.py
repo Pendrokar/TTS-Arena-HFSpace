@@ -144,7 +144,7 @@ def give_cached_sample(session_hash: str, autoplay: bool, request: gr.Request):
 
     return (
         gr.update(visible=True, value=pair[0].transcript, elem_classes=['blurred-text']),
-        "Synthesize 🐢",
+        gr.update(interactive=True), #sync btn
         gr.update(visible=True), # r2
         pair[0].modelName, # model1
         pair[1].modelName, # model2
