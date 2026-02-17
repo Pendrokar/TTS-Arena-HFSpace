@@ -19,7 +19,6 @@ def blur_text():
 def unblur_text():
     return gr.update(elem_classes=[])
 def hidetips():
-    gr.Info('Tips hidden')
     return gr.update(open=False)
 
 with gr.Blocks() as vote:
