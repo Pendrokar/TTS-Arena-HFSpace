@@ -12,6 +12,8 @@ def disable():
     return [gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=False)]
 def enable():
     return [gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)]
+def failed():
+    return [gr.update(interactive=True), gr.update(interactive=False), gr.update(interactive=False), gr.update(interactive=True)]
 def blur_text():
     return gr.update(elem_classes=['blurred-text'])
 def unblur_text():
@@ -140,6 +142,7 @@ with gr.Blocks() as vote:
     btn\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(synthandreturn, inputs=[text, autoplay], outputs=outputs)\
+        .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])\
         .then(None, js="() => "+ unblur_text_js)
     # Next Round ; blur text
@@ -147,7 +150,8 @@ with gr.Blocks() as vote:
         .click(clear_stuff, outputs=outputs)\
         .then(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(give_cached_sample, inputs=[session_hash, autoplay], outputs=[*outputs, cachedt])\
-        .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
+        .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
+        .success(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
     # blur text
     nxtroundbtn.click(None, js="() => "+ blur_text_js)
 
@@ -155,7 +159,8 @@ with gr.Blocks() as vote:
     cachedt\
         .click(disable, outputs=[btn, abetter, bbetter, cachedt])\
         .then(give_cached_sample, inputs=[session_hash, autoplay], outputs=[*outputs, cachedt])\
-        .then(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
+        .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
+        .success(enable, outputs=[btn, gr.State(), gr.State(), gr.State()])
     # TODO: await download of sample before allowing playback
 
     # Allow interaction with the vote buttons only when both audio samples have finished playing
@@ -183,9 +188,11 @@ with gr.Blocks() as vote:
     nxt_outputs = [abetter, bbetter, prevmodel1, prevmodel2, nxtroundbtn]
     abetter\
         .click(a_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
+        .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
     bbetter\
         .click(b_is_better, outputs=nxt_outputs, inputs=[model1, model2, useridstate, text])\
+        .failure(failed, outputs=[btn, abetter, bbetter, cachedt])\
         .then(voted_on_cached, inputs=[model1, model2, text, session_hash], outputs=[])
 
     # get session cookie

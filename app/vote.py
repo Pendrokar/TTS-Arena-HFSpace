@@ -16,7 +16,10 @@ def log_text(text, voteid):
     cursor = conn.cursor()
     # TODO: multilang
     cursor.execute('INSERT INTO spokentext (spokentext, lang, votelog_id) VALUES (?,?,?)', (text,'en',voteid))
-    with scheduler.lock:
+    if scheduler:
+        with scheduler.lock:
+            conn.commit()
+    else:
         conn.commit()
     cursor.close()
 
@@ -89,7 +92,14 @@ def is_better(model1, model2, userid, text, chose_a):
         else:
             cursor.execute(sql_query, (str(userid), model2, model1))
 
-        with scheduler.lock:
+        if scheduler:
+            with scheduler.lock:
+                conn.commit()
+                # also retrieve primary key ID
+                cursor.execute('SELECT last_insert_rowid()')
+                votelogid = cursor.fetchone()[0]
+                cursor.close()
+        else:
             conn.commit()
             # also retrieve primary key ID
             cursor.execute('SELECT last_insert_rowid()')
