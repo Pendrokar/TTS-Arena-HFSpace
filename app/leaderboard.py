@@ -101,24 +101,32 @@ def get_leaderboard(reveal_prelim = False):
 
     # last in model series from models.py
     last_series = []
-    # medals
-    def assign_medal(rank, model_series, last_series, assign):
-        rank = str(rank + 1)
-        if (
-            assign
-            # and last_series != ''
-            # and model_series != last_series
-        ):
-            if rank == '1':
-                rank += '🥇'
-            elif rank == '2':
-                rank += '🥈'
-            elif rank == '3':
-                rank += '🥉'
+    # medals - assign to top 3 active models
+    def assign_medal(rank, model_series, last_series, active_rank):
+        rank_str = str(rank + 1)
+        # Only assign medals to top 3 active models (active_rank 0, 1, 2)
+        if active_rank is not None and active_rank < 3:
+            if active_rank == 0:
+                rank_str += '🥇'
+            elif active_rank == 1:
+                rank_str += '🥈'
+            elif active_rank == 2:
+                rank_str += '🥉'
 
         if (model_series != last_series):
             last_series = model_series
-        return '#'+ rank
+        return '#'+ rank_str
+
+    # Build a map of which models are active and their rank among active models
+    active_ranks = {}
+    active_count = 0
+    for i in range(len(df)):
+        orig_name = df['OrigName'].iloc[i]
+        if orig_name in AVAILABLE_MODELS.keys():
+            active_ranks[i] = active_count
+            active_count += 1
+        else:
+            active_ranks[i] = None
 
     try:
         df['Order'] = [
@@ -126,7 +134,7 @@ def get_leaderboard(reveal_prelim = False):
                 i,
                 HF_SPACES[df['OrigName'].iloc[i]]['series'],
                 last_series,
-                not reveal_prelim and len(df) > 2
+                active_ranks[i] if not reveal_prelim and len(df) > 2 else None
             ) for i in range(len(df))
         ]
     except:
@@ -134,7 +142,7 @@ def get_leaderboard(reveal_prelim = False):
             i,
             '',
             '',
-            not reveal_prelim and len(df) > 2) for i in range(len(df))
+            active_ranks[i] if not reveal_prelim and len(df) > 2 else None) for i in range(len(df))
         ]
         pass
 
