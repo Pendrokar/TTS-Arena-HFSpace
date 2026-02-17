@@ -178,6 +178,9 @@ AVAILABLE_MODELS = {
     # Pocket TTS
     'NeuralFalcon/Pocket-TTS': 'NeuralFalcon/Pocket-TTS',
 
+    # KaniTTS
+    'nineninesix/KaniTTS': 'nineninesix/KaniTTS',
+
     # HF TTS w issues
     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Discontinued for OpenAudio S1
     # 'LeeSangHoon/HierSpeech_TTS': 'LeeSangHoon/HierSpeech_TTS', # irresponsive to exclamation marks # 4.29
