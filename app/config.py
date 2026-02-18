@@ -56,7 +56,19 @@ CITATION_TEXT = """@misc{tts-arena,
 	howpublished = "\\url{https://huggingface.co/spaces/TTS-AGI/TTS-Arena}"
 }"""
 
-#- 2025/01/21: New leaderboard UI released with enhanced UI and improved performance.
 NEWS = """
-- 2026/02/15: TTS added - Pocket-TTS Smallest.ai Lightning v3.1 Qwen3-TTS-Voice-Design MOSS-TTS
+- 2026/02/17: Added TTS models - KaniTTS
+- 2026/02/15: Added TTS models - Pocket-TTS, MOSS-TTS, Qwen3-TTS, Qwen3-TTS-Voice-Design, Smallest.ai Lightning v3.1
+- 2025/07/15: Added TTS models - MegaTTS3
+- 2025/06/19: Added TTS models - OpenAudio S1 Mini (by Fish Audio), Chatterbox
+- 2025/05/01: Added TTS models - Parler Multi, Dia (unstable)
+- 2025/04/05: Added TTS models - Index TTS
+- 2025/03/21: Added TTS models - Orpheus-TTS, Sesame CSM-1B
+- 2025/03/08: Added TTS models - SparkTTS
+- 2025/02/23: Added TTS models - LLaSA
+- 2025/02/15: Added TTS models - Zonos (both architectures)
+- 2024/11/13: Added TTS models - MaskGCT, StyleTTS Kokoro
+- 2024/10/19: Added TTS models - IMS-Toucan
+- 2024/10/11: Added TTS models - E2/F5 TTS
+- 2024/03/09: Added TTS models - Amphion, HierSpeech++
 """
