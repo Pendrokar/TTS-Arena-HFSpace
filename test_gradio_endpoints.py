@@ -295,8 +295,8 @@ def main():
         config['space_url'] = space_url
         
         try:
-            # Create Gradio client with 15 second timeout
-            client = create_client_with_timeout(space_url, hf_token, timeout_secs=15)
+            # Create Gradio client with 30 second timeout
+            client = create_client_with_timeout(space_url, hf_token, timeout_secs=30)
             
             # Validate the endpoint
             result = validate_endpoint(model_name, client, config)

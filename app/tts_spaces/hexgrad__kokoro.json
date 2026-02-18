@@ -6,5 +6,6 @@
   "is_zero_gpu_space": false,
   "series": "Kokoro",
   "space_link": "Remsky/Kokoro-TTS-Zero",
+  "emoji": "😷",
   "title": "Deprecated: Kokoro v1.0+ improves pronunciation"
 }

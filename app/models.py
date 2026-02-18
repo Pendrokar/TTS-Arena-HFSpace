@@ -169,8 +169,8 @@ AVAILABLE_MODELS = {
     'smallestai/smallest-ai-tts-lightningv3.1-demo': 'smallestai/smallest-ai-tts-lightningv3.1-demo',
 
     # Qwen3 TTS
-    'Qwen/Qwen3-TTS-Voice-Design': 'Qwen/Qwen3-TTS-Voice-Design',
     'Qwen/Qwen3-TTS': 'Qwen/Qwen3-TTS',
+    'Qwen/Qwen3-TTS-Voice-Design': 'Qwen/Qwen3-TTS-Voice-Design', # voice by prompt
 
     # MOSS TTS
     'OpenMOSS-Team/MOSS-TTS': 'OpenMOSS-Team/MOSS-TTS',
@@ -279,7 +279,7 @@ top_five = [
     'NeuralFalcon/Pocket-TTS',
     'smallestai/smallest-ai-tts-lightningv3.1-demo',
     'Qwen/Qwen3-TTS-Voice-Design',
-    'OpenMOSS-Team/MOSS-TTS',
+    'Qwen/Qwen3-TTS',
 ]
 
 # prioritize low vote models

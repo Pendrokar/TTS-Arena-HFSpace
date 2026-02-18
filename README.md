@@ -24,6 +24,7 @@ models:
 - HKUSTAudio/Llasa-8B
 - IndexTeam/Index-TTS
 - kyutai/pocket-tts
+- kyutai/tts-voices
 - lj1995/GPT-SoVITS
 - metavoiceio/metavoice-1B-v0.1
 - myshell-ai/MeloTTS-English-v2
