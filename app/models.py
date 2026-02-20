@@ -66,7 +66,7 @@ AVAILABLE_MODELS = {
     # '<keyname>':'<Space URL>'
     # gradio version that works with most spaces: 4.29
     # 'coqui/xtts': 'coqui/xtts', # 4.29 4.32; extra_headers error appears for 5.13+
-    'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
+    # 'coqui/xtts': 'tonyassi/voice-clone', # ZeroGPU clone
     # 'collabora/WhisperSpeech': 'collabora/WhisperSpeech', # 4.32 4.36.1
     #'myshell-ai/OpenVoice': 'myshell-ai/OpenVoice', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
     #'myshell-ai/OpenVoiceV2': 'myshell-ai/OpenVoiceV2', # same devs as MeloTTS, which scores higher # extra_headers error appears for 5.13+
@@ -127,7 +127,7 @@ AVAILABLE_MODELS = {
     # llasa 1b TTS
     # 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers': 'HKUST-Audio/Llasa-1B-finetuned-for-two-speakers',
     # llasa 3b TTS
-    'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
+    # 'srinivasbilla/llasa-3b-tts': 'srinivasbilla/llasa-3b-tts',
     # llasa 8b TTS
     # 'srinivasbilla/llasa-8b-tts': 'srinivasbilla/llasa-8b-tts', # ZeroGPU Pro account expired
 
@@ -176,7 +176,7 @@ AVAILABLE_MODELS = {
     'OpenMOSS-Team/MOSS-TTS': 'OpenMOSS-Team/MOSS-TTS',
 
     # Pocket TTS
-    'NeuralFalcon/Pocket-TTS': 'NeuralFalcon/Pocket-TTS',
+    # 'NeuralFalcon/Pocket-TTS': 'NeuralFalcon/Pocket-TTS',
 
     # KaniTTS
     'nineninesix/KaniTTS': 'nineninesix/KaniTTS',
@@ -276,10 +276,9 @@ closed_source = [
 
 # top five models in order to always have one of them picked and scrutinized
 top_five = [
-    'NeuralFalcon/Pocket-TTS',
-    'smallestai/smallest-ai-tts-lightningv3.1-demo',
     'Qwen/Qwen3-TTS-Voice-Design',
     'Qwen/Qwen3-TTS',
+    'nineninesix/KaniTTS',
 ]
 
 # prioritize low vote models
