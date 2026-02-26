@@ -10,7 +10,7 @@ This test:
 4. Validates that any overridden inputs in OVERRIDE_INPUTS are valid for that space
 """
 
-import os
+import os, time
 import sys
 import signal
 from gradio_client import Client
@@ -295,8 +295,8 @@ def main():
         config['space_url'] = space_url
         
         try:
-            # Create Gradio client with 30 second timeout
-            client = create_client_with_timeout(space_url, hf_token, timeout_secs=30)
+            # Create Gradio client with a timeout
+            client = create_client_with_timeout(space_url, hf_token, timeout_secs=45)
             
             # Validate the endpoint
             result = validate_endpoint(model_name, client, config)
@@ -337,6 +337,8 @@ def main():
                 'model': model_name,
                 'reason': f'Connection error: {str(e)}'
             })
+
+        time.sleep(1.0)
     
     # Print summary
     print("=" * 70)
