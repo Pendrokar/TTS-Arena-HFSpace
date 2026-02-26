@@ -158,6 +158,9 @@ AVAILABLE_MODELS = {
 
     # Chatterbox
     'ResembleAI/Chatterbox': 'ResembleAI/Chatterbox',
+    
+    # Chatterbox Turbo
+    'ResembleAI/chatterbox-turbo-demo': 'ResembleAI/chatterbox-turbo-demo',
 
     # OpenAudio S1 (Fish Audio)
     # 'fishaudio/openaudio-s1-mini': 'fishaudio/openaudio-s1-mini',

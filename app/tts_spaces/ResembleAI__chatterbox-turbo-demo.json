@@ -1,0 +1,8 @@
+{
+  "name": "Chatterbox Turbo",
+  "function": "/generate",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "Chatterbox"
+}
