@@ -1,8 +1,9 @@
 {
-  "name": "Qwen3 TTS CustomVoice",
+  "name": "Qwen3 TTS CV (Fine)",
   "function": "/generate_custom_voice",
   "text_param_index": "text",
   "return_audio_index": 0,
-  "is_zero_gpu_space": false,
+  "is_zero_gpu_space": true,
+  "title": "Fine-tuned model",
   "series": "Qwen"
 }

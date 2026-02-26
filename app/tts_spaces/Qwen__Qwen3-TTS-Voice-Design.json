@@ -1,8 +1,10 @@
 {
-  "name": "Qwen3 TTS Voice Design",
+  "name": "Qwen3 TTS VD (🎲)",
   "function": "/tts_interface",
   "text_param_index": "text",
+  "voice_prompt_param_index": "instruct",
   "return_audio_index": 0,
-  "is_zero_gpu_space": false,
+  "is_zero_gpu_space": true,
+  "title": "Voice model by prompt",
   "series": "Qwen"
 }
