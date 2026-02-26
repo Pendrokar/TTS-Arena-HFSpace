@@ -291,7 +291,7 @@ def main():
             })
             continue
         
-        config = HF_SPACES[model_name].copy()
+        config = HF_SPACES[space_url].copy()
         config['space_url'] = space_url
         
         try:
