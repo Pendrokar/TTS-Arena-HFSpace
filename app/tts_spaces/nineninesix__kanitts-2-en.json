@@ -1,0 +1,8 @@
+{
+  "name": "KaniTTS 2",
+  "function": "/generate_speech_gpu",
+  "text_param_index": "text",
+  "return_audio_index": 0,
+  "is_zero_gpu_space": true,
+  "series": "KaniTTS"
+}

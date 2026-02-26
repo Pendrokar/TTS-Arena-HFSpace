@@ -179,7 +179,10 @@ AVAILABLE_MODELS = {
     # 'NeuralFalcon/Pocket-TTS': 'NeuralFalcon/Pocket-TTS',
 
     # KaniTTS
-    'nineninesix/KaniTTS': 'nineninesix/KaniTTS',
+    # 'nineninesix/KaniTTS': 'nineninesix/KaniTTS',
+
+    # KaniTTS 2
+    'nineninesix/kanitts-2-en': 'nineninesix/kanitts-2-en',
 
     # HF TTS w issues
     # 'fishaudio/fish-speech-1': 'fishaudio/fish-speech-1', # Discontinued for OpenAudio S1
@@ -278,7 +281,8 @@ closed_source = [
 top_five = [
     'Qwen/Qwen3-TTS-Voice-Design',
     'Qwen/Qwen3-TTS',
-    'nineninesix/KaniTTS',
+    'smallestai/smallest-ai-tts-lightningv3.1-demo',
+    'nineninesix/kanitts-2-en',
 ]
 
 # prioritize low vote models
