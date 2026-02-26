@@ -1,6 +1,6 @@
 {
   "name": "XTTS v2",
-  "function": "/predict",
+  "function": "/clone",
   "text_param_index": "text",
   "return_audio_index": 0,
   "is_zero_gpu_space": true,
