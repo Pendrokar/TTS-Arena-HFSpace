@@ -286,6 +286,7 @@ top_five = [
     'Qwen/Qwen3-TTS',
     'smallestai/smallest-ai-tts-lightningv3.1-demo',
     'nineninesix/kanitts-2-en',
+    'ResembleAI/chatterbox-turbo-demo',
 ]
 
 # prioritize low vote models

@@ -42,6 +42,7 @@ models:
 - Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice
 - Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign
 - ResembleAI/chatterbox
+- ResembleAI/chatterbox-turbo
 - sesame/csm-1b
 - SparkAudio/Spark-TTS-0.5B
 - SWivid/F5-TTS
